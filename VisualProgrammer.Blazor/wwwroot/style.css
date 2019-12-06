@@ -1,4 +1,8 @@
-﻿.vp--program-presenter  .vp--canvas {
+﻿.vp--program-presenter {
+    background: #EFF0F1;
+}
+
+.vp--program-presenter .vp--canvas {
     position: relative;
 }
 
@@ -9,16 +13,16 @@
 }
 
 .vp--node-connector-container {
-    top: 7px; /* Half the size of a single node dot. This is so that it's easier to make the line meet the center of the */
-    left: 8px; /* link dot, without needing to add it to the JS calculation. */
+    top: 11px; /* This is so that it's easier to make the line meet the center of the */
+    left: 12px; /* link dot, without needing to add it to the JS calculation. */
     overflow: visible; /* So we don't have to resize the SVG to fit everything. Easy :) */
     width: 0;
     height: 0;
 }
 
 .vp--node-connector-container path {
-    stroke: #333;
-    stroke-width: 2;
+    stroke: #AAA;
+    stroke-width: 3;
     fill: none;
 }
 .vp--node-connector-container path[data-line-dest-id=""] {
@@ -27,30 +31,42 @@
 
 .vp--visual-node {
     display: inline-block;
+    min-width: 180px;
     border: 1px solid #FFF2;
     border-radius: 4px;
     font-size: 85%;
-    box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
     background: #68717B;
 }
 
-.vp--visual-node[data-visual-expression-type="double"] { background: #42759F; }
-.vp--visual-node[data-visual-expression-type="boolean"] { background: #AE4444; }
-.vp--visual-node[data-visual-expression-type="string"] { background: #5E9B4E; }
+.vp--visual-node[data-visual-expression-type="double"] { --node-background: #42759F; }
+.vp--visual-node[data-visual-expression-type="boolean"] { --node-background: #AE4444; }
+.vp--visual-node[data-visual-expression-type="string"] { --node-background: #5E9B4E; }
+
+.vp--visual-entry {
+    --node-background: #1E222A;
+    --node-border: rgba(255, 255, 255, .15);
+    --link-inner: rgba(255, 255, 255, .2);
+    color: #F9F9F9;
+}
+
+.vp--visual-node, .vp--visual-node .vp--node-link {
+    background: var(--node-background, #F9F9F9);
+    border: 1px solid var(--node-border, rgba(0, 0, 0, .15));
+}
 
 .vp--visual-node .vp--node-title {
     display: block;
-    padding: 6px 10px 6px 16px;
+    padding: 6px 10px;
     font-weight: bold;
 }
 
 .vp--visual-node .vp--node-dragger {
     position: absolute;
-    left: 2px;
-    top: 2px;
-    width: 12px;
-    height: 24px;
-    background: rgba(0, 0, 0, .2);
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 29px;
     cursor: move;
 }
 
@@ -65,17 +81,6 @@
 
 .vp--visual-node .vp--node-properties, .vp--visual-node .vp--node-statements {
     position: relative;
-}
-
-.vp--visual-node .vp--node-properties::before, .vp--visual-node .vp--node-statements::before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    border-top: 1px solid rgba(0, 0, 0, .18);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .vp--visual-node .vp--node-statements {
@@ -96,16 +101,26 @@
 
 .vp--visual-node .vp--node-link {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50% 50% 50% 0;
-    background: #E9E9E9;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.vp--visual-node .vp--node-link::after {
+    content: ' ';
+    position: absolute;
+    top: 3px; bottom: 3px;
+    left: 3px; right: 3px;
+    border-radius: 50%;
+    background: var(--link-inner, rgba(0, 0, 0, 0.2));
 }
 
 .vp--visual-node.vp--visual-expression .vp--node-link[data-node-link-role="destination"] { /* Connector for the result of an expression */
-    right: 0;
+    right: -1px;
     top: 11px;
-    transform: translateX(50%) rotate(-135deg);
+    transform: translateX(50%) rotate(45deg);
 }
 
 .vp--visual-node.vp--visual-statement .vp--node-link[data-node-link-role="destination"] { /* Connector for the incoming statement. */
@@ -115,7 +130,7 @@
 }
 
 .vp--visual-node .vp--node-link[data-node-link-type="expression"][data-node-link-role="source"] { /* Connector for the expression parameters for an expression/statement */
-    left: 0;
+    left: -1px;
     top: 50%;
     transform: translate(-50%, -50%) rotate(-135deg);
 }
@@ -123,5 +138,5 @@
 .vp--visual-node .vp--node-link[data-node-link-type="statement"][data-node-link-role="source"] { /* Connector for outgoing statements (e.g. "next", "true branch", etc.) */
     bottom: 0;
     left: 50%;
-    transform: translate(-50%, 50%) rotate(-45deg);
+    transform: translate(-50%, 50%) rotate(135deg);
 }

@@ -21,6 +21,9 @@
     stroke-width: 2;
     fill: none;
 }
+.vp--node-connector-container path[data-line-dest-id=""] {
+    display: none;
+}
 
 .vp--visual-node {
     display: inline-block;

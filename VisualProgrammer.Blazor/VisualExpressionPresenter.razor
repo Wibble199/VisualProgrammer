@@ -1,0 +1,15 @@
+﻿<div class="vp--visual-node vp--visual-expression" data-visual-expression-type="@Expression.ReturnType.Name.ToLower()" data-visual-node-id="@ExpressionId">
+    <div class="vp--node-dragger"></div>
+
+    @* A node connector for the output of this expression *@
+    <div class="vp--node-link" data-node-link-role="destination" data-node-link-type="expression"></div>
+
+    <span class="vp--node-title">@Expression.GetType().GetNameWithoutGeneric()</span>
+
+    <VisualNodePropertiesPresenter Node="Expression" />
+</div>
+
+@code {
+    [Parameter] public IVisualExpression Expression { get; set; }
+    [Parameter] public Guid ExpressionId { get; set; }
+}

@@ -1,0 +1,124 @@
+﻿.vp--program-presenter  .vp--canvas {
+    position: relative;
+}
+
+.vp--canvas > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.vp--node-connector-container {
+    top: 7px; /* Half the size of a single node dot. This is so that it's easier to make the line meet the center of the */
+    left: 8px; /* link dot, without needing to add it to the JS calculation. */
+    overflow: visible; /* So we don't have to resize the SVG to fit everything. Easy :) */
+    width: 0;
+    height: 0;
+}
+
+.vp--node-connector-container path {
+    stroke: #333;
+    stroke-width: 2;
+    fill: none;
+}
+
+.vp--visual-node {
+    display: inline-block;
+    border: 1px solid #FFF2;
+    border-radius: 4px;
+    font-size: 85%;
+    box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.45);
+    background: #68717B;
+}
+
+.vp--visual-node[data-visual-expression-type="double"] { background: #42759F; }
+.vp--visual-node[data-visual-expression-type="boolean"] { background: #AE4444; }
+.vp--visual-node[data-visual-expression-type="string"] { background: #5E9B4E; }
+
+.vp--visual-node .vp--node-title {
+    display: block;
+    padding: 6px 10px 6px 16px;
+    font-weight: bold;
+}
+
+.vp--visual-node .vp--node-dragger {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 12px;
+    height: 24px;
+    background: rgba(0, 0, 0, .2);
+    cursor: move;
+}
+
+.vp--visual-node .vp--node-properties > div {
+    position: relative;
+    padding: 6px 6px 6px 10px;
+}
+
+.vp--visual-node .vp--node-properties > div:not(:first-child) {
+    border-top: 1px solid #FFF1;
+}
+
+.vp--visual-node .vp--node-properties, .vp--visual-node .vp--node-statements {
+    position: relative;
+}
+
+.vp--visual-node .vp--node-properties::before, .vp--visual-node .vp--node-statements::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    border-top: 1px solid rgba(0, 0, 0, .18);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vp--visual-node .vp--node-statements {
+    display: flex;
+}
+
+.vp--visual-node .vp--node-statements > div {
+    position: relative;
+    flex: 1 1 0;
+    padding: 4px 4px 6px 4px;
+    text-align: center;
+    font-size: 90%;
+}
+
+.vp--visual-node .vp--node-statements > span:not(:first-of-type) {
+    border-left: 1px solid #FFF1;
+}
+
+.vp--visual-node .vp--node-link {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50% 50% 50% 0;
+    background: #E9E9E9;
+}
+
+.vp--visual-node.vp--visual-expression .vp--node-link[data-node-link-role="destination"] { /* Connector for the result of an expression */
+    right: 0;
+    top: 11px;
+    transform: translateX(50%) rotate(-135deg);
+}
+
+.vp--visual-node.vp--visual-statement .vp--node-link[data-node-link-role="destination"] { /* Connector for the incoming statement. */
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.vp--visual-node .vp--node-link[data-node-link-type="expression"][data-node-link-role="source"] { /* Connector for the expression parameters for an expression/statement */
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.vp--visual-node .vp--node-link[data-node-link-type="statement"][data-node-link-role="source"] { /* Connector for outgoing statements (e.g. "next", "true branch", etc.) */
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(-45deg);
+}

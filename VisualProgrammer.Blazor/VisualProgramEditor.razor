@@ -1,0 +1,133 @@
+﻿@implements IDisposable
+@inject IJSRuntime JsRuntime
+
+<div class="vp--program-presenter" @ref="progRootEl">
+    <CascadingValue Value="Program" TValue="VisualProgram">
+
+        @* SVG to hold all the lines (make first, so it appears behind node boxes) *@
+        <div class="vp--canvas">
+            <svg class="vp--node-connector-container">
+                @* Create a line for every single expression property of every single node in the program *@
+                @foreach (var type in new[] { VisualNodePropertyType.Expression, VisualNodePropertyType.Statement }) { // For statements and expressions
+                    @foreach (var line in from n in Program.Nodes
+                                          let vn = n.Value
+                                          from p in vn.GetPropertiesOfType(type)
+                                          select new { n.Key, Name = p.Name, End = p.Getter(vn) }) {
+                        <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-line-dest-id="@(line.End?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
+                    }
+                }
+
+                @* Drag-drop preview line *@
+                <path class="vp--preview-line" style="display:none" />
+            </svg>
+        </div>
+
+        @* Display to hold all the nodes *@
+        <div class="vp--node-container">
+            @foreach (var node in Program.Nodes) {
+                <div style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
+                    @if (node.Value is VisualEntry entry) {
+                        <VisualEntryPresenter Entry="entry" EntryId="node.Key" />
+                    } else if (node.Value is VisualStatement stmt) {
+                        <VisualStatementPresenter Statement="stmt" StatementId="node.Key" />
+                    } else if (node.Value is IVisualExpression expr) {
+                        <VisualExpressionPresenter Expression="expr" ExpressionId="node.Key" />
+                    }
+                </div>
+            }
+        </div>
+
+        @* Toolbox that contains all available nodes *@
+        <div class="vp--node-toolbox">
+            @foreach (var node in Program.AvailableNodes) {
+                if (node.IsGenericType) {
+                    foreach (var type in new[] { typeof(string), typeof(bool), typeof(double) }) {
+                        <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node, type)">@node.GetNameWithoutGeneric() (@type.Name)</button>
+                    }
+                } else {
+                    <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node)">@node.GetNameWithoutGeneric()</button>
+                }
+                <br/>
+            }
+        </div>
+    </CascadingValue>
+</div>
+
+@code {
+    ElementReference progRootEl;
+
+    /// <summary>The program being edited by this editor.</summary>
+    [Parameter] public VisualProgram Program { get; set; }
+
+    protected override void OnAfterRender(bool firstRender) {
+        if (firstRender) // If this is the first render of the component, we need to setup all the JS (listeners etc)
+            JsRuntime.InvokeVoidAsync("VisualProgrammer.init", progRootEl, DotNetObjectReference.Create(this));
+        else // If it's not the first time, we only want it to update the line positions, not create any more listeners
+            JsRuntime.InvokeVoidAsync("VisualProgrammer.afterRender", progRootEl);
+    }
+
+    public void Dispose() {
+        // Destroy javascript events etc. when the component gets destroyed
+        JsRuntime.InvokeVoidAsync("VisualProgrammer.dispose");
+    }
+
+    /// <summary>
+    /// Function that takes two node connectors and attempts to create a link between the relevant nodes. The link will only be created if it is valid
+    /// (i.e. only when connecting an output to an input, the same types - e.g. expression to expression, and if the nodes won't create a loop).
+    /// </summary>
+    /// <param name="startData">The dataset of the connector that was initially dragged from.</param>
+    /// <param name="endData">The dataset of the connector that was dragged to.</param>
+    [JSInvokable]
+    public void SetLink(LinkDragData startData, LinkDragData endData) {
+        if (startData.Role == endData.Role) return; // If the roles are the same, trying to connect a source to a source or a destination to a destination
+        if (startData.Type != endData.Type) return; // If the types are differrent, trying to connect an expression to a statement or vice versa
+        if (!startData.Id.HasValue || !endData.Id.HasValue || startData.Id == endData.Id) return; // If the IDs are the same, trying to connect a node to iself
+
+        // Figure out which node is the one that has the NodeReference property (which is referred to here as the parent node). Whether this is the start or end
+        // will depend on which way the user dragged, so we check instead which connector is a "source" role (parent) and which is a "destination" role (child).
+        var (parentData, childData) = startData.Role == "source" ? (startData, endData) : (endData, startData);
+        var parentNode = Program.ResolveReference(new NodeReference(parentData.Id.Value)); // Get the actual nodes for the child and parent
+        var childNode = Program.ResolveReference(new NodeReference(childData.Id.Value));
+
+        // Perform the link
+        try {
+            // The parentData.Name is the name of the property that the link should be performed on (e.g. "NextStatement" or "LeftHandSide")
+            parentNode.Link(Program, parentData.Name, childNode);
+            StateHasChanged(); // Tell Blazor to re-render the component since it does not know to do this automagically
+        } catch (VisualNodeLinkException ex) {
+            // TODO: Give message to user telling them why the link could not be created, or atleast give some visual feedback that their action was
+            // recieved (in case they think they missed their drag destination) but could not be done.
+            Console.WriteLine("LINK EXCEPTION");
+            Console.WriteLine(ex);
+        }
+    }
+
+    /// <summary>
+    /// Creates a new node in the program. Will return (a string representation of) the new ID of the node to the caller.
+    /// </summary>
+    public void CreateNode(Type nodeType, params Type[] genericTypes) {
+        var newId = Program.CreateNode(nodeType, genericTypes);
+        JsRuntime.InvokeVoidAsync("VisualProgrammer.onNewNode", progRootEl, newId);
+    }
+
+    /// <summary>
+    /// Updates the position of the node with the given ID.
+    /// </summary>
+    /// <param name="nodeId">The ID of the node whose position to update.</param>
+    [JSInvokable]
+    public void SetPosition(Guid nodeId, int x, int y) {
+        if (!Program.TryResolveReference(new NodeReference(nodeId), out var node)) return;
+        node.Position = new System.Drawing.Point(x, y);
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// A POCO representing the data that is required to be able to uniqely identify a node connector.
+    /// </summary>
+    public class LinkDragData {
+        public Guid? Id { get; set; }
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Role { get; set; }
+    }
+}

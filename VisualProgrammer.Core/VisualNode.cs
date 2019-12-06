@@ -153,6 +153,15 @@ namespace VisualProgrammer.Core {
         /// <param name="type">The type of property to filter by.</param>
         IEnumerable<PropDef> GetPropertiesOfType(VisualNodePropertyType type);
 
+		/// <summary>Gets all the properties of a range of specific <see cref="VisualNodePropertyType"/>s, for example getting all statements AND all values.</summary>
+		/// <param name="types">The types of property to filter by.</param>
+		IEnumerable<PropDef> GetPropertiesOfTypes(params VisualNodePropertyType[] types) {
+			var props = Enumerable.Empty<PropDef>();
+			foreach (var type in types)
+				props = props.Concat(GetPropertiesOfType(type));
+			return props;
+		}
+
         /// <summary>Gets the value of the property with the given name.</summary>
         object GetPropertyValue(string name);
 

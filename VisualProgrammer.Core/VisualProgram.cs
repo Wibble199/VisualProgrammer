@@ -82,7 +82,7 @@ namespace VisualProgrammer.Core {
         /// <param name="includeUnset">Whether to generated delegates for the entries that have not been added by the program by the user. In this case, a delegate
         /// that performs no action is generated. If this is false, unset entries will not be present in the returned dictionary.</param>
         public Dictionary<string, Delegate> Compile(bool includeUnset = false) {
-            var presentEntries = Nodes.OfType<VisualEntry>().ToDictionary(e => e.VisualEntryId, e => e);
+            var presentEntries = Nodes.Values.OfType<VisualEntry>().ToDictionary(e => e.VisualEntryId, e => e);
             return includeUnset
                 ? EntryDefinitions.ToDictionary(
                     e => e.Key,

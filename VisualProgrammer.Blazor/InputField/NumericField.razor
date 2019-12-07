@@ -1,0 +1,9 @@
+﻿@typeparam TNum
+@attribute [InputFieldControl(typeof(double), typeof(int), typeof(float), typeof(long), IsDefault = true, PassGeneric = true)]
+
+<input type="number" value="@Value" @oninput="e => ValueChanged.InvokeAsync(Value = (TNum)Convert.ChangeType(e.Value.ToString(), typeof(TNum)))" />
+
+@code {
+    [Parameter] public TNum Value { get; set; }
+    [Parameter] public EventCallback<TNum> ValueChanged { get; set; }
+}

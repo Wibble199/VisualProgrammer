@@ -1,0 +1,11 @@
+﻿@attribute [VisualProgrammer.Blazor.InputField.InputFieldControl(typeof(string))]
+
+<!-- This control demonstrates being able to override default input fields with custom ones -->
+
+<input type="text" placeholder="Hello" value="@Value" @oninput="e => ValueChanged.InvokeAsync(e.Value.ToString())" style="background:#333;color:#F9F9F9" />
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string>
+    ValueChanged { get; set; }
+}

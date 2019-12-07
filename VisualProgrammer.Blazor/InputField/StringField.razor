@@ -1,0 +1,8 @@
+﻿@attribute [InputFieldControl(typeof(string), IsDefault = true)]
+
+<input type="text" value="@Value" @oninput="e => ValueChanged.InvokeAsync(e.Value.ToString())" />
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+}

@@ -1,0 +1,25 @@
+﻿@attribute [InputFieldControl(typeof(Enum), IsDefault = true, PassGeneric = true)]
+@typeparam TEnum
+
+<select @onchange="SelectedItemChanged">
+    @foreach (var item in Items) {
+        <option value="@item.value" @attributes="item.selectedAttr">@item.label</option>
+    }
+</select>
+
+@code {
+    IEnumerable<(string label, string value, Dictionary<string, object> selectedAttr)> Items => Enum.GetValues(typeof(TEnum))
+        .Cast<TEnum>()
+        .Select(e => (
+            e.ToString(),
+            e.ToString(),
+            EqualityComparer<TEnum>.Default.Equals(e, Value) ? new Dictionary<string, object> { { "selected", "selected" } } : null
+        ));
+
+    [Parameter] public TEnum Value { get; set; }
+    [Parameter] public EventCallback<TEnum> ValueChanged { get; set; }
+
+    void SelectedItemChanged(ChangeEventArgs e) {
+        ValueChanged.InvokeAsync(Value = (TEnum)Enum.Parse(typeof(TEnum), e.Value.ToString()));
+    }
+}

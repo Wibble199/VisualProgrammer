@@ -7,7 +7,7 @@ namespace VisualProgrammer.Core {
     public class VisualNodePropertyDefinition {
 
         public string Name { get; }
-        public VisualNodePropertyType PropertyType => Meta.PropertyType;
+        public VisualNodePropertyType PropertyType { get; }
         public Type? PropertyDataType { get; }
         public VisualNodePropertyAttribute Meta { get; }
         public Func<object, object> Getter { get; }
@@ -17,11 +17,17 @@ namespace VisualProgrammer.Core {
             Name = prop.Name;
             Meta = meta;
 
-            PropertyDataType = meta.PropertyType switch {
-                VisualNodePropertyType.Value => prop.PropertyType,
-                VisualNodePropertyType.Expression => meta.GetExpressionType(prop.DeclaringType!),
-                _ => null,
-            };
+			// If determine PropertyType and PropertyDataType values from the type of the annotated property
+			if (prop.PropertyType == typeof(StatementReference)) {
+				PropertyType = VisualNodePropertyType.Statement;
+				PropertyDataType = null;
+			} else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(ExpressionReference<>)) {
+				PropertyType = VisualNodePropertyType.Expression;
+				PropertyDataType = prop.PropertyType.GetGenericArguments()[0];
+			} else {
+				PropertyType = VisualNodePropertyType.Value;
+				PropertyDataType = prop.PropertyType;
+			}
 
             // Create a getter for this property
             var arg0 = Expression.Parameter(typeof(object));

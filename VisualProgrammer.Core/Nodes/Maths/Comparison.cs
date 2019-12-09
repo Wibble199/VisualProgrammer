@@ -6,14 +6,9 @@ namespace VisualProgrammer.Core.Nodes.Maths {
 
     public class Comparison : VisualExpression<bool> {
 
-        [VisualNodeExpressionProperty(typeof(double), Label = "A")]
-        public NodeReference? LHS { get; set; }
-
-        [VisualNodeExpressionProperty(typeof(double), Label = "B")]
-        public NodeReference? RHS { get; set; }
-
-        [VisualNodeValueProperty(Label = "Op")]
-        public Op SelectedOp { get; set; }
+        [VisualNodeProperty(Label = "A")] public ExpressionReference<double> LHS { get; set; }
+        [VisualNodeProperty(Label = "B")] public ExpressionReference<double> RHS { get; set; }
+        [VisualNodeProperty(Label = "Op")] public Op SelectedOp { get; set; }
 
         public override Expression CreateExpression(VisualProgram context) => opMap[SelectedOp](
             LHS.ResolveRequiredExpression(context),

@@ -5,14 +5,9 @@ using System.Linq.Expressions;
 namespace VisualProgrammer.Core.Nodes.Maths {
     public class Operation : VisualExpression<double> {
 
-        [VisualNodeExpressionProperty(typeof(double), Label = "A")]
-        public NodeReference? LHS { get; set; }
-
-        [VisualNodeExpressionProperty(typeof(double), Label = "B")]
-        public NodeReference? RHS { get; set; }
-
-        [VisualNodeValueProperty(Label = "Op")]
-        public Op SelectedOperation { get; set; }
+        [VisualNodeProperty(Label = "A")] public ExpressionReference<double> LHS { get; set; }
+        [VisualNodeProperty(Label = "B")] public ExpressionReference<double> RHS { get; set; }
+        [VisualNodeProperty(Label = "Op")] public Op SelectedOperation { get; set; }
 
         public override Expression CreateExpression(VisualProgram context) => opMap[SelectedOperation](
             LHS.ResolveRequiredExpression(context),

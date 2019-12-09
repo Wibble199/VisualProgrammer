@@ -26,13 +26,16 @@
         Nodes = new Dictionary<Guid, VisualNode> {
             { Guid.NewGuid(), new VisualEntry(testEntryId) {
                 ParameterMap = new Dictionary<string, string> { { "someDouble", "doubleVar" } }, // Map the "someInt" parameter onto the "intVar" variable
-                FirstStatement = new NodeReference(firstStatementGuid),
+                FirstStatement = new StatementReference(firstStatementGuid),
                 Position = new System.Drawing.Point(100, 0) }
             },
-            { firstStatementGuid, new VisualProgrammer.Core.Nodes.Debug.Print { PrintValue = new NodeReference(printValueGuid), Position = new System.Drawing.Point(100, 100) } },
+            { firstStatementGuid, new VisualProgrammer.Core.Nodes.Debug.Print { PrintValue = new ExpressionReference<string>(printValueGuid), Position = new System.Drawing.Point(100, 100) } },
             { printValueGuid, new VisualProgrammer.Core.Nodes.Variables.Literal<string> { Value = "Hello world!", Position = new System.Drawing.Point(0, 100) } },
             { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.SetVariable<double> { VariableName = "doubleVar" } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.GetVariable<double> { VariableName = "doubleVar" } }
+            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.GetVariable<double> { VariableName = "doubleVar" } },
+            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.Literal<double> { Value = 0 } },
+            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.Literal<double> { Value = -1 } },
+            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Maths.Comparison { SelectedOp = VisualProgrammer.Core.Nodes.Maths.Comparison.Op.GT } }
         }
     };
 

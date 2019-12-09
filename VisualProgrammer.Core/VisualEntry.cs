@@ -20,8 +20,7 @@ namespace VisualProgrammer.Core {
         public Dictionary<string, string> ParameterMap { get; set; } = new Dictionary<string, string>();
 
         /// <summary>A reference to the first statement that will be executed by this entry.</summary>
-        [VisualNodeStatementProperty(Label = "Start")]
-        public NodeReference? FirstStatement { get; set; }
+        [VisualNodeProperty(Label = "Start")] public StatementReference FirstStatement { get; set; }
 
         /// <summary>
         /// Creates the lambda expression from the statements attached to this entry and the parameter definitions in the provided program context.

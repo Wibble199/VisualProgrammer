@@ -88,7 +88,12 @@ namespace VisualProgrammer.Core {
                     // Check that this node is not part of the child tree of expressions of the incoming node.
                     // Since expressions cannot have child statements, we don't need to worry about those.
                     ValidateCircular<IVisualExpression>(context, expr, VisualNodePropertyType.Expression);
-                    break;
+
+#warning TODO: Remove other links if required
+
+					// If we got here, validation has passed so make the link
+					SetPropertyValue(targetProperty, Activator.CreateInstance(typeof(ExpressionReference<>).MakeGenericType(prop.PropertyDataType), context, node));
+					break;
 
                 case VisualNodePropertyType.Statement:
                     // When prop is statement, check incoming is statement
@@ -98,13 +103,13 @@ namespace VisualProgrammer.Core {
                     // Check this node is not part of the child statement tree of the incoming node.
                     // Note that we do not need to check expressions since expressions cannot have statement children. If THIS node is a statement, it CANNOT be a child of any expressions.
                     ValidateCircular<VisualStatement>(context, stmt, VisualNodePropertyType.Statement);
-                    break;
-            }
 
 #warning TODO: Remove other links if required
 
-            // If we got here, validation has passed so make the link
-            SetPropertyValue(targetProperty, new NodeReference(context, node));
+					// If we got here, validation has passed so make the link
+					SetPropertyValue(targetProperty, new StatementReference(context, node));
+					break;
+            }
         }
 
         /// <summary>
@@ -127,7 +132,7 @@ namespace VisualProgrammer.Core {
                 // For each child of the type we are searching for in the current item
                 foreach (var child in item.GetPropertiesOfType(type))
                     // Check the property is a NodeReference (and not null), then attempt to resolve it (and defensively double-check it's the correct type).
-                    if (item.GetPropertyValue(child.Name) is NodeReference @ref && context.ResolveReference(@ref) is TNode childItem)
+                    if (item.GetPropertyValue(child.Name) is INodeReference @ref && @ref.ResolveNode(context) is TNode childItem)
                         // If so, add this to the queue to be checked
                         itemsToCheck.Enqueue(childItem);
             }
@@ -139,7 +144,7 @@ namespace VisualProgrammer.Core {
     /// <summary>
     /// An interface that VisualNodes must implement.
     /// </summary>
-    /// <remarks>This is required in addition to the abstract class above because we need to provide a contact to the non-generic <see cref="IVisualExpression"/>.</remarks>
+    /// <remarks>This is required in addition to the abstract class above because we need to provide a contract to the non-generic <see cref="IVisualExpression"/>.</remarks>
     public interface IVisualNode {
 
         /// <summary>The position of this node on the program canvas.</summary>

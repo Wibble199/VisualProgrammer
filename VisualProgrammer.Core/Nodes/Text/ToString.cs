@@ -5,8 +5,8 @@ namespace VisualProgrammer.Core.Nodes.Text {
 
     public class ToString<TSource> : VisualExpression<string> {
 
-        [VisualNodeExpressionProperty(nameof(TSource))]
-        public NodeReference? Value { get; set; }
+        [VisualNodeProperty]
+        public ExpressionReference<TSource> Value { get; set; }
 
         public override Expression CreateExpression(VisualProgram context) => Expression.Call(
             Value.ResolveRequiredExpression(context),

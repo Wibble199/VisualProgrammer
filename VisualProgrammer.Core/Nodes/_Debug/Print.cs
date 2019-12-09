@@ -6,8 +6,7 @@ namespace VisualProgrammer.Core.Nodes.Debug
 {
     public class Print : VisualStatement {
 
-        [VisualNodeExpressionProperty(typeof(string))]
-        public NodeReference? PrintValue { get; set; }
+        [VisualNodeProperty] public ExpressionReference<string> PrintValue { get; set; }
 
         private static readonly MethodInfo write = typeof(Console).GetMethod("WriteLine", new[] { typeof(object) })!;
 

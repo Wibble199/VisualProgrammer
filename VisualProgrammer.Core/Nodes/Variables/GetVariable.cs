@@ -4,8 +4,7 @@ namespace VisualProgrammer.Core.Nodes.Variables {
 
     public sealed class GetVariable<TVar> : VisualExpression<TVar> {
 
-		[VisualNodeValueProperty]
-		public string VariableName { get; set; } = "";
+		[VisualNodeProperty] public string VariableName { get; set; } = "";
 
         public override Expression CreateExpression(VisualProgram context) {
             // Check that the variable exists in the program and it has the correct type

@@ -5,11 +5,8 @@ namespace VisualProgrammer.Core.Nodes.Flow {
 
     public class Loop : VisualStatement {
 
-        [VisualNodeExpressionProperty(typeof(bool))]
-        public NodeReference? Condition { get; set; }
-
-        [VisualNodeStatementProperty]
-        public NodeReference? Body { get; set; }
+        [VisualNodeProperty] public ExpressionReference<bool> Condition { get; set; }
+        [VisualNodeProperty] public StatementReference Body { get; set; }
 
        public override Expression CreateExpression(VisualProgram context) {
             var @break = Label("break");

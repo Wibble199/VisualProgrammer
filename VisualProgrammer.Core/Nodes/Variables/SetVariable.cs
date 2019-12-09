@@ -4,11 +4,8 @@ namespace VisualProgrammer.Core.Nodes.Variables {
 
     public sealed class SetVariable<TVar> : VisualStatement {
 
-		[VisualNodeValueProperty]
-		public string VariableName { get; set; } = "";
-
-        [VisualNodeExpressionProperty(nameof(TVar))]
-        public NodeReference? Value { get; set; }
+		[VisualNodeProperty] public string VariableName { get; set; } = "";
+        [VisualNodeProperty] public ExpressionReference<TVar> Value { get; set; }
 
         public override Expression CreateExpression(VisualProgram context)
         {

@@ -18,15 +18,12 @@ namespace VisualProgrammer.Core {
         /// <summary>
         /// Attempts to resolve the link and return the linked node. Will return null if no node could be found.
         /// </summary>
-        public VisualNode? ResolveReference(NodeReference reference) => Nodes.TryGetValue(reference.nodeId, out var node) ? node : null;
+        public VisualNode? ResolveReference(Guid? id) => id.HasValue && Nodes.TryGetValue(id.Value, out var node) ? node : null;
 
         /// <summary>
         /// Attempts to resolve the reference. Returns whether the node was able to be resolved, and the node's value in the <paramref name="visualNode"/> out parameter.
         /// </summary>
-        public bool TryResolveReference(NodeReference reference, [MaybeNullWhen(false), NotNullWhen(true)] out VisualNode? visualNode) {
-            visualNode = null;
-            return reference != null && Nodes.TryGetValue(reference.nodeId, out visualNode);
-        }
+        public bool TryResolveReference(Guid id, [MaybeNullWhen(false), NotNullWhen(true)] out VisualNode? visualNode) => Nodes.TryGetValue(id, out visualNode);
 
         public Guid CreateNode(Type nodeType, params Type[] genericTypes) {
             if (!typeof(VisualNode).IsAssignableFrom(nodeType))

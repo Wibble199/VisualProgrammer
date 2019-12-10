@@ -21,7 +21,7 @@
         },
 
         variableDefinitions = new Dictionary<string, (Type type, object @default)> {
-            { "doubleVar", (typeof(double), 0) }
+            { "doubleVar", (typeof(double), 0d) }
         },
 
         Nodes = new Dictionary<Guid, VisualNode> {
@@ -43,6 +43,8 @@
     void Execute() {
         // Compiles all the entries as delegates and adds them to a dictionary with their entryId (NOT THEIR NAME) as the key
         var delegates = program.Compile();
+
+        program.ResetVariables();
 
         // Since our entry has 1 parameter (an int), it is an Action<int>
         var testEntry = (Action<double>)delegates[testEntryId];

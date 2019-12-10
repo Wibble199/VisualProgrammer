@@ -6,10 +6,17 @@
     @* A list of all parameters and their mappings for this entry *@
     <div class="vp--node-properties">
         @foreach (var param in Definition.Parameters) {
+            Entry.ParameterMap.TryGetValue(param.Key, out var varName);
+
             <div>
                 @param.Key
                 &rarr;
-                @(Entry.ParameterMap.TryGetValue(param.Key, out var varName) ? varName : "")
+                <select @onchange="e => Entry.ParameterMap[param.Key] = (string)e.Value">
+                    <option value="@string.Empty">&mdash; None &mdash;</option>
+                    @foreach (var variableDef in Context.VariableDefinitions.Where(d => d.Value.type == Definition.Parameters[param.Key])) {
+                        <option value="@variableDef.Key" selected="@(variableDef.Key == varName)">@variableDef.Key</option>
+                    }
+                </select>
             </div>
         }
     </div>

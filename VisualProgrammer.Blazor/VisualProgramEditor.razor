@@ -50,6 +50,26 @@
                 <br/>
             }
         </div>
+
+        @* Variable definition list *@
+        <div class="vp--variable-list">
+            <ul>
+                @foreach (var varDef in Program.VariableDefinitions) {
+                    <li>
+                        <strong>Name:</strong> @varDef.Key
+                        <strong>Type:</strong> @varDef.Value.type.Name
+                    </li>
+                }
+            </ul>
+            <InputFieldGeneric TValue="string" @bind-Value="newVariableName" />
+            <select @onchange="e => newVariableType = Type.GetType((string)e.Value)">
+                @foreach (var type in new[] { typeof(double), typeof(bool), typeof(string) }) {
+                    <option value="@type.AssemblyQualifiedName" selected="@(newVariableType == type)">@type.Name</option>
+                }
+            </select>
+            <InputFieldDynamic InputType="newVariableType" @bind-Value="newVariableDefault" />
+            <button @onclick="CreateVariable">New variable</button>
+        </div>
     </CascadingValue>
 </div>
 
@@ -58,6 +78,10 @@
 
     /// <summary>The program being edited by this editor.</summary>
     [Parameter] public VisualProgram Program { get; set; }
+
+    private string newVariableName { get; set; }
+    private Type newVariableType { get; set; } = typeof(string);
+    private object newVariableDefault { get; set; }
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) // If this is the first render of the component, we need to setup all the JS (listeners etc)
@@ -119,6 +143,14 @@
         if (!Program.TryResolveReference(nodeId, out var node)) return;
         node.Position = new System.Drawing.Point(x, y);
         StateHasChanged();
+    }
+
+    /// <summary>
+    /// Creates a new variable in the program with parameters set by the user in the UI.
+    /// </summary>
+    void CreateVariable() {
+        if (!string.IsNullOrWhiteSpace(newVariableName) && newVariableType != null)
+            Program.CreateVariable(newVariableName, newVariableType, newVariableDefault);
     }
 
     /// <summary>

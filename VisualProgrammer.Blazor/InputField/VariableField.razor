@@ -1,16 +1,25 @@
 ﻿@attribute [InputFieldControl(typeof(VariableReference<>), IsDefault = true, PassGeneric = true)]
 @typeparam TVarRef
 
-<InputFieldGeneric TValue="string" Value="Value.Name" ValueChanged="UpdateReference" />
+<select @onchange="UpdateReference">
+    <!-- Prevents the first option being automatically selected if the Variable's Name property is not set -->
+    <option value="@string.Empty">&mdash; None &mdash;</option>
+
+    <!-- For every defined variable in the program context whose type matches the given variable type, add that variable to a select list -->
+    @foreach (var variableDef in Context.VariableDefinitions.Where(d => d.Value.type == variableType)) {
+        <option value="@variableDef.Key" selected="@(variableDef.Key == Value.Name)">@variableDef.Key</option>
+    }
+</select>
 
 @code {
     [Parameter] public TVarRef Value { get; set; }
     [Parameter] public EventCallback<TVarRef> ValueChanged { get; set; }
+    [CascadingParameter] public VisualProgram Context { get; set; }
     private Type variableType = typeof(TVarRef).GetGenericArguments()[0];
 
-    void UpdateReference(string e) {
+    void UpdateReference(ChangeEventArgs e) {
         ValueChanged.InvokeAsync(
-            Value = (TVarRef)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(variableType))
+            Value = (TVarRef)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(variableType), e.Value.ToString())
         );
     }
 }

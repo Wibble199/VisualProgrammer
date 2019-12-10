@@ -1,10 +1,12 @@
 ﻿<div class="vp--node-properties">
     @foreach (var prop in Properties) {
         <div class="vp--node-property">
-            @(prop.Meta.Label ?? prop.Name)
+            @prop.DisplayName
 
             @if (prop.PropertyType == VisualNodePropertyType.Expression) {
                 <div class="vp--node-link" data-node-link-type="expression" data-node-link-role="source" data-node-link-name="@prop.Name" data-node-link-expr-type="@prop.PropertyType"></div>
+            } else if (prop.PropertyType == VisualNodePropertyType.Variable) {
+                <InputFieldDynamic InputType="prop.RawType" Value="Node.GetPropertyValue(prop.Name)" ValueChanged="newVal => Node.SetPropertyValue(prop.Name, newVal)" />
             } else {
                 <InputFieldDynamic InputType="prop.PropertyDataType" Value="Node.GetPropertyValue(prop.Name)" ValueChanged="newVal => Node.SetPropertyValue(prop.Name, newVal)" />
             }
@@ -16,7 +18,7 @@
     [Parameter] public IVisualNode Node { get; set; }
 
     /// <summary>Gets an enumerable for all the editable properties of the assigned node.</summary>
-    IOrderedEnumerable<VisualNodePropertyDefinition> Properties => Node.GetPropertiesOfTypes(VisualNodePropertyType.Expression, VisualNodePropertyType.Value)
+    IOrderedEnumerable<VisualNodePropertyDefinition> Properties => Node.GetPropertiesOfTypes(VisualNodePropertyType.Expression, VisualNodePropertyType.Value, VisualNodePropertyType.Variable)
         .OrderBy(p => p.Meta.Order)
-        .ThenBy(p => p.Meta.Label ?? p.Name);
+        .ThenBy(p => p.DisplayName);
 }

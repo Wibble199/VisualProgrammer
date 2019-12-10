@@ -24,6 +24,8 @@ namespace VisualProgrammer.Core {
         /// <summary>This visual node property accepts a reference to an expression of a particular type.</summary>
         Expression,
         /// <summary>This visual node property accepts a reference to a statement.</summary>
-        Statement
-    }
+        Statement,
+		/// <summary>This visual node property accepts a reference to a variable.</summary>
+		Variable
+	}
 }

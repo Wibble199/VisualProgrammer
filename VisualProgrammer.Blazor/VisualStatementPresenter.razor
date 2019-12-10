@@ -12,7 +12,7 @@
     <div class="vp--node-statements">
         @foreach (var link in Statement.GetPropertiesOfType(VisualNodePropertyType.Statement)) {
             <div>
-                @(link.Meta.Label ?? link.Name)
+                @link.DisplayName
                 <div class="vp--node-link" data-node-link-type="statement" data-node-link-role="source" data-node-link-name="@link.Name"></div>
             </div>
         }

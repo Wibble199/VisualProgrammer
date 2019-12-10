@@ -1,0 +1,16 @@
+﻿@attribute [InputFieldControl(typeof(VariableReference<>), IsDefault = true, PassGeneric = true)]
+@typeparam TVarRef
+
+<InputFieldGeneric TValue="string" Value="Value.Name" ValueChanged="UpdateReference" />
+
+@code {
+    [Parameter] public TVarRef Value { get; set; }
+    [Parameter] public EventCallback<TVarRef> ValueChanged { get; set; }
+    private Type variableType = typeof(TVarRef).GetGenericArguments()[0];
+
+    void UpdateReference(string e) {
+        ValueChanged.InvokeAsync(
+            Value = (TVarRef)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(variableType))
+        );
+    }
+}

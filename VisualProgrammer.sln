@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualProgrammer.Core", "VisualProgrammer.Core\VisualProgrammer.Core.csproj", "{6CD1F65E-C0A7-4461-877D-240E039F230C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualProgrammer.Blazor", "VisualProgrammer.Blazor\VisualProgrammer.Blazor.csproj", "{81174C31-2DD3-46B6-9DCB-FE3708E00401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualProgrammer.Blazor", "VisualProgrammer.Blazor\VisualProgrammer.Blazor.csproj", "{81174C31-2DD3-46B6-9DCB-FE3708E00401}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{17D89D99-BCCF-46D7-9889-791948986CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoBlazorApp", "DemoBlazorApp\DemoBlazorApp.csproj", "{1FAEB603-820C-4F39-83A7-327EAD5BCEC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoBlazorApp", "DemoBlazorApp\DemoBlazorApp.csproj", "{1FAEB603-820C-4F39-83A7-327EAD5BCEC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

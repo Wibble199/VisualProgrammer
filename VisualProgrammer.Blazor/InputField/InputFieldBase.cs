@@ -38,11 +38,17 @@ namespace VisualProgrammer.Blazor.InputField {
         }
 
         /// <summary>Gets the editor type that will be used for the given data type.</summary>
-        protected static (Type controlType, InputFieldControlAttribute meta)? GetControlFor(Type dataType, string specialName = "")
-            => availableControls.ContainsKey((dataType, specialName.ToLower())) ? availableControls[(dataType, specialName)] // Try find a matching type and special name
-             : availableControls.ContainsKey((dataType, "")) ? availableControls[(dataType, specialName)] // If not, try find the type with no special name
-             : dataType.IsEnum && availableControls.ContainsKey((typeof(Enum), specialName.ToLower())) ? availableControls[(typeof(Enum), specialName.ToLower())] // If not, and the type is an enum, look for a generic enum control with that special name
-             : dataType.IsEnum && availableControls.ContainsKey((typeof(Enum), "")) ? availableControls[(typeof(Enum), "")] // If not, and the type is an enum, look for a generic enum control with no special name
-             : ((Type, InputFieldControlAttribute)?)null; // Found no matching control
+        protected static (Type controlType, InputFieldControlAttribute meta)? GetControlFor(Type dataType, string specialName = "") {
+            specialName = specialName.ToLower();
+            return GetControlForExact(dataType, specialName) // Try to find this exact type in the controls list
+                ?? (dataType.IsGenericType ? GetControlForExact(dataType.GetGenericTypeDefinition(), specialName) : null) // If nothing found, and the dataType is generic, seach for anything of that generic type (e.g. a control registered for Something<> can handle Something<string>)
+                ?? (dataType.IsEnum ? GetControlFor(typeof(Enum), specialName) : null); // If the dataType is an enum, try to find the general Enum handler
+        }
+
+        /// <summary>Gets the control for this exact type. Should only be used from within <see cref="GetControlFor(Type, string)"/>.</summary>
+        private static (Type controlType, InputFieldControlAttribute meta)? GetControlForExact(Type dataType, string specialName = "")
+            => availableControls.ContainsKey((dataType, specialName)) ? availableControls[(dataType, specialName)]
+             : availableControls.ContainsKey((dataType, "")) ? availableControls[(dataType, "")]
+             : ((Type, InputFieldControlAttribute)?)null;
     }
 }

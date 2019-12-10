@@ -3,6 +3,7 @@
 <VisualProgrammer.Blazor.VisualProgramEditor Program="program" />
 
 <button @onclick="Execute">Execute</button>
+<button @onclick="Del">Del</button>
 
 @code {
     static string testEntryId = "testentry";
@@ -19,7 +20,7 @@
             } }
         },
 
-        VariableDefinitions = new Dictionary<string, (Type type, object @default)> {
+        variableDefinitions = new Dictionary<string, (Type type, object @default)> {
             { "doubleVar", (typeof(double), 0) }
         },
 
@@ -31,8 +32,8 @@
             },
             { firstStatementGuid, new VisualProgrammer.Core.Nodes.Debug.Print { PrintValue = new ExpressionReference<string>(printValueGuid), Position = new System.Drawing.Point(100, 100) } },
             { printValueGuid, new VisualProgrammer.Core.Nodes.Variables.Literal<string> { Value = "Hello world!", Position = new System.Drawing.Point(0, 100) } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.SetVariable<double> { VariableName = "doubleVar" } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.GetVariable<double> { VariableName = "doubleVar" } },
+            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.SetVariable<double> { Variable = new VariableReference<double>("doubleVar") } },
+            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.GetVariable<double> { Variable = new VariableReference<double>("doubleVar") } },
             { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.Literal<double> { Value = 0 } },
             { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.Literal<double> { Value = -1 } },
             { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Maths.Comparison { SelectedOp = VisualProgrammer.Core.Nodes.Maths.Comparison.Op.GT } }
@@ -47,5 +48,10 @@
         var testEntry = (Action<double>)delegates[testEntryId];
 
         testEntry.Invoke(5d);
+    }
+
+    void Del()
+    {
+        program.RemoveVariable("doubleVar");
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using VisualProgrammer.Core.Utils;
+using System;
 
 namespace VisualProgrammer.Core {
 
@@ -30,7 +31,7 @@ namespace VisualProgrammer.Core {
                 throw new KeyNotFoundException($"Could not find an entry with ID '{VisualEntryId}' in the VisualProgram's entry definitions.");
 
             // Create a parameter for each expected/defined parameter
-            var parameters = def.Parameters.Map(t => Expression.Parameter(t));
+            var parameters = def.Parameters.Map(Expression.Parameter);
 
             return Expression.Lambda(
                 Expression.Block(
@@ -39,7 +40,7 @@ namespace VisualProgrammer.Core {
                         .Where(mapping => !string.IsNullOrWhiteSpace(mapping.Value)) // Exclude any that don't actually map to anything
                         .Select(p => VariableAccessorFactory.CreateSetterExpression(
                             context,
-                            p.Value,
+                            (IVariableReference)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(def.Parameters[p.Key]), p.Value),
                             parameters[p.Key]
                         )
                     ).Concat(

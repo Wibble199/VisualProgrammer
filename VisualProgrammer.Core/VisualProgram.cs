@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -47,10 +48,11 @@ namespace VisualProgrammer.Core {
         #endregion
 
         #region Variables
-        /// <summary>
-        /// The recognised variables for this program. The dictionary key is the name of the variable, and the dictionary value is a tuple containing the variable type and default value.
-        /// </summary>
-        public Dictionary<string, (Type type, object @default)> VariableDefinitions { get; set; } = new Dictionary<string, (Type, object)>();
+		public Dictionary<string, (Type type, object @default)> variableDefinitions = new Dictionary<string, (Type, object)>();
+		/// <summary>
+		/// The recognised variables for this program. The dictionary key is the name of the variable, and the dictionary value is a tuple containing the variable type and default value.
+		/// </summary>
+		public ReadOnlyDictionary<string, (Type type, object @default)> VariableDefinitions => new ReadOnlyDictionary<string, (Type type, object @default)>(variableDefinitions);
 
         /// <summary>
         /// The current variable storage. The dictionary's key is the name of the variable and the dictionary value is the current value of that variable.
@@ -61,13 +63,52 @@ namespace VisualProgrammer.Core {
         /// Resets all the variables currently stored to their default values.
         /// </summary>
         public void ResetVariables() => VariableValues = VariableDefinitions.ToDictionary(v => v.Key, v => v.Value.@default);
-        #endregion
 
-        #region NodeTypes
-        /// <summary>
-        /// Gets a list of all node types that can be added to this program.
-        /// </summary>
-        public IEnumerable<Type> AvailableNodes { get; } = Assembly.GetExecutingAssembly().GetTypes()
+		public void CreateVariable(string name, Type type, object @default) {
+			if (variableDefinitions.ContainsKey(name))
+				throw new Exception(); // TODO: Throw error if variable with name already exists
+			variableDefinitions.Add(name, (type, @default));
+		}
+
+		/// <summary>
+		/// Removes the variable with the given name from the <see cref="VariableDefinitions"/> dictionary.<para/>
+		/// Will remove the references from any VisualEntry parameter mappings and any VisualNode's VariableReference properties
+		/// </summary>
+		public void RemoveVariable(string name) {
+			if (variableDefinitions.Remove(name)) {
+				// References to reset (cannot remove in the first loop as doing so modifies the collection and invalidates the enumerator)
+				var paramMapsToReset = new List<(VisualEntry, string)>();
+				var varRefsToReset = new List<(VisualNode, VisualNodePropertyDefinition)>();
+
+				// If removal was successful, clean up some references to the variable
+				foreach (var (_, node) in Nodes) {
+					// Find all entries and unmap any parameter mappings that use the removed variable
+					if (node is VisualEntry entry) {
+						foreach (var kvp in entry!.ParameterMap)
+							if (kvp.Value == name)
+								paramMapsToReset.Add((entry!, kvp.Key));
+					} else {
+						// Find all (non-entry) nodes for any variablereference properties that reference the removed variable
+						foreach (var prop in node.GetPropertiesOfType(VisualNodePropertyType.Variable))
+							if (prop.Getter(node) is IVariableReference varDef && varDef.Name == name)
+								varRefsToReset.Add((node, prop));
+					}
+				}
+
+				// Now that we have found parameters and variable references that need to be reset, we can do so
+				foreach (var (entry, paramKey) in paramMapsToReset)
+					entry.ParameterMap[paramKey] = "";
+				foreach (var (node, prop) in varRefsToReset)
+					prop.Setter(node, Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(prop.PropertyDataType), "")); // Create a new empty reference of the relevant type
+			}
+		}
+		#endregion
+
+		#region NodeTypes
+		/// <summary>
+		/// Gets a list of all node types that can be added to this program.
+		/// </summary>
+		public IEnumerable<Type> AvailableNodes { get; } = Assembly.GetExecutingAssembly().GetTypes()
             .Where(t => (typeof(IVisualExpression).IsAssignableFrom(t) || typeof(VisualStatement).IsAssignableFrom(t)) && !t.IsAbstract); // Get anything that extends IExpression or VisualStatement but is not abstract
 
         // TODO: In future add the possibility of adding per-program nodes and removing default blocks

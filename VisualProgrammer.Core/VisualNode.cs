@@ -74,9 +74,6 @@ namespace VisualProgrammer.Core {
             // Next, check that the property on this node accepts the type of incoming node
             // Also check that this link would not make a circular reference (e.g. a -> b -> c -> a or a -> a)
             switch (prop.PropertyType) {
-                case VisualNodePropertyType.Value:
-                    throw new VisualNodeLinkException($"Cannot link a VisualNode to the value-type property '{targetProperty}'.");
-
                 case VisualNodePropertyType.Expression:
                     // When prop is expression, check incoming is expression
                     if (!(node is IVisualExpression expr))
@@ -109,7 +106,10 @@ namespace VisualProgrammer.Core {
 					// If we got here, validation has passed so make the link
 					SetPropertyValue(targetProperty, new StatementReference(context, node));
 					break;
-            }
+
+				default:
+					throw new VisualNodeLinkException($"Cannot link a VisualNode to the {prop.PropertyType.ToString()}-type property '{targetProperty}'.");
+			}
         }
 
         /// <summary>

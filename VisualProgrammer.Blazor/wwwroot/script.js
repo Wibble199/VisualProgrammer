@@ -25,7 +25,7 @@ class VisualProgrammer {
             // the pointerup event needs to capture the element (connector) which the user's mouse was over at release. This is ALWAYS the
             // element that has capture if the capture has been sent.
             if (this.nodeDragData != null && this.nodeDragData.element != null) {
-                let r = VisualProgrammer.getMousePositionRelativeTo(e, this.element);
+                let r = VisualProgrammer.getMousePositionRelativeTo(e, this.nodeContainer);
                 this.nodeDragData.element.parentElement.style.left = Math.round(r.x - this.nodeDragData.offset.x) + "px";
                 this.nodeDragData.element.parentElement.style.top = Math.round(r.y - this.nodeDragData.offset.y) + "px";
                 this.updateLinePositions();
@@ -37,7 +37,7 @@ class VisualProgrammer {
         };
         this.onPointerUp = (e) => {
             if (this.nodeDragData != null) {
-                let { x, y } = VisualProgrammer.getMousePositionRelativeTo(e, this.element);
+                let { x, y } = VisualProgrammer.getMousePositionRelativeTo(e, this.nodeContainer);
                 this.dotNet.invokeMethodAsync("SetPosition", this.nodeDragData.element.dataset.visualNodeId, Math.round(x - this.nodeDragData.offset.x), Math.round(y - this.nodeDragData.offset.y));
             }
             else if (this.connectorDragStartData != null && e.target instanceof HTMLElement && e.target.classList.contains('vp--node-link')) {
@@ -63,7 +63,7 @@ class VisualProgrammer {
             if (path.dataset.lineDestId != null && path.dataset.lineDestId != "") {
                 let sourceEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineSourceId}"] [data-node-link-role="source"][data-node-link-name="${path.dataset.lineSourceName}"]`);
                 let destEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineDestId}"] [data-node-link-role="destination"]`);
-                let sourcePos = VisualProgrammer.getOffsetRelativeTo(sourceEl, this.element), destPos = VisualProgrammer.getOffsetRelativeTo(destEl, this.element);
+                let sourcePos = VisualProgrammer.getOffsetRelativeTo(sourceEl, this.nodeContainer), destPos = VisualProgrammer.getOffsetRelativeTo(destEl, this.nodeContainer);
                 this.drawPathFrom(path, sourcePos, destPos, sourceEl.dataset.nodeLinkType == "statement");
             }
         });

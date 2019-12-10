@@ -1,15 +1,32 @@
 ﻿.vp--program-presenter {
+    display: flex;
+    flex-direction: row;
     background: #EFF0F1;
 }
 
 .vp--program-presenter .vp--canvas {
+    flex: 1 1 0;
+    order: 1;
     position: relative;
+    overflow: hidden;
 }
 
 .vp--canvas > * {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.vp--node-toolbox {
+    order: 0;
+    flex: 0 0 300px;
+    border-right: 1px solid #d7d7d7;
+}
+
+.vp--variable-list {
+    order: 2;
+    flex: 0 0 300px;
+    border-left: 1px solid #d7d7d7;
 }
 
 .vp--node-connector-container {

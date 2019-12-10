@@ -2,8 +2,7 @@
 
 <VisualProgrammer.Blazor.VisualProgramEditor Program="program" />
 
-<button @onclick="Execute">Execute</button>
-<button @onclick="Del">Del</button>
+<button class="execute-button" @onclick="Execute">Execute</button>
 
 @code {
     static string testEntryId = "testentry";
@@ -50,10 +49,5 @@
         var testEntry = (Action<double>)delegates[testEntryId];
 
         testEntry.Invoke(5d);
-    }
-
-    void Del()
-    {
-        program.RemoveVariable("doubleVar");
     }
 }

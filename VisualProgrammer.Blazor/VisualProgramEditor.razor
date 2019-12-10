@@ -4,15 +4,16 @@
 <div class="vp--program-presenter" @ref="progRootEl">
     <CascadingValue Value="Program" TValue="VisualProgram">
 
-        @* SVG to hold all the lines (make first, so it appears behind node boxes) *@
+        @* Canvas holds all visual elements (nodes and lines) *@
         <div class="vp--canvas">
+            @* SVG to hold all the lines (make first, so it appears behind node boxes) *@
             <svg class="vp--node-connector-container">
                 @* Create a line for every single expression property of every single node in the program *@
                 @foreach (var type in new[] { VisualNodePropertyType.Expression, VisualNodePropertyType.Statement }) { // For statements and expressions
                     @foreach (var line in from n in Program.Nodes
                                           let vn = n.Value
                                           from p in vn.GetPropertiesOfType(type)
-                                          select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn) }) {
+                                            select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn) }) {
                         <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
                     }
                 }
@@ -20,21 +21,21 @@
                 @* Drag-drop preview line *@
                 <path class="vp--preview-line" style="display:none" />
             </svg>
-        </div>
 
-        @* Display to hold all the nodes *@
-        <div class="vp--node-container">
-            @foreach (var node in Program.Nodes) {
-                <div style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
-                    @if (node.Value is VisualEntry entry) {
-                        <VisualEntryPresenter Entry="entry" EntryId="node.Key" />
-                    } else if (node.Value is VisualStatement stmt) {
-                        <VisualStatementPresenter Statement="stmt" StatementId="node.Key" />
-                    } else if (node.Value is IVisualExpression expr) {
-                        <VisualExpressionPresenter Expression="expr" ExpressionId="node.Key" />
-                    }
-                </div>
-            }
+            @* Display to hold all the nodes *@
+            <div class="vp--node-container">
+                @foreach (var node in Program.Nodes) {
+                    <div style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
+                        @if (node.Value is VisualEntry entry) {
+                            <VisualEntryPresenter Entry="entry" EntryId="node.Key" />
+                        } else if (node.Value is VisualStatement stmt) {
+                            <VisualStatementPresenter Statement="stmt" StatementId="node.Key" />
+                        } else if (node.Value is IVisualExpression expr) {
+                            <VisualExpressionPresenter Expression="expr" ExpressionId="node.Key" />
+                        }
+                    </div>
+                }
+            </div>
         </div>
 
         @* Toolbox that contains all available nodes *@

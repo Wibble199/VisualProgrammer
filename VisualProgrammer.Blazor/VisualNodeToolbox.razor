@@ -1,0 +1,27 @@
+﻿@inject IJSRuntime JsRuntime
+
+<div class="vp--node-toolbox">
+    @foreach (var node in Context.AvailableNodes) {
+        if (node.IsGenericType) {
+            foreach (var type in Context.AvailableDataTypes) {
+                <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node, type)">@node.GetNameWithoutGeneric() (@type.Name)</button>
+            }
+        } else {
+            <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node)">@node.GetNameWithoutGeneric()</button>
+        }
+        <br/>
+    }
+</div>
+
+@code {
+    [CascadingParameter] VisualProgram Context { get; set; }
+    [Parameter] public EventCallback<Guid> NodeCreated { get; set; }
+
+    /// <summary>
+    /// Creates a new node in the program. Will return (a string representation of) the new ID of the node to the caller.
+    /// </summary>
+    public void CreateNode(Type nodeType, params Type[] genericTypes) {
+        var newId = Context.CreateNode(nodeType, genericTypes);
+        NodeCreated.InvokeAsync(newId);
+    }
+}

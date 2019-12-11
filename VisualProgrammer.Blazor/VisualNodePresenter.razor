@@ -1,0 +1,12 @@
+﻿@if (Node is VisualEntry entry) {
+    <VisualEntryPresenter Entry="entry" EntryId="Key" />
+} else if (Node is VisualStatement stmt) {
+    <VisualStatementPresenter Statement="stmt" StatementId="Key" />
+} else if (Node is IVisualExpression expr) {
+    <VisualExpressionPresenter Expression="expr" ExpressionId="Key" />
+}
+
+@code {
+    [Parameter] public Guid Key { get; set; }
+    [Parameter] public VisualNode Node { get; set; }
+}

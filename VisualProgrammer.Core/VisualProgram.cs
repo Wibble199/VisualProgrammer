@@ -121,7 +121,13 @@ namespace VisualProgrammer.Core {
 		public IEnumerable<Type> AvailableNodes { get; } = Assembly.GetExecutingAssembly().GetTypes()
             .Where(t => (typeof(IVisualExpression).IsAssignableFrom(t) || typeof(VisualStatement).IsAssignableFrom(t)) && !t.IsAbstract); // Get anything that extends IExpression or VisualStatement but is not abstract
 
-        // TODO: In future add the possibility of adding per-program nodes and removing default blocks
+		// TODO: In future add the possibility of adding per-program nodes and removing default blocks
+		
+		/// <summary>
+		/// Gets a list of all types that are supported for use as variables or as generic arguments for nodes.
+		/// </summary>
+		// TODO: Add some way of adding additional types?
+		public IEnumerable<Type> AvailableDataTypes { get; } = new[] { typeof(string), typeof(double), typeof(int), typeof(bool) };
         #endregion
 
         /// <summary>

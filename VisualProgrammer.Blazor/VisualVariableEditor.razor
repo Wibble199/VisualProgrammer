@@ -1,0 +1,71 @@
+﻿@using VisualProgrammer.Core.Utils
+
+<div class="vp--variable-list">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+
+        @* Current variables table *@
+        <tbody>
+            @foreach (var varDef in Context.VariableDefinitions)
+            {
+                <tr>
+                    <td>@varDef.Key</td>
+                    <td>@varDef.Value.type.Name</td>
+                    <td>@(varDef.Value.@default.ToString())</td>
+                    <td><button @onclick="e => Context.RemoveVariable(varDef.Key)">&times;</button></td>
+                </tr>
+            }
+        </tbody>
+
+        @* Fields to create new variable *@
+        <tfoot>
+            <tr>
+                <td><InputFieldGeneric TValue="string" @bind-Value="NewVariableName" /></td>
+                <td>
+                    <select @onchange="e => NewVariableType = Type.GetType((string)e.Value)">
+                        @foreach (var type in Context.AvailableDataTypes) {
+                            <option value="@type.AssemblyQualifiedName" selected="@(NewVariableType == type)">@type.Name</option>
+                        }
+                    </select>
+                </td>
+                <td><InputFieldDynamic InputType="NewVariableType" @bind-Value="NewVariableDefault" /></td>
+                <td><button @onclick="CreateVariable">+</button></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@code {
+    [CascadingParameter] public VisualProgram Context { get; set; }
+
+    string NewVariableName { get; set; } = "";
+    object NewVariableDefault { get; set; } = "";
+
+    private Type _newVariableType = typeof(string);
+    Type NewVariableType {
+        get => _newVariableType;
+        set {
+            if (value == NewVariableType) return;
+            _newVariableType = value;
+            if (!value.CanBeSetTo(NewVariableDefault)) { // If the default value is not valid for this type:
+                try { NewVariableDefault = Convert.ChangeType(NewVariableDefault, value); } // Try to convert it to the correct type
+                catch { NewVariableDefault = Activator.CreateInstance(value); } // Otherwise just set it to the default for that type
+            }
+        }
+    }
+
+    /// <summary>
+    /// Creates a new variable in the program with parameters set by the user in the UI.
+    /// </summary>
+    void CreateVariable() {
+        if (!string.IsNullOrWhiteSpace(NewVariableName) && NewVariableType != null)
+            Context.CreateVariable(NewVariableName, NewVariableType, NewVariableDefault);
+    }
+}

@@ -13,7 +13,7 @@
                     @foreach (var line in from n in Program.Nodes
                                           let vn = n.Value
                                           from p in vn.GetPropertiesOfType(type)
-                                            select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn) }) {
+                                          select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn) }) {
                         <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
                     }
                 }
@@ -26,63 +26,25 @@
             <div class="vp--node-container">
                 @foreach (var node in Program.Nodes) {
                     <div style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
-                        @if (node.Value is VisualEntry entry) {
-                            <VisualEntryPresenter Entry="entry" EntryId="node.Key" />
-                        } else if (node.Value is VisualStatement stmt) {
-                            <VisualStatementPresenter Statement="stmt" StatementId="node.Key" />
-                        } else if (node.Value is IVisualExpression expr) {
-                            <VisualExpressionPresenter Expression="expr" ExpressionId="node.Key" />
-                        }
+                        <VisualNodePresenter Node="node.Value" Key="node.Key" />
                     </div>
                 }
             </div>
         </div>
 
         @* Toolbox that contains all available nodes *@
-        <div class="vp--node-toolbox">
-            @foreach (var node in Program.AvailableNodes) {
-                if (node.IsGenericType) {
-                    foreach (var type in new[] { typeof(string), typeof(bool), typeof(double) }) {
-                        <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node, type)">@node.GetNameWithoutGeneric() (@type.Name)</button>
-                    }
-                } else {
-                    <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node)">@node.GetNameWithoutGeneric()</button>
-                }
-                <br/>
-            }
-        </div>
+        <VisualNodeToolbox NodeCreated="OnCreateNode" />
 
         @* Variable definition list *@
-        <div class="vp--variable-list">
-            <ul>
-                @foreach (var varDef in Program.VariableDefinitions) {
-                    <li>
-                        <strong>Name:</strong> @varDef.Key
-                        <strong>Type:</strong> @varDef.Value.type.Name
-                    </li>
-                }
-            </ul>
-            <InputFieldGeneric TValue="string" @bind-Value="newVariableName" />
-            <select @onchange="e => newVariableType = Type.GetType((string)e.Value)">
-                @foreach (var type in new[] { typeof(double), typeof(bool), typeof(string) }) {
-                    <option value="@type.AssemblyQualifiedName" selected="@(newVariableType == type)">@type.Name</option>
-                }
-            </select>
-            <InputFieldDynamic InputType="newVariableType" @bind-Value="newVariableDefault" />
-            <button @onclick="CreateVariable">New variable</button>
-        </div>
+        <VisualVariableEditor />
     </CascadingValue>
 </div>
 
 @code {
-    ElementReference progRootEl;
+    internal ElementReference progRootEl;
 
     /// <summary>The program being edited by this editor.</summary>
     [Parameter] public VisualProgram Program { get; set; }
-
-    private string newVariableName { get; set; }
-    private Type newVariableType { get; set; } = typeof(string);
-    private object newVariableDefault { get; set; }
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) // If this is the first render of the component, we need to setup all the JS (listeners etc)
@@ -130,8 +92,7 @@
     /// <summary>
     /// Creates a new node in the program. Will return (a string representation of) the new ID of the node to the caller.
     /// </summary>
-    public void CreateNode(Type nodeType, params Type[] genericTypes) {
-        var newId = Program.CreateNode(nodeType, genericTypes);
+    public void OnCreateNode(Guid newId) {
         JsRuntime.InvokeVoidAsync("VisualProgrammer.onNewNode", progRootEl, newId);
     }
 
@@ -144,14 +105,6 @@
         if (!Program.TryResolveReference(nodeId, out var node)) return;
         node.Position = new System.Drawing.Point(x, y);
         StateHasChanged();
-    }
-
-    /// <summary>
-    /// Creates a new variable in the program with parameters set by the user in the UI.
-    /// </summary>
-    void CreateVariable() {
-        if (!string.IsNullOrWhiteSpace(newVariableName) && newVariableType != null)
-            Program.CreateVariable(newVariableName, newVariableType, newVariableDefault);
     }
 
     /// <summary>

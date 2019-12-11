@@ -5,7 +5,8 @@ namespace VisualProgrammer.Core {
     /// <summary>
     /// Attribute used to decorate properties on a <see cref="VisualNode" /> to allow them to be visible in the user interface.
     /// </summary>
-    public class VisualNodePropertyAttribute : Attribute {
+	[AttributeUsage(AttributeTargets.Property, Inherited = false)]
+    public sealed class VisualNodePropertyAttribute : Attribute {
 
         /// <summary>
         /// A label for this property. If not set, the name of the property as defined in the code will be used.

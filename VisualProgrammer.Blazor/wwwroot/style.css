@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     background: #EFF0F1;
+    user-select: none;
 }
 
 .vp--program-presenter .vp--canvas {
@@ -24,6 +25,9 @@
 }
 
 /* Toolbox template nodes (i.e. ones that should not be edited, but can be dragged onto canvas) */
+.vp--visual-node-toolbox-template {
+    cursor: move;
+}
 .vp--visual-node-toolbox-template > * {
     pointer-events: none; /* Prevent anything such as inputs from responding to the user input */
 }
@@ -61,9 +65,9 @@
     background: #68717B;
 }
 
-.vp--visual-node[data-visual-expression-type="double"] { --node-background: #42759F; }
-.vp--visual-node[data-visual-expression-type="boolean"] { --node-background: #AE4444; }
-.vp--visual-node[data-visual-expression-type="string"] { --node-background: #5E9B4E; }
+.vp--visual-node[data-visual-expression-type="double"], .vp--node-link[data-node-link-expr-type="double"] { --node-background: #42759F; }
+.vp--visual-node[data-visual-expression-type="boolean"], .vp--node-link[data-node-link-expr-type="boolean"] { --node-background: #AE4444; }
+.vp--visual-node[data-visual-expression-type="string"], .vp--node-link[data-node-link-expr-type="string"] { --node-background: #5E9B4E; }
 
 .vp--visual-entry {
     --node-background: #1E222A;

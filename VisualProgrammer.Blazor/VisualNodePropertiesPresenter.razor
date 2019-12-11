@@ -4,7 +4,7 @@
             @prop.DisplayName
 
             @if (prop.PropertyType == VisualNodePropertyType.Expression) {
-                <div class="vp--node-link" data-node-link-type="expression" data-node-link-role="source" data-node-link-name="@prop.Name" data-node-link-expr-type="@prop.PropertyType"></div>
+                <div class="vp--node-link" data-node-link-type="expression" data-node-link-role="source" data-node-link-name="@prop.Name" data-node-link-expr-type="@prop.PropertyDataType.Name.ToLower()"></div>
             } else if (prop.PropertyType == VisualNodePropertyType.Variable) {
                 <InputFieldDynamic InputType="prop.RawType" Value="Node.GetPropertyValue(prop.Name)" ValueChanged="newVal => Node.SetPropertyValue(prop.Name, newVal)" />
             } else {

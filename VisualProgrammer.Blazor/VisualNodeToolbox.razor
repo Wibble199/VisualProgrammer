@@ -14,7 +14,7 @@
             <select @onchange="BindSetGenericType(nodeType, i)">
                 @* TODO: Restrict the available types based on type argument data (e.g. generic contraints, attributes, etc.) *@
                 @foreach (var type in Context.AvailableDataTypes) {
-                    <option value="@type.AssemblyQualifiedName">@type.Name</option>
+                    <option value="@type.AssemblyQualifiedName" selected="@(GetDataItem(nodeType).GenericTypes[i] == type)">@type.Name</option>
                 }
             </select>
         }

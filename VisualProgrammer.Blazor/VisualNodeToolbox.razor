@@ -1,15 +1,23 @@
 ﻿@inject IJSRuntime JsRuntime
 
 <div class="vp--node-toolbox">
-    @foreach (var node in Context.AvailableNodes) {
-        if (node.IsGenericType) {
-            foreach (var type in Context.AvailableDataTypes) {
-                <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node, type)">@node.GetNameWithoutGeneric() (@type.Name)</button>
-            }
-        } else {
-            <button class="vp--node-spawner-button" @onmousedown="() => CreateNode(node)">@node.GetNameWithoutGeneric()</button>
+    @* For every different node type the user can choose (e.g. If statement, Literal expression, etc.) *@
+    @foreach (var nodeType in Context.AvailableNodes) {
+
+        @* Create a preview dummy node that the user can drag *@
+        <div class="vp--visual-node-toolbox-template" @onmousedown="() => CreateNode(GetDataItem(nodeType))">
+            <VisualNodePresenter Node="GetDataItem(nodeType).Node" Key="Guid.Empty" />
+        </div>
+
+        @* For each generic type parameter on this node type, create a <select> box which allows the user to choose which generic type they want to use. *@
+        @for (var i = 0; i < GetDataItem(nodeType).GenericTypes.Length; i++) {
+            <select @onchange="BindSetGenericType(nodeType, i)">
+                @* TODO: Restrict the available types based on type argument data (e.g. generic contraints, attributes, etc.) *@
+                @foreach (var type in Context.AvailableDataTypes) {
+                    <option value="@type.AssemblyQualifiedName">@type.Name</option>
+                }
+            </select>
         }
-        <br/>
     }
 </div>
 
@@ -17,11 +25,51 @@
     [CascadingParameter] VisualProgram Context { get; set; }
     [Parameter] public EventCallback<Guid> NodeCreated { get; set; }
 
+    // Dictionary that contains the additional data required to render the node list
+    // The VisualNode is the dummy instance used to generate the node preview. The Type array is used to store currently selected generic types for that node type
+    // Note that `Tuple` is used instead of (x, y) because for this I need a reference type, not a value type
+    Dictionary<Type, NodeListDataItem> ListDataDict = new Dictionary<Type, NodeListDataItem>();
+
+    
+    /// <summary>Gets the data item for a particular base node type. If not already created, will create one.</summary>
+    private NodeListDataItem GetDataItem(Type sourceType) => ListDataDict.TryGetValue(sourceType, out var i) ? i : CreateListDataEntry(sourceType);
+
     /// <summary>
     /// Creates a new node in the program. Will return (a string representation of) the new ID of the node to the caller.
     /// </summary>
-    public void CreateNode(Type nodeType, params Type[] genericTypes) {
-        var newId = Context.CreateNode(nodeType, genericTypes);
+    public void CreateNode(NodeListDataItem item) {
+        var newId = Context.CreateNode(item.NodeType, item.GenericTypes);
         NodeCreated.InvokeAsync(newId);
+    }
+
+    /// <summary>Creates a new data POCO for the given source node type. and adds it to the <see cref="ListDataDict"/> source.</summary>
+    private NodeListDataItem CreateListDataEntry(Type sourceType) {
+        var genericArgs = sourceType.IsGenericType ? new Type[sourceType.GetGenericArguments().Length] : Array.Empty<Type>();
+        // TODO: Populate generic args with relevant types
+        for (var i = 0; i < genericArgs.Length; i++) genericArgs[i] = typeof(double);
+
+        return ListDataDict[sourceType] = new NodeListDataItem { NodeType = sourceType, Node = CreateDummyNode(sourceType, genericArgs), GenericTypes = genericArgs };
+    }
+
+    /// <summary>Creates a dummy node instance of the source type with the given generic arguments.</summary>
+    private VisualNode CreateDummyNode(Type sourceType, params Type[] args)
+        => (VisualNode)Activator.CreateInstance(sourceType.IsGenericType ? sourceType.MakeGenericType(args) : sourceType);
+
+    /// <summary>Sets the user's selected generic type for the given node type at the given index to the given new type and updates the assigned dummy node.</summary>
+    private void SetGenericType(Type sourceType, int genericArgIndex, Type newGenericType) {
+        if (ListDataDict[sourceType].GenericTypes[genericArgIndex] == newGenericType) return; // Do nothing if not different
+        ListDataDict[sourceType].GenericTypes[genericArgIndex] = newGenericType;
+        ListDataDict[sourceType].Node = CreateDummyNode(sourceType, ListDataDict[sourceType].GenericTypes);
+    }
+
+    /// <summary>Creates a lambda for the type dropdown selection for the given type and index. This is required for proper variable capture.</summary>
+    private Action<ChangeEventArgs> BindSetGenericType(Type nodeType, int genericArgIndex) => e => SetGenericType(nodeType, genericArgIndex, Type.GetType((string)e.Value));
+
+
+    // POCO to store list data. I do not use a value tuple (i.e. (VisualNode, Type[]) ) in it's place because I need a reference type (and Tuple<VisualNode, Type[]> has read only properties)
+    public class NodeListDataItem {
+        public Type NodeType { get; set; }
+        public VisualNode Node { get; set; }
+        public Type[] GenericTypes { get; set; }
     }
 }

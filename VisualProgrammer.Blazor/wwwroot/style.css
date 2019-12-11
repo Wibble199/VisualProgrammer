@@ -23,6 +23,11 @@
     border-right: 1px solid #d7d7d7;
 }
 
+/* Toolbox template nodes (i.e. ones that should not be edited, but can be dragged onto canvas) */
+.vp--visual-node-toolbox-template > * {
+    pointer-events: none; /* Prevent anything such as inputs from responding to the user input */
+}
+
 .vp--variable-list {
     order: 2;
     flex: 0 0 300px;

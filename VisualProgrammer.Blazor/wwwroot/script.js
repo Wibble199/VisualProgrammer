@@ -3,6 +3,7 @@ class VisualProgrammer {
         this.element = element;
         this.dotNet = dotNet;
         this.onPointerDown = (e) => {
+            var _a, _b;
             if (!(e.target instanceof Element))
                 return;
             // If the user clicks down on the part of the visual node marked as the dragger, we want to start moving that node.
@@ -14,10 +15,12 @@ class VisualProgrammer {
             else if (e.target.classList.contains('vp--node-link')) {
                 e.preventDefault();
                 this.connectorDragStartData = this.getDragDataFromNode(e.target);
-                let svgOffset = VisualProgrammer.getMousePositionRelativeTo(e, this.lineContainer);
+                let svgOffset = this.getConnectorPosition(e.target);
                 this.connectorDragStartPos = Object.assign(Object.assign({}, svgOffset), { isVert: e.target.dataset.nodeLinkType == "statement" });
                 this.drawPathFrom(this.previewLine, this.connectorDragStartPos, this.connectorDragStartPos, this.connectorDragStartPos.isVert);
                 this.previewLine.style.display = "block";
+                // Set the preview line 'data-type' attribute to either be the type of node being dragged, or in the case of an expression output, the type of the expression
+                this.previewLine.dataset.type = (_b = (_a = e.target.dataset.type, (_a !== null && _a !== void 0 ? _a : e.target.closest('.vp--visual-node').dataset.type)), (_b !== null && _b !== void 0 ? _b : ""));
             }
         };
         this.documentOnPointerMove = (e) => {
@@ -63,7 +66,7 @@ class VisualProgrammer {
             if (path.dataset.lineDestId != null && path.dataset.lineDestId != "") {
                 let sourceEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineSourceId}"] [data-node-link-role="source"][data-node-link-name="${path.dataset.lineSourceName}"]`);
                 let destEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineDestId}"] [data-node-link-role="destination"]`);
-                let sourcePos = VisualProgrammer.getOffsetRelativeTo(sourceEl, this.nodeContainer), destPos = VisualProgrammer.getOffsetRelativeTo(destEl, this.nodeContainer);
+                let sourcePos = this.getConnectorPosition(sourceEl), destPos = this.getConnectorPosition(destEl);
                 this.drawPathFrom(path, sourcePos, destPos, sourceEl.dataset.nodeLinkType == "statement");
             }
         });
@@ -97,6 +100,9 @@ class VisualProgrammer {
     static getOffsetRelativeTo(el1, el2) {
         let r1 = el1.getBoundingClientRect(), r2 = el2.getBoundingClientRect();
         return { x: r1.left - r2.left, y: r1.top - r2.top };
+    }
+    getConnectorPosition(connector) {
+        return VisualProgrammer.getOffsetRelativeTo(connector, this.nodeContainer);
     }
     static afterRender(element) {
         var _a, _b, _c, _d;

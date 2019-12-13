@@ -47,10 +47,12 @@ class VisualProgrammer {
         } else if (e.target.classList.contains('vp--node-link')) {
             e.preventDefault();
             this.connectorDragStartData = this.getDragDataFromNode(<HTMLElement>e.target);
-            let svgOffset = VisualProgrammer.getMousePositionRelativeTo(e, this.lineContainer);
+            let svgOffset = this.getConnectorPosition(<HTMLElement>e.target);
             this.connectorDragStartPos = { ...svgOffset, isVert: (<any>e.target).dataset.nodeLinkType == "statement" };
             this.drawPathFrom(this.previewLine, this.connectorDragStartPos, this.connectorDragStartPos, this.connectorDragStartPos.isVert);
             this.previewLine.style.display = "block";
+            // Set the preview line 'data-type' attribute to either be the type of node being dragged, or in the case of an expression output, the type of the expression
+            this.previewLine.dataset.type = (<HTMLElement>e.target).dataset.type ?? (<HTMLElement>e.target.closest('.vp--visual-node')).dataset.type ?? "";
         }
     };
 
@@ -88,7 +90,7 @@ class VisualProgrammer {
             if (path.dataset.lineDestId != null && path.dataset.lineDestId != "") {
                 let sourceEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineSourceId}"] [data-node-link-role="source"][data-node-link-name="${path.dataset.lineSourceName}"]`);
                 let destEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineDestId}"] [data-node-link-role="destination"]`);
-                let sourcePos = VisualProgrammer.getOffsetRelativeTo(sourceEl, this.nodeContainer), destPos = VisualProgrammer.getOffsetRelativeTo(destEl, this.nodeContainer);
+                let sourcePos = this.getConnectorPosition(sourceEl), destPos = this.getConnectorPosition(destEl);
                 this.drawPathFrom(path, sourcePos, destPos, (<HTMLElement>sourceEl).dataset.nodeLinkType == "statement");
             }
         });
@@ -131,6 +133,10 @@ class VisualProgrammer {
     private static getOffsetRelativeTo(el1: Element, el2: Element): Point {
         let r1 = el1.getBoundingClientRect(), r2 = el2.getBoundingClientRect();
         return { x: r1.left - r2.left, y: r1.top - r2.top };
+    }
+
+    private getConnectorPosition(connector: Element): Point {
+        return VisualProgrammer.getOffsetRelativeTo(connector, this.nodeContainer);
     }
 
     public static afterRender(element: HTMLElement) {

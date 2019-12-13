@@ -13,8 +13,8 @@
                     @foreach (var line in from n in Program.Nodes
                                           let vn = n.Value
                                           from p in vn.GetPropertiesOfType(type)
-                                          select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn) }) {
-                        <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
+                                          select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn), Type = p.PropertyDataType }) {
+                        <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-type="@line.Type?.Name.ToString().ToLower()" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
                     }
                 }
 

@@ -57,6 +57,7 @@
 
 .vp--visual-node {
     display: inline-block;
+    position: relative;
     min-width: 180px;
     border: 1px solid #FFF2;
     border-radius: 4px;
@@ -66,6 +67,7 @@
 }
 
 .vp--visual-node[data-visual-expression-type="double"], .vp--node-link[data-node-link-expr-type="double"] { --node-background: #42759F; }
+.vp--visual-node[data-visual-expression-type="int32"], .vp--node-link[data-node-link-expr-type="int32"] { --node-background: #44AE90 }
 .vp--visual-node[data-visual-expression-type="boolean"], .vp--node-link[data-node-link-expr-type="boolean"] { --node-background: #AE4444; }
 .vp--visual-node[data-visual-expression-type="string"], .vp--node-link[data-node-link-expr-type="string"] { --node-background: #5E9B4E; }
 

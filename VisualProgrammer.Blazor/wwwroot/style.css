@@ -41,9 +41,10 @@
 .vp--node-connector-container {
     top: 11px; /* This is so that it's easier to make the line meet the center of the */
     left: 12px; /* link dot, without needing to add it to the JS calculation. */
+
     overflow: visible; /* So we don't have to resize the SVG to fit everything. Easy :) */
-    width: 0;
-    height: 0;
+    width: 1px;  /* These used to be zero, but Chrome does not display the lines inside the */
+    height: 1px; /* container (despite overflow being visible) if they have zero width/height. */
 }
 
 .vp--node-connector-container path {

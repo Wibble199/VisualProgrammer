@@ -5,3 +5,5 @@ VisualProgrammer is a collection of libraries that can be used to create a progr
 - [VisualProgrammer.Core](/VisualProgrammer.Core)
 - [VisualProgrammer.Blazor](/VisualProgrammer.Blazor)
 - VisualProgrammer.WPF *Planned*
+
+View the [Wiki](https://github.com/Wibble199/VisualProgrammer/wiki) for documentation.

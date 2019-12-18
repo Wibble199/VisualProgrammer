@@ -8,7 +8,7 @@ class VisualProgrammer {
                 return;
             // If the user clicks down on the part of the visual node marked as the dragger, we want to start moving that node.
             if (e.target.classList.contains('vp--node-dragger')) {
-                e.preventDefault();
+                // No longer doing e.preventDefault() here, since we want it to bubble up to be cause by the handler in VisualProgramEditor.razor so the node can be selected
                 let offset = VisualProgrammer.getMousePositionRelativeTo(e, e.target.closest('.vp--visual-node'));
                 this.nodeDragData = { element: e.target.closest('.vp--visual-node'), offset };
             }

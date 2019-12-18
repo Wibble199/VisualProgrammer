@@ -56,6 +56,10 @@
     display: none;
 }
 
+.vp--visual-node-container-selected {
+    outline: 3px solid #0087FF;
+}
+
 .vp--visual-node {
     display: inline-block;
     position: relative;

@@ -112,6 +112,31 @@ namespace VisualProgrammer.Core {
 			}
         }
 
+		/// <summary>
+		/// Attempts to clears the between a node and the target property of this node. Optionally only clears the link for a specific Node ID.
+		/// </summary>
+		/// <param name="onlyIf">If a value for this parameter is provided, the reference will only be cleared if the ID of the target node of the reference matches this.</param>
+		public void ClearLink(string targetProperty, Guid? onlyIf = null) {
+			// Check the target property exists on this node
+			if (!Properties.TryGetValue(targetProperty, out var prop))
+				throw new ArgumentException($"Property could not be found on type '{GetType().Name}'.", nameof(targetProperty));
+
+			// Check that this property is a NodeReference and the ID of the reference has a value (so that expressions with values instead aren't cleared) and, if requierd, the ID matches onlyIf
+			if (GetPropertyValue(targetProperty) is INodeReference @ref && @ref.Id.HasValue && (onlyIf == null || @ref.Id == onlyIf))
+				SetPropertyValue(targetProperty, prop.PropertyType == VisualNodePropertyType.Expression
+					? Activator.CreateInstance(typeof(ExpressionReference<>).MakeGenericType(prop.PropertyDataType))
+					: new StatementReference()
+				);
+		}
+
+		/// <summary>
+		/// Attempts to clear all references on this node. Optionally only clears references for a specific node ID.
+		/// </summary>
+		public void ClearAllLinks(Guid? onlyIf = null) {
+			foreach (var prop in Properties.Where(x => x.Value.PropertyType == VisualNodePropertyType.Expression || x.Value.PropertyType == VisualNodePropertyType.Statement))
+				ClearLink(prop.Key, onlyIf);
+		}
+
         /// <summary>
         /// Performs a breadth-first iterative validation that validate the given link would not make a circular reference loop. If it does, throws a <see cref="VisualNodeLinkException"/>.
         /// </summary>

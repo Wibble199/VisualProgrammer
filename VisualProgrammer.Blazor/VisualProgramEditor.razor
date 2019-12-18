@@ -4,8 +4,11 @@
 <div class="vp--program-presenter" @ref="progRootEl">
     <CascadingValue Value="Program" TValue="VisualProgram">
 
+        @* Just temporary to test. For some reason could not make @onkeydown work *@
+        <button @onclick="DeleteSelected">Del</button>
+
         @* Canvas holds all visual elements (nodes and lines) *@
-        <div class="vp--canvas">
+        <div class="vp--canvas" @onmousedown="CanvasMousedown">
             @* SVG to hold all the lines (make first, so it appears behind node boxes) *@
             <svg class="vp--node-connector-container">
                 @* Create a line for every single expression property of every single node in the program *@
@@ -14,7 +17,7 @@
                                           let vn = n.Value
                                           from p in vn.GetPropertiesOfType(type)
                                           select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn), Type = p.PropertyDataType }) {
-                        <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-type="@line.Type?.Name.ToString().ToLower()" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
+                        <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-type="@(line.Type?.Name.ToString().ToLower() ?? "")" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
                     }
                 }
 
@@ -25,7 +28,7 @@
             @* Display to hold all the nodes *@
             <div class="vp--node-container">
                 @foreach (var node in Program.Nodes) {
-                    <div style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
+                    <div class="@(selectedNodes.Contains(node.Key) ? "vp--visual-node-container-selected" : "")" @onmousedown="e => SelectNode(node.Key, e)" @onmousedown:stopPropagation style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
                         <VisualNodePresenter Node="node.Value" Key="node.Key" />
                     </div>
                 }
@@ -42,6 +45,7 @@
 
 @code {
     internal ElementReference progRootEl;
+    HashSet<Guid> selectedNodes = new HashSet<Guid>();
 
     /// <summary>The program being edited by this editor.</summary>
     [Parameter] public VisualProgram Program { get; set; }
@@ -105,6 +109,37 @@
         if (!Program.TryResolveReference(nodeId, out var node)) return;
         node.Position = new System.Drawing.Point(x, y);
         StateHasChanged();
+    }
+
+    /// <summary>
+    /// Selects the node with the given Guid.
+    /// </summary>
+    void SelectNode(Guid nodeId, MouseEventArgs e) {
+        // If the control or shift keys are pressed, we want to toggle the selection of this node while keeping any additional any already selected nodes
+        if (e.CtrlKey || e.ShiftKey) {
+            selectedNodes.Toggle(nodeId);
+
+        } else {
+            // If ctrl or shift aren't pressed, only select this node
+            selectedNodes.Clear();
+            selectedNodes.Add(nodeId);
+        }
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Canvas-wide mouse handler. Used to detect if the user clicks a blank space and deselects all nodes.
+    /// </summary>
+    void CanvasMousedown(MouseEventArgs e) {
+        // If the user isn't holding ctrl or shift, clear the selection
+        if (!e.CtrlKey && !e.ShiftKey)
+            selectedNodes.Clear();
+        StateHasChanged();
+    }
+
+    void DeleteSelected() {
+        foreach (var id in selectedNodes)
+            Program.RemoveNode(id);
     }
 
     /// <summary>

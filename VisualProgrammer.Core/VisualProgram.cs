@@ -26,9 +26,16 @@ namespace VisualProgrammer.Core {
         /// </summary>
         public bool TryResolveReference(Guid id, [MaybeNullWhen(false), NotNullWhen(true)] out VisualNode? visualNode) => Nodes.TryGetValue(id, out visualNode);
 
+		/// <summary>
+		/// Attempt to create a new node of the given type. Returns the ID of the newly created node.
+		/// </summary>
+		/// <param name="nodeType">The type of node to create. This must extend from <see cref="VisualNode"/>.</param>
+		/// <param name="genericTypes">If the node type is generic, pass the desired generic types here.</param>
         public Guid CreateNode(Type nodeType, params Type[] genericTypes) {
+			// Check the given type is actually a VisualNode
             if (!typeof(VisualNode).IsAssignableFrom(nodeType))
                 throw new ArgumentException($"Supplied node type must be a '${nameof(VisualNode)}'.", nameof(nodeType));
+			// Check the given type's generic parameter count matches the given genericTypes param array count
             if (nodeType.GetGenericArguments().Length != genericTypes.Length)
                 throw new ArgumentException($"Node type generic argument count must match given generic type parameter count. Expected {nodeType.GetGenericArguments().Length}, got {genericTypes.Length}.", nameof(genericTypes));
             
@@ -36,6 +43,16 @@ namespace VisualProgrammer.Core {
             Nodes.Add(id, (VisualNode)Activator.CreateInstance(nodeType.IsGenericType ? nodeType.MakeGenericType(genericTypes) : nodeType)!);
             return id;
         }
+
+		/// <summary>
+		/// Attempts to delete the node with the given ID. Will also remove the node from any links it is associated with.
+		/// </summary>
+		public void RemoveNode(Guid nodeId) {
+			if (!Nodes.ContainsKey(nodeId)) return;
+			foreach (var node in Nodes.Values)
+				node.ClearAllLinks(nodeId);
+			Nodes.Remove(nodeId);
+		}
         #endregion
 
         #region Entries

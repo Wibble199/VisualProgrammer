@@ -1,13 +1,12 @@
 ﻿@page "/"
+@inject IJSRuntime JsRuntime
 
-<VisualProgrammer.Blazor.VisualProgramEditor Program="program" />
+<VisualProgramEditor Program="program" />
 
 <button class="execute-button" @onclick="Execute">Execute</button>
 
 @code {
     static string testEntryId = "testentry";
-    static Guid firstStatementGuid = Guid.NewGuid();
-    static Guid printValueGuid = Guid.NewGuid();
 
     static VisualProgram program = new VisualProgram {
         EntryDefinitions = new Dictionary<string, EntryDefinition> {
@@ -26,16 +25,8 @@
         Nodes = new Dictionary<Guid, VisualNode> {
             { Guid.NewGuid(), new VisualEntry(testEntryId) {
                 ParameterMap = new Dictionary<string, string> { { "someDouble", "doubleVar" } }, // Map the "someInt" parameter onto the "intVar" variable
-                FirstStatement = new StatementReference(firstStatementGuid),
-                Position = new System.Drawing.Point(100, 0) }
+                Position = new System.Drawing.Point(100, 10) }
             },
-            { firstStatementGuid, new VisualProgrammer.Core.Nodes.Debug.Print { PrintValue = new ExpressionReference<string>(printValueGuid), Position = new System.Drawing.Point(100, 100) } },
-            { printValueGuid, new VisualProgrammer.Core.Nodes.Variables.Literal<string> { Value = "Hello world!", Position = new System.Drawing.Point(0, 100) } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.SetVariable<double> { Variable = new VariableReference<double>("doubleVar") } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.GetVariable<double> { Variable = new VariableReference<double>("doubleVar") } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.Literal<double> { Value = 0 } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Variables.Literal<double> { Value = -1 } },
-            { Guid.NewGuid(), new VisualProgrammer.Core.Nodes.Maths.Comparison { SelectedOp = VisualProgrammer.Core.Nodes.Maths.Comparison.Op.GT } }
         }
     };
 
@@ -49,5 +40,28 @@
         var testEntry = (Action<double>)delegates[testEntryId];
 
         testEntry.Invoke(5d);
+    }
+
+
+
+    // Get a reference to the instance of the Index (so we can access the log method)
+    internal static Index instance;
+    protected override void OnInitialized() => instance = this;
+
+    // Logs a value to the web console
+    public void ConsoleLog(string value) {
+        JsRuntime.InvokeVoidAsync("console.log", value);
+    }
+
+    // Custom node that prints to the web console
+    public class PrintToWebConsole : VisualStatement {
+
+        [VisualNodeProperty] public ExpressionReference<string> Value { get; set; }
+
+        public override Expression CreateExpression(VisualProgram context) => Expression.Call(
+            instance: Expression.Constant(Index.instance),
+            method: Index.instance.GetType().GetMethod(nameof(Index.ConsoleLog)),
+            Value.ResolveExpression(context)
+        );
     }
 }

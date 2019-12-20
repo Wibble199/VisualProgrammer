@@ -135,7 +135,8 @@ namespace VisualProgrammer.Core {
 		/// <summary>
 		/// Gets a list of all node types that can be added to this program.
 		/// </summary>
-		public IEnumerable<Type> AvailableNodes { get; } = Assembly.GetExecutingAssembly().GetTypes()
+		public IEnumerable<Type> AvailableNodes { get; } = AppDomain.CurrentDomain.GetAssemblies()
+			.SelectMany(a => a.GetTypes())
             .Where(t => (typeof(IVisualExpression).IsAssignableFrom(t) || typeof(VisualStatement).IsAssignableFrom(t)) && !t.IsAbstract); // Get anything that extends IExpression or VisualStatement but is not abstract
 
 		// TODO: In future add the possibility of adding per-program nodes and removing default blocks

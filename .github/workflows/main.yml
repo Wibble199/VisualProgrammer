@@ -1,0 +1,21 @@
+name: Build
+
+on: [push]
+jobs:
+  build:
+    runs-on: [windows-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build with DocFX
+      run: |
+        choco install docfx -y
+        docfx .\Docs\docfx.json
+        New-Item -Path .\_public -Type Directory
+        Move-Item -Path .\Docs\doc -Destination .\_public
+    - name: Deploy to GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: _public
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}

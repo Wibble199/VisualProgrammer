@@ -1,2 +1,7 @@
-- name: Introduction
-  href: intro.md
+- name: Visual Program
+  href: core/visual-program.md
+- name: Nodes
+  href: core/nodes.md
+- name: Variables
+  href: core/variables
+  

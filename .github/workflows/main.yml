@@ -14,6 +14,7 @@ jobs:
         Move-Item -Path .\Docs\doc -Destination .\_public
     - name: Build Demo
       run: |
+        (Get-Content -Path .\Demos\DemoBlazorApp\wwwroot\index.html) -replace '<base href="/" />', '<base href="/VisualProgrammer/wasm-demo/" />' | Set-Content -Path .\Demos\DemoBlazorApp\wwwroot\index.html
         dotnet restore
         dotnet publish --configuration Release --output demo-build
         Rename-Item .\demo-build\DemoBlazorApp\dist wasm-demo

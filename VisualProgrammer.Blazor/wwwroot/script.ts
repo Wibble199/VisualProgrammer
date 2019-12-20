@@ -6,6 +6,7 @@ interface HTMLElement { __visualProgrammer?: VisualProgrammer; }
 
 class VisualProgrammer {
 
+    private canvasContainer: HTMLDivElement;
     private nodeContainer: HTMLDivElement
     private lineContainer: SVGElement;
     private previewLine: SVGPathElement;
@@ -13,6 +14,7 @@ class VisualProgrammer {
     private nodeDragData?: { element: HTMLElement, offset: Point };
     private connectorDragStartData?: ConnectorData;
     private connectorDragStartPos?: Point & { isVert: boolean };
+    private selectedNodes = new Set<String>();
 
     private awaitRenderPromise: Promise<void>;
     private awaitRenderResolve: () => void;
@@ -22,6 +24,7 @@ class VisualProgrammer {
     }
 
     public constructor(private element: HTMLElement, private dotNet: DotNetReference) {
+        this.canvasContainer = element.querySelector('.vp--canvas');
         this.nodeContainer = element.querySelector('.vp--node-container');
         this.lineContainer = element.querySelector('.vp--node-connector-container');
         this.previewLine = element.querySelector('.vp--preview-line');
@@ -29,6 +32,7 @@ class VisualProgrammer {
         element.addEventListener('pointerdown', this.onPointerDown);
         document.addEventListener('pointermove', this.documentOnPointerMove);
         element.addEventListener('pointerup', this.onPointerUp);
+        document.addEventListener('keydown', this.documentOnKeyDown);
 
         this.updateLinePositions();
 
@@ -38,12 +42,15 @@ class VisualProgrammer {
     private onPointerDown = (e: PointerEvent) => {
         if (!(e.target instanceof Element)) return;
 
+        let closestNode = <HTMLElement>e.target.closest('.vp--visual-node');
+
         // If the user clicks down on the part of the visual node marked as the dragger, we want to start moving that node.
         if (e.target.classList.contains('vp--node-dragger')) {
             // No longer doing e.preventDefault() here, since we want it to bubble up to be cause by the handler in VisualProgramEditor.razor so the node can be selected
             let offset = VisualProgrammer.getMousePositionRelativeTo(e, e.target.closest('.vp--visual-node'));
             this.nodeDragData = { element: e.target.closest('.vp--visual-node'), offset };
 
+        // If the user clicked down on a node link part of a node
         } else if (e.target.classList.contains('vp--node-link')) {
             e.preventDefault();
             this.connectorDragStartData = this.getDragDataFromNode(<HTMLElement>e.target);
@@ -52,7 +59,21 @@ class VisualProgrammer {
             this.drawPathFrom(this.previewLine, this.connectorDragStartPos, this.connectorDragStartPos, this.connectorDragStartPos.isVert);
             this.previewLine.style.display = "block";
             // Set the preview line 'data-type' attribute to either be the type of node being dragged, or in the case of an expression output, the type of the expression
-            this.previewLine.dataset.type = (<HTMLElement>e.target).dataset.type ?? (<HTMLElement>e.target.closest('.vp--visual-node')).dataset.type ?? "";
+            this.previewLine.dataset.type = (<HTMLElement>e.target).dataset.type ?? closestNode.dataset.type ?? "";
+
+        // Otherwise, if the mouse went down on any element inside a visual node (including inputs etc., but not the dragger or the node links)
+        } else if (closestNode != null) {
+            if (e.ctrlKey || e.shiftKey)
+                this.setNodeSelected(closestNode.dataset.visualNodeId); // If ctrl or shift, toggle this node to to selection
+            else {
+                this.clearSelection(); // Otherwise, only select this node
+                this.setNodeSelected(closestNode.dataset.visualNodeId, true);
+            }
+            
+        // Otherwise if the mouse went down anywhere else on the canvas
+        } else if (e.target == this.canvasContainer) {
+            // Deselect all nodes
+            this.clearSelection();
         }
     };
 
@@ -83,6 +104,15 @@ class VisualProgrammer {
         }
         this.nodeDragData = this.connectorDragStartData = null;
         this.previewLine.style.display = "none";
+    }
+
+    private documentOnKeyDown = (e: KeyboardEvent) => {
+        if (e.keyCode == 46 && this.selectedNodes.size) { // 46 = delete (but not backspace)
+            // Send an array of node IDs to Blazor to have the nodes removed
+            let nodeIds = [...this.selectedNodes];
+            this.clearSelection(); // This needs to be called because otherwise Blazor will reuse some deleted nodes instead which will end up appearing selected even though they shouln't be
+            this.dotNet.invokeMethodAsync("DeleteNodes", nodeIds);
+        }
     }
 
     public updateLinePositions() {
@@ -123,6 +153,19 @@ class VisualProgrammer {
             name: connector.dataset.nodeLinkName,
             role: connector.dataset.nodeLinkRole
         };
+    }
+
+    /** Sets whether or not the node with the given ID is selected or not.
+     * @param newStatus Whether or not the node should be selected. Leave blank to toggle the selection on/off. */
+    private setNodeSelected(id: String, newStatus: boolean = null) {
+        newStatus = newStatus ?? !this.selectedNodes.has(id);
+        this.selectedNodes[newStatus ? "add" : "delete"](id);
+        document.querySelector(`[data-visual-node-id="${id}"]`).closest('.vp--visual-node-container').classList[newStatus ? "add" : "remove"]('vp--selected');
+    }
+
+    private clearSelection() {
+        this.selectedNodes.clear();
+        Array.from(document.querySelectorAll('.vp--visual-node-container.vp--selected')).forEach(el => el.classList.remove('vp--selected'));
     }
 
     private static getMousePositionRelativeTo(evt: MouseEvent, element: Element): Point {

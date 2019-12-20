@@ -4,11 +4,8 @@
 <div class="vp--program-presenter" @ref="progRootEl">
     <CascadingValue Value="Program" TValue="VisualProgram">
 
-        @* Just temporary to test. For some reason could not make @onkeydown work *@
-        <button @onclick="DeleteSelected">Del</button>
-
         @* Canvas holds all visual elements (nodes and lines) *@
-        <div class="vp--canvas" @onmousedown="CanvasMousedown">
+        <div class="vp--canvas">
             @* SVG to hold all the lines (make first, so it appears behind node boxes) *@
             <svg class="vp--node-connector-container">
                 @* Create a line for every single expression property of every single node in the program *@
@@ -28,7 +25,7 @@
             @* Display to hold all the nodes *@
             <div class="vp--node-container">
                 @foreach (var node in Program.Nodes) {
-                    <div class="@(selectedNodes.Contains(node.Key) ? "vp--visual-node-container-selected" : "")" @onmousedown="e => SelectNode(node.Key, e)" @onmousedown:stopPropagation style="position:absolute;top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
+                    <div class="vp--visual-node-container" style="top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
                         <VisualNodePresenter Node="node.Value" Key="node.Key" />
                     </div>
                 }
@@ -45,7 +42,6 @@
 
 @code {
     internal ElementReference progRootEl;
-    HashSet<Guid> selectedNodes = new HashSet<Guid>();
 
     /// <summary>The program being edited by this editor.</summary>
     [Parameter] public VisualProgram Program { get; set; }
@@ -112,34 +108,13 @@
     }
 
     /// <summary>
-    /// Selects the node with the given Guid.
+    /// Deletes the specified nodes.
     /// </summary>
-    void SelectNode(Guid nodeId, MouseEventArgs e) {
-        // If the control or shift keys are pressed, we want to toggle the selection of this node while keeping any additional any already selected nodes
-        if (e.CtrlKey || e.ShiftKey) {
-            selectedNodes.Toggle(nodeId);
-
-        } else {
-            // If ctrl or shift aren't pressed, only select this node
-            selectedNodes.Clear();
-            selectedNodes.Add(nodeId);
-        }
-        StateHasChanged();
-    }
-
-    /// <summary>
-    /// Canvas-wide mouse handler. Used to detect if the user clicks a blank space and deselects all nodes.
-    /// </summary>
-    void CanvasMousedown(MouseEventArgs e) {
-        // If the user isn't holding ctrl or shift, clear the selection
-        if (!e.CtrlKey && !e.ShiftKey)
-            selectedNodes.Clear();
-        StateHasChanged();
-    }
-
-    void DeleteSelected() {
-        foreach (var id in selectedNodes)
+    [JSInvokable]
+    public void DeleteNodes(Guid[] nodes) {
+        foreach (var id in nodes)
             Program.RemoveNode(id);
+        this.StateHasChanged();
     }
 
     /// <summary>

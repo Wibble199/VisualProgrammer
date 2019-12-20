@@ -6,12 +6,18 @@ jobs:
     runs-on: [windows-latest]
     steps:
     - uses: actions/checkout@v1
-    - name: Build with DocFX
+    - run: New-Item -Path .\_public -Type Directory
+    - name: Build Documentation
       run: |
         choco install docfx -y
         docfx .\Docs\docfx.json
-        New-Item -Path .\_public -Type Directory
         Move-Item -Path .\Docs\doc -Destination .\_public
+    - name: Build Demo
+      run: |
+        dotnet restore
+        dotnet publish --configuration Release --output demo-build
+        Rename-Item .\demo-build\DemoBlazorApp\dist wasm-demo
+        Move-Item -Path .\demo-build\DemoBlazorApp\wasm-demo -Destination .\_public
     - name: Deploy to GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1
       with:

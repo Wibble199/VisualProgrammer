@@ -86,7 +86,7 @@ class VisualProgrammer {
     }
 
     public updateLinePositions() {
-        (<SVGPathElement[]>[...this.lineContainer.querySelectorAll('path')]).forEach(path => {
+        (<SVGPathElement[]>Array.from(this.lineContainer.querySelectorAll('path'))).forEach(path => {
             if (path.dataset.lineDestId != null && path.dataset.lineDestId != "") {
                 let sourceEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineSourceId}"] [data-node-link-role="source"][data-node-link-name="${path.dataset.lineSourceName}"]`);
                 let destEl = this.element.querySelector(`[data-visual-node-id="${path.dataset.lineDestId}"] [data-node-link-role="destination"]`);

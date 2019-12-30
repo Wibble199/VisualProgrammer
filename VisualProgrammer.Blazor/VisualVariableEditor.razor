@@ -19,7 +19,7 @@
                     <td>@varDef.Key</td>
                     <td>@varDef.Value.type.Name</td>
                     <td>@(varDef.Value.@default.ToString())</td>
-                    <td><button @onclick="e => Context.RemoveVariable(varDef.Key)">&times;</button></td>
+                    <td><button @onclick="e => RemoveVariable(varDef.Key)">&times;</button></td>
                 </tr>
             }
         </tbody>
@@ -43,7 +43,8 @@
 </div>
 
 @code {
-    [CascadingParameter] public VisualProgram Context { get; set; }
+    [CascadingParameter] VisualProgram Context { get; set; }
+    [CascadingParameter] VisualProgramEditor Editor { get; set; }
 
     string NewVariableName { get; set; } = "";
     object NewVariableDefault { get; set; } = "";
@@ -65,7 +66,18 @@
     /// Creates a new variable in the program with parameters set by the user in the UI.
     /// </summary>
     void CreateVariable() {
-        if (!string.IsNullOrWhiteSpace(NewVariableName) && NewVariableType != null)
+        if (!string.IsNullOrWhiteSpace(NewVariableName) && NewVariableType != null) {
             Context.CreateVariable(NewVariableName, NewVariableType, NewVariableDefault);
+            NewVariableName = "";
+            Editor.StateChanged();
+        }
+    }
+
+    /// <summary>
+    /// Removes the specified variable from the program.
+    /// </summary>
+    void RemoveVariable(string name) {
+        Context.RemoveVariable(name);
+        Editor.StateChanged();
     }
 }

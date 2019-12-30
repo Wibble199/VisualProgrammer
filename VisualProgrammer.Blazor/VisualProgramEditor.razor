@@ -2,6 +2,7 @@
 @inject IJSRuntime JsRuntime
 
 <div class="vp--program-presenter" @ref="progRootEl">
+    <CascadingValue Value="this">
     <CascadingValue Value="Program" TValue="VisualProgram">
 
         @* Canvas holds all visual elements (nodes and lines) *@
@@ -37,6 +38,7 @@
 
         @* Variable definition list *@
         <VisualVariableEditor />
+    </CascadingValue>
     </CascadingValue>
 </div>
 
@@ -116,6 +118,9 @@
             Program.RemoveNode(id);
         this.StateHasChanged();
     }
+
+    /// <summary>Allows invoking <see cref="ComponentBase.StateHasChanged"/> externally to the editor.</summary>
+    public void StateChanged() => StateHasChanged();
 
     /// <summary>
     /// A POCO representing the data that is required to be able to uniqely identify a node connector.

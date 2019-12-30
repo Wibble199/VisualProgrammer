@@ -10,9 +10,12 @@ class VisualProgrammer {
             let closestNode = e.target.closest('.vp--visual-node');
             // If the user clicks down on the part of the visual node marked as the dragger, we want to start moving that node.
             if (e.target.classList.contains('vp--node-dragger')) {
-                // No longer doing e.preventDefault() here, since we want it to bubble up to be cause by the handler in VisualProgramEditor.razor so the node can be selected
-                let offset = VisualProgrammer.getMousePositionRelativeTo(e, e.target.closest('.vp--visual-node'));
-                this.nodeDragData = { element: e.target.closest('.vp--visual-node'), offset };
+                this.doNodeSelection(closestNode.dataset.visualNodeId, e.ctrlKey || e.shiftKey);
+                this.nodeDragData = [];
+                for (let nodeId of this.selectedNodes) {
+                    let node = document.querySelector(`[data-visual-node-id="${nodeId}"]`);
+                    this.nodeDragData.push({ element: node, offset: VisualProgrammer.getMousePositionRelativeTo(e, node) });
+                }
                 // If the user clicked down on a node link part of a node
             }
             else if (e.target.classList.contains('vp--node-link')) {
@@ -27,12 +30,7 @@ class VisualProgrammer {
                 // Otherwise, if the mouse went down on any element inside a visual node (including inputs etc., but not the dragger or the node links)
             }
             else if (closestNode != null) {
-                if (e.ctrlKey || e.shiftKey)
-                    this.setNodeSelected(closestNode.dataset.visualNodeId); // If ctrl or shift, toggle this node to to selection
-                else {
-                    this.clearSelection(); // Otherwise, only select this node
-                    this.setNodeSelected(closestNode.dataset.visualNodeId, true);
-                }
+                this.doNodeSelection(closestNode.dataset.visualNodeId, e.ctrlKey || e.shiftKey);
                 // Otherwise if the mouse went down anywhere else on the canvas
             }
             else if (e.target == this.canvasContainer) {
@@ -44,10 +42,12 @@ class VisualProgrammer {
             // This is added to the document rather than the using the pointer capture method (as with the device-preview script) because
             // the pointerup event needs to capture the element (connector) which the user's mouse was over at release. This is ALWAYS the
             // element that has capture if the capture has been sent.
-            if (this.nodeDragData != null && this.nodeDragData.element != null) {
+            if (this.nodeDragData != null) {
                 let r = VisualProgrammer.getMousePositionRelativeTo(e, this.nodeContainer);
-                this.nodeDragData.element.parentElement.style.left = Math.round(r.x - this.nodeDragData.offset.x) + "px";
-                this.nodeDragData.element.parentElement.style.top = Math.round(r.y - this.nodeDragData.offset.y) + "px";
+                for (let { element, offset } of this.nodeDragData) {
+                    element.parentElement.style.left = Math.round(r.x - offset.x) + "px";
+                    element.parentElement.style.top = Math.round(r.y - offset.y) + "px";
+                }
                 this.updateLinePositions();
             }
             else if (this.connectorDragStartData != null) {
@@ -58,7 +58,8 @@ class VisualProgrammer {
         this.onPointerUp = (e) => {
             if (this.nodeDragData != null) {
                 let { x, y } = VisualProgrammer.getMousePositionRelativeTo(e, this.nodeContainer);
-                this.dotNet.invokeMethodAsync("SetPosition", this.nodeDragData.element.dataset.visualNodeId, Math.round(x - this.nodeDragData.offset.x), Math.round(y - this.nodeDragData.offset.y));
+                for (let { element, offset } of this.nodeDragData)
+                    this.dotNet.invokeMethodAsync("SetPosition", element.dataset.visualNodeId, Math.round(x - offset.x), Math.round(y - offset.y));
             }
             else if (this.connectorDragStartData != null && e.target instanceof HTMLElement && e.target.classList.contains('vp--node-link')) {
                 this.dotNet.invokeMethodAsync("SetLink", this.connectorDragStartData, this.getDragDataFromNode(e.target));
@@ -102,9 +103,12 @@ class VisualProgrammer {
         var _a;
         let vp = element.__visualProgrammer;
         // We need to wait for an afterRender from Blazor, otherwise the element won't exist yet.
-        (_a = vp) === null || _a === void 0 ? void 0 : _a.awaitRender().then(() => vp.nodeDragData = {
-            element: vp.element.querySelector(`[data-visual-node-id="${id}"]`),
-            offset: { x: 10, y: 10 }
+        (_a = vp) === null || _a === void 0 ? void 0 : _a.awaitRender().then(() => {
+            vp.doNodeSelection(id, false);
+            vp.nodeDragData = [{
+                    element: vp.element.querySelector(`[data-visual-node-id="${id}"]`),
+                    offset: { x: 10, y: 10 }
+                }];
         });
     }
     drawPathFrom(path, p1, p2, isVert) {
@@ -126,6 +130,14 @@ class VisualProgrammer {
         newStatus = (newStatus !== null && newStatus !== void 0 ? newStatus : !this.selectedNodes.has(id));
         this.selectedNodes[newStatus ? "add" : "delete"](id);
         document.querySelector(`[data-visual-node-id="${id}"]`).closest('.vp--visual-node-container').classList[newStatus ? "add" : "remove"]('vp--selected');
+    }
+    doNodeSelection(id, ctrlOrShift) {
+        if (ctrlOrShift)
+            this.setNodeSelected(id); // If ctrl or shift, toggle this node to to selection
+        else {
+            this.clearSelection(); // Otherwise, only select this node
+            this.setNodeSelected(id, true);
+        }
     }
     clearSelection() {
         this.selectedNodes.clear();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using VisualProgrammer.Core.Compilation;
 using VisualProgrammer.Core.Utils;
 
@@ -75,6 +76,11 @@ namespace VisualProgrammer.Core {
         /// The current variable storage. The dictionary's key is the name of the variable and the dictionary value is the current value of that variable.
         /// </summary>
         internal Dictionary<string, object?> VariableValues { get; private set; } = new Dictionary<string, object?>();
+
+		/// <summary>
+		/// A parameter that will be the first parameter of all compiled functions which provides them access to their instance context (e.g. allows for accessing variable store).
+		/// </summary>
+		internal ParameterExpression compiledInstanceParameter = Expression.Parameter(typeof(CompiledInstanceBase), "context");
 
         /// <summary>
         /// Resets all the variables currently stored to their default values.

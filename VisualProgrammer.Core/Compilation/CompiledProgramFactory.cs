@@ -7,6 +7,15 @@ using static System.Reflection.Emit.OpCodes;
 
 namespace VisualProgrammer.Core.Compilation {
 
+	/// <summary>
+	/// A factory class that is produced as the result of the compilation of a <see cref="VisualProgram"/>.
+	/// This can be used to create self-containted instances of the program.<para/>
+	/// A type parameter can be provided which should be an interface which will be implemented by the resulting instance of the program.
+	/// Any methods defined on the interface will map to a function with the same name as it's key. Any properties on the program will
+	/// map to variables of the same name. Note that any variables not mapped to an interface's property will be unavailable for reading/writing
+	/// externally, however any functions in the VisualProgram that are not mapped to an interface method are.
+	/// </summary>
+	/// <typeparam name="TImplements">An interface type that is implemented by the program instances created by this factory.</typeparam>
 	public class CompiledProgramFactory<TImplements> where TImplements : class {
 
 		// Builders
@@ -38,19 +47,24 @@ namespace VisualProgrammer.Core.Compilation {
 			typeBuilder.AddInterfaceImplementation(typeof(TImplements));
 
 			// Generate constructor
-			var ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis, new[] { typeof(Dictionary<string, Delegate>) });
+			var ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis, new[] { typeof(Dictionary<string, Delegate>), typeof(Dictionary<string, (Type, object)>) });
 			var ctorIl = ctorBuilder.GetILGenerator();
 			ctorIl.Emit(Ldarg_0);
 			ctorIl.Emit(Ldarg_1);
+			ctorIl.Emit(Ldarg_2);
 			ctorIl.Emit(Call, cibCtor);
 			ctorIl.Emit(Ret);
 
 			// For each defined method on the interface, generate the IL to invoke it.
 			foreach (var method in typeof(TImplements).GetMethods().Where(m => m.ReturnType == typeof(void))) {
-				var methodBuilder = typeBuilder.DefineMethod(method.Name, MethodAttributes.Public | MethodAttributes.Virtual);
-				GenerateDynamicTypeMethod(methodBuilder.GetILGenerator(), method.Name, method.GetParameters().Length);
+				var @params = method.GetParameters().Select(p => p.ParameterType).ToArray();
+				var methodBuilder = typeBuilder.DefineMethod(method.Name, MethodAttributes.Public | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(void), @params);
+				GenerateDynamicTypeMethod(methodBuilder.GetILGenerator(), method.Name, @params);
 				typeBuilder.DefineMethodOverride(methodBuilder, method); // Indicate this method overrides the one on the interface
 			}
+
+			// For each defined property on the interface, generate the IL to access it.
+			// TODO
 
 			programType = typeBuilder.CreateType();
 		}
@@ -60,24 +74,24 @@ namespace VisualProgrammer.Core.Compilation {
 		/// </summary>
 		/// <param name="il">The generator that will get the emitted IL.</param>
 		/// <param name="methodName">The method name string that will be passed to <see cref="CompiledInstanceBase.ExecuteFunction(string, object[])"/>.</param>
-		/// <param name="numParams">The number of parameters to be passed to <see cref="CompiledInstanceBase.ExecuteFunction(string, object[])"/>.</param>
-		private void GenerateDynamicTypeMethod(ILGenerator il, string methodName, int numParams) {
+		/// <param name="params">The parameters to be passed to <see cref="CompiledInstanceBase.ExecuteFunction(string, object[])"/>.</param>
+		private void GenerateDynamicTypeMethod(ILGenerator il, string methodName, Type[] @params) {
 			il.Emit(Ldarg_0);
 			il.Emit(Ldstr, methodName);
-			if (numParams == 0)
+			if (@params.Length == 0)
 				// If no arguments, get an empty array (using Array.Empty<object>() ) to pass to "CompiledInstanceBase.ExecuteFunction"
 				il.Emit(Call, arrEmptyObj);
 			else {
 				// Create an object array with numParams elements
-				il.Emit(Ldc_I4, numParams);
+				il.Emit(Ldc_I4, @params.Length);
 				il.Emit(Newarr, typeof(object));
 
 				// Load each parameter from the method into the array
-				for (var i = 0; i < numParams; i++) {
+				for (var i = 0; i < @params.Length; i++) {
 					il.Emit(Dup);
 					il.Emit(Ldc_I4, i);
 					il.Emit(Ldarg, i + 1);
-					il.Emit(Box);
+					il.Emit(Box, @params[i]);
 					il.Emit(Stelem_Ref);
 				}
 			}
@@ -91,6 +105,6 @@ namespace VisualProgrammer.Core.Compilation {
 		/// Creates a new instance of the target program, with its own set of variables.<para/>
 		/// Note that the returned type also inherits <see cref="CompiledInstanceBase"/> (and, by extension, <see cref="System.Dynamic.DynamicObject"/>).
 		/// </summary>
-		public TImplements CreateProgram() => (TImplements)Activator.CreateInstance(programType, functions);
+		public TImplements CreateProgram() => (TImplements)Activator.CreateInstance(programType, functions, varDefs);
 	}
 }

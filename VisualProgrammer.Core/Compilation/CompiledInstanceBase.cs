@@ -12,10 +12,21 @@ namespace VisualProgrammer.Core.Compilation {
 
 		// The delegates for each of the compiled functions
 		private readonly Dictionary<string, Delegate> functions;
+		private readonly Dictionary<string, (Type type, object @default)> variableDefinitions;
+		private Dictionary<string, object> variableValues;
 
-		protected CompiledInstanceBase(Dictionary<string, Delegate> functions) {
+#pragma warning disable CS8618 // Disable warning saying that variableValues is unset, because the compiler doesn't realise it's set during the ResetVariables() call.
+		protected CompiledInstanceBase(Dictionary<string, Delegate> functions, Dictionary<string, (Type type, object @default)> variableDefinitions) {
 			this.functions = new Dictionary<string, Delegate>(functions ?? new Dictionary<string, Delegate>(), StringComparer.InvariantCultureIgnoreCase);
+			this.variableDefinitions = new Dictionary<string, (Type type, object @default)>(variableDefinitions ?? new Dictionary<string, (Type type, object @default)>(), StringComparer.InvariantCultureIgnoreCase);
+			ResetVariables();
 		}
+#pragma warning restore CS8618
+
+		/// <summary>
+		/// Resets all variables to their default values as defined by the given variable definitions dictionary.
+		/// </summary>
+		public void ResetVariables() => variableValues = variableDefinitions.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.@default);
 
 		/// <summary>Invokes the target delegate method with the given arguments.</summary>
 		/// <param name="name">The name of the function to execute</param>
@@ -24,7 +35,8 @@ namespace VisualProgrammer.Core.Compilation {
 		protected internal bool ExecuteFunction(string name, object[] args) {
 			if (!functions.TryGetValue(name, out var @delegate))
 				return false;
-			@delegate.DynamicInvoke(args);
+			// TODO: Optimise this. Ideally without needing to allocate arrays, rely on a dynamic invokation
+			@delegate.DynamicInvoke(new object[] { this }.Concat(args).ToArray());
 			return true;
 		}
 

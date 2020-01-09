@@ -1,15 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 
 namespace VisualProgrammer.Core {
 
+	/// <summary>
+	/// Providers methods that create expressions relating to reading and writing variables.
+	/// </summary>
     internal static class VariableAccessorFactory {
 
-        private static IndexExpression GetMemberExpressionFor(VisualProgram context, IVariableReference variable) =>
+		/// <summary>
+		/// Creates a property accessing expression that points to the desired variable with the 
+		/// </summary>
+		/// <param name="context">The program context whose variable dictionary will be used.</param>
+		/// <param name="variable">A reference to the desired variable.</param>
+		private static IndexExpression GetMemberExpressionFor(VisualProgram context, IVariableReference variable) =>
             Property(
-                Constant(context.VariableValues, typeof(Dictionary<string, object>)),
+                PropertyOrField(
+					context.compiledInstanceParameter,
+					"variableValues"
+				),
                 "Item",
                 Constant(variable.Name, typeof(string))
             );

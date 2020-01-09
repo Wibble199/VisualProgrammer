@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
+using VisualProgrammer.Core.Compilation;
 using VisualProgrammer.Core.Utils;
 
 namespace VisualProgrammer.Core {
@@ -149,22 +149,18 @@ namespace VisualProgrammer.Core {
         #endregion
 
         /// <summary>
-        /// Creates a dictionary containing the KEY of the visual entries (not their names) and a compiled delegate that performs the actions specified by the user.
+        /// Compiles the VisualProgram into a compiled program factory, which can then be used to create independent instances of the program.<para/>
+		/// The program instances generated from this factory will attempt to implement the given interface.
         /// </summary>
-        /// <param name="includeUnset">Whether to generated delegates for the entries that have not been added by the program by the user. In this case, a delegate
-        /// that performs no action is generated. If this is false, unset entries will not be present in the returned dictionary.</param>
-        public Dictionary<string, Delegate> Compile(bool includeUnset = false) {
-            var presentEntries = Nodes.Values.OfType<VisualEntry>().ToDictionary(e => e.VisualEntryId, e => e);
-            return includeUnset
-                ? EntryDefinitions.ToDictionary(
-                    e => e.Key,
-                    e => (presentEntries.TryGetValue(e.Key, out var ve) ? ve : new VisualEntry(e.Key)).CreateLambda(this).Compile()
-                )
-                : presentEntries.ToDictionary(
-                    e => e.Key,
-                    e => e.Value.CreateLambda(this).Compile()
-                );
-        }
+        public CompiledProgramFactory<TImplements> Compile<TImplements>() where TImplements : class => new CompiledProgramFactory<TImplements>(
+			Nodes.Values.OfType<VisualEntry>().ToDictionary(e => e.VisualEntryId, e => e.CreateLambda(this).Compile()),
+			variableDefinitions!
+		);
+
+		/// <summary>
+		/// Compiles the VisualProgram into a compiled program factory, which can then be used to create independent instances of the program.
+		/// </summary>
+		public CompiledProgramFactory<IAnonymousProgram> Compile() => Compile<IAnonymousProgram>();
     }
 
 

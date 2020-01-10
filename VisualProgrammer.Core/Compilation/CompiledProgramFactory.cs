@@ -12,8 +12,8 @@ namespace VisualProgrammer.Core.Compilation {
 	/// This can be used to create self-containted instances of the program.<para/>
 	/// A type parameter can be provided which should be an interface which will be implemented by the resulting instance of the program.
 	/// Any methods defined on the interface will map to a function with the same name as it's key. Any properties on the program will
-	/// map to variables of the same name. Note that any variables not mapped to an interface's property will be unavailable for reading/writing
-	/// externally, however any functions in the VisualProgram that are not mapped to an interface method are.
+	/// map to variables of the same name. Note that any variables not mapped to an interface's property will only available for reading/writing
+	/// via the <see cref="CompiledInstanceBase.Variables"/> property, however all functions in the VisualProgram that are available on the root program instance.
 	/// </summary>
 	/// <typeparam name="TImplements">An interface type that is implemented by the program instances created by this factory.</typeparam>
 	public class CompiledProgramFactory<TImplements> where TImplements : class {
@@ -26,6 +26,8 @@ namespace VisualProgrammer.Core.Compilation {
 		private static readonly ConstructorInfo cibCtor = typeof(CompiledInstanceBase).GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)[0];
 		private static readonly MethodInfo cibInvoke = typeof(CompiledInstanceBase).GetMethod(nameof(CompiledInstanceBase.ExecuteFunction), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 		private static readonly MethodInfo arrEmptyObj = typeof(Array).GetMethod("Empty").MakeGenericMethod(typeof(object));
+		private static readonly MethodInfo getVariable = typeof(CompiledInstanceBase).GetMethod(nameof(CompiledInstanceBase.GetVariable), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+		private static readonly MethodInfo setVariable = typeof(CompiledInstanceBase).GetMethod(nameof(CompiledInstanceBase.SetVariable), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
 
 		// Dynamic type that is generated from the functions passed to the CompiledProgram ctor.
@@ -56,7 +58,7 @@ namespace VisualProgrammer.Core.Compilation {
 			ctorIl.Emit(Ret);
 
 			// For each defined method on the interface, generate the IL to invoke it.
-			foreach (var method in typeof(TImplements).GetMethods().Where(m => m.ReturnType == typeof(void))) {
+			foreach (var method in typeof(TImplements).GetMethods().Where(m => m.ReturnType == typeof(void) && !m.IsSpecialName)) {
 				var @params = method.GetParameters().Select(p => p.ParameterType).ToArray();
 				var methodBuilder = typeBuilder.DefineMethod(method.Name, MethodAttributes.Public | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(void), @params);
 				GenerateDynamicTypeMethod(methodBuilder.GetILGenerator(), method.Name, @params);
@@ -64,7 +66,8 @@ namespace VisualProgrammer.Core.Compilation {
 			}
 
 			// For each defined property on the interface, generate the IL to access it.
-			// TODO
+			foreach (var prop in typeof(TImplements).GetProperties())
+				GenerateDynamicTypeProperty(typeBuilder, prop);
 
 			programType = typeBuilder.CreateType();
 		}
@@ -98,6 +101,38 @@ namespace VisualProgrammer.Core.Compilation {
 			il.Emit(Call, cibInvoke);
 			il.Emit(Pop);
 			il.Emit(Ret);
+		}
+
+		/// <summary>
+		/// Creates a property on the target type builder that implements the given property info (from an interface).
+		/// </summary>
+		/// <param name="typeBuilder">The type builder that the property will be added to.</param>
+		/// <param name="prop">The property definition from the base interface that will be implemented.</param>
+		private void GenerateDynamicTypeProperty(TypeBuilder typeBuilder, PropertyInfo prop) {
+			var propBuilder = typeBuilder.DefineProperty(prop.Name, PropertyAttributes.None, prop.PropertyType, Type.EmptyTypes);
+			if (prop.CanRead) {
+				var getBuilder = typeBuilder.DefineMethod($"get_{prop.Name}", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName, prop.PropertyType, Type.EmptyTypes);
+				var il = getBuilder.GetILGenerator();
+				il.Emit(Ldarg_0);
+				il.Emit(Ldstr, prop.Name);
+				il.Emit(Call, getVariable);
+				il.Emit(Unbox_Any, prop.PropertyType);
+				il.Emit(Ret);
+				typeBuilder.DefineMethodOverride(getBuilder, prop.GetMethod);
+				propBuilder.SetGetMethod(getBuilder);
+			}
+			if (prop.CanWrite) {
+				var setBuilder = typeBuilder.DefineMethod($"set_{prop.Name}", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName, typeof(void), new[] { prop.PropertyType });
+				var il = setBuilder.GetILGenerator();
+				il.Emit(Ldarg_0);
+				il.Emit(Ldstr, prop.Name);
+				il.Emit(Ldarg_1);
+				il.Emit(Box, prop.PropertyType);
+				il.Emit(Call, setVariable);
+				il.Emit(Ret);
+				typeBuilder.DefineMethodOverride(setBuilder, prop.SetMethod);
+				propBuilder.SetSetMethod(setBuilder);
+			}
 		}
 
 

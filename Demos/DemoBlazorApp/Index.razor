@@ -31,37 +31,15 @@
     };
 
     void Execute() {
-        // Compiles all the entries as delegates and adds them to a dictionary with their entryId (NOT THEIR NAME) as the key
-        var delegates = program.Compile();
-
-        program.ResetVariables();
-
-        // Since our entry has 1 parameter (an int), it is an Action<int>
-        var testEntry = (Action<double>)delegates[testEntryId];
-
-        testEntry.Invoke(5d);
+        var programFactory = program.Compile<IDemoProgram>();
+        var inst = programFactory.CreateProgram();
+        inst.TestEntry(10d);
+        Console.WriteLine($"Double var = {inst.DoubleVar}");
     }
 
-
-
-    // Get a reference to the instance of the Index (so we can access the log method)
-    internal static Index instance;
-    protected override void OnInitialized() => instance = this;
-
-    // Logs a value to the web console
-    public void ConsoleLog(string value) {
-        JsRuntime.InvokeVoidAsync("console.log", value);
-    }
-
-    // Custom node that prints to the web console
-    public class PrintToWebConsole : VisualStatement {
-
-        [VisualNodeProperty] public ExpressionReference<string> Value { get; set; }
-
-        public override Expression CreateExpression(VisualProgram context) => Expression.Call(
-            instance: Expression.Constant(Index.instance),
-            method: Index.instance.GetType().GetMethod(nameof(Index.ConsoleLog)),
-            Value.ResolveExpression(context)
-        );
+    public interface IDemoProgram
+    {
+        void TestEntry(double d);
+        double DoubleVar { get; set; }
     }
 }

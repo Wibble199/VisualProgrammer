@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @inject IJSRuntime JsRuntime
 
 <VisualProgramEditor Program="program" />
@@ -35,9 +35,10 @@
         var inst = programFactory.CreateProgram();
         inst.TestEntry(10d);
         Console.WriteLine($"Double var = {inst.DoubleVar}");
+        Console.WriteLine($"Double var other = {inst.GetVariable("doubleVar")}");
     }
 
-    public interface IDemoProgram
+    public interface IDemoProgram : VisualProgrammer.Core.Compilation.ICompiledInstanceBase
     {
         void TestEntry(double d);
         double DoubleVar { get; set; }

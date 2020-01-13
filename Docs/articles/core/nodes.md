@@ -5,11 +5,11 @@ Nodes are the "blocks" that users can edit in the program. Nodes can be linked t
 There are a few different types of nodes:
 
 ## Entry
-Entry nodes are the main starting point of the program. These are [defined](entry-definition.md)] in the VisualProgram before use. The user cannot create custom entry nodes, though they can add a single instance of any pre-defined entry.
+Entry nodes are the main starting point of the program. These are [defined](entry-definition.md) in the VisualProgram before use. The user cannot create custom entry nodes, though they can add a single instance of any pre-defined entry.
 
 Each entry has a single "next" statement link which can be joined to any other statement node.
 
-The entries can also take parameters. If these parameters are to be used in the code, they must then be mapped onto a [program variable](variables.md) first. If the parameter is not mapped, it has no effect on the program.
+The entries can also take parameters. If these parameters are to be used in the visual code, they must then be mapped onto a [program variable](variables.md) first. If the parameter is not mapped, it has no effect on the program.
 
 When the VisualProgram is compiled, each entry is compiled into a `System.Action` using Linq expressions. See [compilation](compilation.md) for more details.
 

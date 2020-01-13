@@ -9,6 +9,9 @@ using VisualProgrammer.Core.Utils;
 
 namespace VisualProgrammer.Core {
 
+	/// <summary>
+	/// The class that is responsible for storing and editing program data which can be compiled.
+	/// </summary>
     public sealed class VisualProgram {
 
 		#region Nodes
@@ -60,7 +63,7 @@ namespace VisualProgrammer.Core {
         /// <summary>
         /// Contains a list of available entry definitions in this program. Any entry defined in here will be able to be added to the program
         /// and will be available for the user to use.<para/>
-        /// Note that entries are serialized by their IDs, so the keys of the dictionary should generally be kept the constant between updates.</summary>
+        /// Note that entries are serialized by their IDs, so the keys of the dictionary should generally be kept constant between updates.</summary>
         /// <remarks>This should not be serialized, but set directly after/during serialization or the constructor.</remarks>
         public Dictionary<string, EntryDefinition> EntryDefinitions { get; set; } = new Dictionary<string, EntryDefinition>();
         #endregion
@@ -87,6 +90,11 @@ namespace VisualProgrammer.Core {
         /// </summary>
         public void ResetVariables() => VariableValues = VariableDefinitions.ToDictionary(v => v.Key, v => v.Value.@default);
 
+		/// <summary>
+		/// Attempts to define a new variable on this program.
+		/// </summary>
+		/// <exception cref="ArgumentException">If the new variable's name is invalid or if the <paramref name="default"/> value cannot be assigned to type <paramref name="type"/>.</exception>
+		/// <exception cref="ArgumentNullException">If the new variable's type is <c>null</c>.</exception>
 		public void CreateVariable(string name, Type type, object? @default) {
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentException("Name must not be null, empty or whitespace.", nameof(name));
@@ -174,6 +182,9 @@ namespace VisualProgrammer.Core {
     /// Class that defines a single entry point for a VisualProgram.
     /// </summary>
     public sealed class EntryDefinition {
+		/// <summary>
+		/// The user-friendly display name of the definition.
+		/// </summary>
 		public string Name { get; set; } = "";
 
         /// <summary>

@@ -4,8 +4,7 @@ Variables are ways of storing stateful data to allow it to be reused again later
 
 Unlike many real programming languages, VisualProgrammer exclusively uses per-VisualProgram "global" variables. This means it is not possible to scope a variable to just one VisualEntry.
 
-The variables are defined in a dictionary in the VisualProgram, and then their running values are stored in another dictionary.
-
+When the program is [compiled](compilation.md), these variables are stored inside the program instance. Each variable can be given a default value which it will have when the program is first initialised or when the ResetVariables method is called.
 
 ---
 ### Reasoning for a global variable system

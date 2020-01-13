@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -32,6 +32,7 @@ namespace VisualProgrammer.Core.Compilation {
 		/// <summary>
 		/// Attempts to get the value of the variable with the given name.
 		/// </summary>
+		/// <param name="key">The name/key of the variable. Case-insensitive.</param>
 		/// <exception cref="ArgumentException">When a variable with the target name has not been defined.</exception>
 		public object GetVariable(string key) {
 			if (!variableDefinitions.ContainsKey(key))
@@ -42,6 +43,7 @@ namespace VisualProgrammer.Core.Compilation {
 		/// <summary>
 		/// Attempts to set the value of the variable with the given name to the given value.
 		/// </summary>
+		/// <param name="key">The name/key of the variable. Case-insensitive.</param>
 		/// <exception cref="ArgumentException">When a variable with the target name has not been defined or the given value cannot be assigned to the type defined by the target variable.</exception>
 		public void SetVariable(string key, object value) {
 			if (!variableDefinitions.TryGetValue(key, out var def))
@@ -73,7 +75,7 @@ namespace VisualProgrammer.Core.Compilation {
 
 	/// <summary>
 	/// An interface that is implemented by the <see cref="CompiledInstanceBase"/>.
-	/// Custom program interfaces can extend this interface to provide stict-typing for getting or setting non-property-bound variables.
+	/// Custom program interfaces can extend this interface to provide strict-typing for getting or setting non-property-bound variables.
 	/// </summary>
 	public interface ICompiledInstanceBase {
 		/// <summary>

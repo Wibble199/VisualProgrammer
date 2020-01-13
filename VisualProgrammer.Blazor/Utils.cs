@@ -14,14 +14,14 @@ namespace VisualProgrammer.Blazor {
         /// </summary>
         public static string GetNameWithoutGeneric(this Type type) => type.IsGenericType ? type.Name.Substring(0, type.Name.IndexOf('`')) : type.Name;
 
-        /// <summary>
-        /// Adds or removes an item from the collection depending on if it already exists in the collection or not.
-        /// </summary>
-        public static void Toggle<T>(this ICollection<T> collection, T value) {
-            if (collection.Contains(value))
-                collection.Remove(value);
-            else
-                collection.Add(value);
-        }
+		/// <summary>
+		/// Adds or removes an item from the collection depending on if it already exists in the collection or not.
+		/// </summary>
+		public static void Toggle<T>(this ICollection<T> collection, T value) {
+			if (collection.Contains(value))
+				collection.Remove(value);
+			else
+				collection.Add(value);
+		}
     }
 }

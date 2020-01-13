@@ -3,5 +3,9 @@
 - name: Nodes
   href: core/nodes.md
 - name: Variables
-  href: core/variables
+  href: core/variables.md
+- name: Entry Definition
+  href: core/entry-definition.md
+- name: Compilation
+  href: core/compilation.md
   

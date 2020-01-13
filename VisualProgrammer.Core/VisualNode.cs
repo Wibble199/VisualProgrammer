@@ -64,8 +64,8 @@ namespace VisualProgrammer.Core {
         /// Attempts to link the given target <see cref="VisualNode"/> to the target property of this node.<para/>
         /// Will perform validation checks to ensure that the nodes can be linked, such as checking for expression/statement and expression type.
         /// </summary>
-        /// <exception cref="ArgumentException" />
-        /// <exception cref="VisualNodeLinkException" />
+        /// <exception cref="ArgumentException">If the target property could not be found on this node.</exception>
+        /// <exception cref="VisualNodeLinkException">When attempting to create a link that would be invalid, e.g. causing a circular reference, mismatching expression/statement types.</exception>
         public void Link(VisualProgram context, string targetProperty, VisualNode node) {
             // First, check the specified property exists on this node
             if (!Properties.TryGetValue(targetProperty, out var prop))
@@ -138,12 +138,11 @@ namespace VisualProgrammer.Core {
 		}
 
         /// <summary>
-        /// Performs a breadth-first iterative validation that validate the given link would not make a circular reference loop. If it does, throws a <see cref="VisualNodeLinkException"/>.
+        /// Performs a breadth-first validation to check the given link would not make a circular reference loop. If it does, throws a <see cref="VisualNodeLinkException"/>.
         /// </summary>
         /// <typeparam name="TNode">The type of node to check (e.g. <see cref="IVisualExpression"/> or <see cref="VisualStatement"/>)</typeparam>
         /// <param name="context">The running context for this nodes.</param>
         /// <param name="start">The initial node to start the search from.</param>
-        /// <param name="getChildren">A function that gets the child properties to be searched of the node type.</param>
         /// <exception cref="VisualNodeLinkException">When a circular reference is detected.</exception>
         private void ValidateCircular<TNode>(VisualProgram context, TNode start, VisualNodePropertyType type) where TNode : IVisualNode {
             var itemsToCheck = new Queue<TNode>(new[] { start });

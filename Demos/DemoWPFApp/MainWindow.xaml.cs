@@ -29,7 +29,8 @@ namespace DemoWPFApp {
                 Nodes = new Dictionary<Guid, VisualNode> {
                     [Guid.NewGuid()] = new VisualEntry("demoEntry") { FirstStatement = new StatementReference(printGuid), Position = new System.Drawing.Point(250, 0) },
                     [printGuid] = new Print { PrintValue = new ExpressionReference<string>(stringLitGuid), Position = new System.Drawing.Point(250, 100) },
-                    [stringLitGuid] = new Literal<string> { Value = "Hello World!", Position = new System.Drawing.Point(5, 100) }
+                    [stringLitGuid] = new Literal<string> { Value = "Hello World!", Position = new System.Drawing.Point(5, 100) },
+					[Guid.NewGuid()] = new SetVariable<string> { Variable = new VariableReference<string>("SomeString"), Position = new System.Drawing.Point(5, 150) }
                 }
             };
         }

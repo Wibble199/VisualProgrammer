@@ -6,14 +6,14 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using VisualProgrammer.Core;
 
-namespace VisualProgrammer.WPF {
+namespace VisualProgrammer.WPF.PropertyEditor {
 
 	/// <summary>
 	/// A control that generates a list of properties for the given <see cref="IVisualNode"/>.
 	/// </summary>
-	public class PropertiesEditor : ItemsControl {
-		static PropertiesEditor() {
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(PropertiesEditor), new FrameworkPropertyMetadata(typeof(PropertiesEditor)));
+	public class MultiEditor : ItemsControl {
+		static MultiEditor() {
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(MultiEditor), new FrameworkPropertyMetadata(typeof(MultiEditor)));
 		}
 
 		#region Node DependencyProperty
@@ -26,7 +26,7 @@ namespace VisualProgrammer.WPF {
 		}
 
 		public static readonly DependencyProperty NodeProperty =
-			DependencyProperty.Register("Node", typeof(IVisualNode), typeof(PropertiesEditor), new PropertyMetadata(null));
+			DependencyProperty.Register("Node", typeof(IVisualNode), typeof(MultiEditor), new PropertyMetadata(null));
 		#endregion
 	}
 

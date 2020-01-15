@@ -4,16 +4,18 @@
     xmlns:local="clr-namespace:VisualProgrammer.WPF"
 	xmlns:pe="clr-namespace:VisualProgrammer.WPF.PropertyEditor"
     xmlns:if="clr-namespace:VisualProgrammer.WPF.InputField"
+	xmlns:u="clr-namespace:VisualProgrammer.WPF.Util"
     xmlns:vpcore="clr-namespace:VisualProgrammer.Core;assembly=VisualProgrammer.Core">
 
     <pe:NodeToPropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, NodeToPropertyListConverter}" />
-    
-    <Style TargetType="{x:Type local:VisualProgramEditor}">
+	<u:TypeIsConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}" />
+
+	<Style TargetType="{x:Type local:VisualProgramEditor}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VisualProgramEditor}">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <local:VisualNodeCanvas Nodes="{Binding Program.Nodes, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualProgramEditor}}" />
+                        <local:VisualNodeCanvas Program="{Binding Program, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualProgramEditor}}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -21,16 +23,12 @@
     </Style>
 
     <Style TargetType="{x:Type local:VisualNodeCanvas}" BasedOn="{StaticResource {x:Type ItemsControl}}">
-        <Setter Property="ItemsSource" Value="{Binding Nodes, RelativeSource={RelativeSource Mode=Self}}" />
+        <Setter Property="ItemsSource" Value="{Binding Program.Nodes, RelativeSource={RelativeSource Mode=Self}}" />
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <!--<local:VisualNodePresenter Node="{Binding Value}" />-->
-                    <StackPanel Orientation="Vertical" Background="LightGray">
-                        <TextBlock Text="{Binding Key}" />
-                        <pe:MultiEditor Node="{Binding Value}" />
-                    </StackPanel>
-                </DataTemplate>
+					<local:VisualNodePresenter />
+				</DataTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="ItemsPanel">
@@ -55,9 +53,25 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentControl Content="{Binding Node, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualNodePresenter}}"
-                            ContentTemplate="{Binding NodeTemplate, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualNodePresenter}}" />
-                    </Border>
+						<Grid>
+							<StackPanel Orientation="Vertical" Background="LightGray">
+								<TextBlock Text="{Binding Key}" />
+								<pe:MultiEditor Node="{Binding .}" />
+							</StackPanel>
+							<Ellipse x:Name="PART_ExpressionReturnConnector" Fill="Green" Width="10" Height="10" VerticalAlignment="Top" HorizontalAlignment="Center">
+								<Ellipse.Style>
+									<Style TargetType="{x:Type Ellipse}">
+										<Setter Property="Visibility" Value="Collapsed" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}}, ConverterParameter={x:Type vpcore:IVisualExpression}}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Ellipse.Style>
+							</Ellipse>
+						</Grid>
+					</Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -79,7 +93,7 @@
 			<Setter.Value>
 				<ItemContainerTemplate>
 					<StackPanel>
-						<TextBlock Text="{Binding Path=Def.DisplayName}" HorizontalAlignment="Left" />
+						<TextBlock Text="{Binding Path=Definition.DisplayName}" HorizontalAlignment="Left" />
 						<pe:SingleEditor />
 					</StackPanel>
 				</ItemContainerTemplate>
@@ -92,7 +106,7 @@
 		<Style.Triggers>
 			<!-- Template for Expression references -->
 			<!-- Is there a cleaner way of doing this? Probably, but idk how -->
-			<DataTrigger Binding="{Binding Path=Def.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Expression}">
+			<DataTrigger Binding="{Binding Path=Definition.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Expression}">
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate>
@@ -103,7 +117,7 @@
 			</DataTrigger>
 
 			<!-- Template for Variable references -->
-			<DataTrigger Binding="{Binding Path=Def.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Variable}">
+			<DataTrigger Binding="{Binding Path=Definition.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Variable}">
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate>
@@ -114,7 +128,7 @@
 			</DataTrigger>
 
 			<!-- Template for raw values -->
-			<DataTrigger Binding="{Binding Path=Def.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Value}">
+			<DataTrigger Binding="{Binding Path=Definition.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Value}">
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate>
@@ -130,7 +144,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type pe:ValueEditor}">
-					<if:InputFieldDynamic Value="{Binding Path=Proxy.Value, Mode=TwoWay}" />
+					<if:InputFieldDynamic Value="{Binding Value, Mode=TwoWay}" />
 				</ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -141,7 +155,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type pe:ExpressionEditor}">
 					<Grid>
-						<Ellipse HorizontalAlignment="Left" Width="10" Height="10" Fill="Red" />
+						<Ellipse x:Name="PART_ExpressionConnector" HorizontalAlignment="Left" Width="10" Height="10" Fill="Red" />
 					</Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -154,7 +168,7 @@
                 <ControlTemplate TargetType="{x:Type pe:VariableEditor}">
 					<TextBlock>
 						<Run Text="Expected type:" FontWeight="Bold" />
-						<Run Text="{Binding Path=Def.PropertyDataType.Name, Mode=OneWay}" />
+						<Run Text="{Binding Path=Definition.PropertyDataType.Name, Mode=OneWay}" />
 					</TextBlock>
 				</ControlTemplate>
             </Setter.Value>

@@ -1,0 +1,128 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:VisualProgrammer.WPF"
+    xmlns:if="clr-namespace:VisualProgrammer.WPF.InputField"
+    xmlns:vpcore="clr-namespace:VisualProgrammer.Core;assembly=VisualProgrammer.Core">
+
+    <local:NodeToPropertyListConverter x:Key="{ComponentResourceKey {x:Type local:PropertiesEditor}, NodeToPropertyListConverter}" />
+    
+    <Style TargetType="{x:Type local:VisualProgramEditor}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VisualProgramEditor}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <local:VisualNodeCanvas Nodes="{Binding Program.Nodes, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualProgramEditor}}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:VisualNodeCanvas}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+        <Setter Property="ItemsSource" Value="{Binding Nodes, RelativeSource={RelativeSource Mode=Self}}" />
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <!--<local:VisualNodePresenter Node="{Binding Value}" />-->
+                    <StackPanel Orientation="Vertical" Background="LightGray">
+                        <TextBlock Text="{Binding Key}" />
+                        <local:PropertiesEditor Node="{Binding Value}" />
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style>
+                    <Setter Property="Canvas.Left" Value="{Binding Path=Value.Position.X, Mode=OneWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Value.Position.Y, Mode=OneWay}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:VisualNodePresenter}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentControl Content="{Binding Node, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualNodePresenter}}"
+                            ContentTemplate="{Binding NodeTemplate, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualNodePresenter}}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type if:InputFieldDynamic}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type if:InputFieldDynamic}">
+					<TextBox Text="{Binding Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type if:InputFieldDynamic}}}" />
+				</ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+	<Style TargetType="{x:Type local:PropertiesEditor}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+		<Setter Property="ItemsSource" Value="{Binding Path=Node, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource {ComponentResourceKey {x:Type local:PropertiesEditor}, NodeToPropertyListConverter}}}" />
+		<Setter Property="ItemTemplate">
+			<Setter.Value>
+				<ItemContainerTemplate>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Path=Def.DisplayName}" />
+						<local:PropertyEditor />
+					</StackPanel>
+				</ItemContainerTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+
+	<Style TargetType="{x:Type local:PropertyEditor}">
+		<!-- Conditionally choose template based on field type -->
+		<Style.Triggers>
+			<!-- Template for Expression references -->
+			<DataTrigger Binding="{Binding Path=Def.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Expression}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Border Background="Red" Width="10" Height="10" />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+			
+			<!-- Template for Variable references -->
+			<DataTrigger Binding="{Binding Path=Def.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Variable}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Border Background="Blue" Width="10" Height="10" />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+			
+			<!-- Template for raw values -->
+			<DataTrigger Binding="{Binding Path=Def.PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Value}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<Border Background="Green" Width="10" Height="10" />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

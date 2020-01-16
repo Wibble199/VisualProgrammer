@@ -38,7 +38,7 @@ namespace VisualProgrammer.WPF.PropertyEditor {
 	/// </summary>
 	public class NodeToPropertyListConverter : IValueConverter {
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is KeyValuePair<Guid, VisualNode> v
-				? ((IVisualNode)v.Value).GetPropertiesOfTypes(VisualNodePropertyType.Expression, VisualNodePropertyType.Value, VisualNodePropertyType.Variable)
+				? v.Value.GetPropertiesOfType(VisualNodePropertyType.Expression, VisualNodePropertyType.Value, VisualNodePropertyType.Variable)
 					.OrderBy(p => p.Meta.Order)
 					.ThenBy(p => p.DisplayName)
 					.Select(p => new BoundVisualNodePropertyContext(v, p))

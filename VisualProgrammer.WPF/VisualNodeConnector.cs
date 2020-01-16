@@ -72,7 +72,7 @@ namespace VisualProgrammer.WPF {
 		}
 
 		public static readonly DependencyProperty ConnectorFlowProperty =
-			DependencyProperty.Register("ConnectorFlow", typeof(ConnectorFlow), typeof(VisualNodeConnector), new PropertyMetadata(ConnectorFlow.Input));
+			DependencyProperty.Register("ConnectorFlow", typeof(ConnectorFlow), typeof(VisualNodeConnector), new PropertyMetadata(ConnectorFlow.Destination));
 		#endregion
 
 		#region Event Handlers
@@ -98,8 +98,8 @@ namespace VisualProgrammer.WPF {
 			 || ConnectorFlow == other.ConnectorFlow) return;
 
 			// Figure out which of the drag ends is the input/output of the connection
-			var parentData = ConnectorFlow == ConnectorFlow.Input ? this : other;
-			var childData = ConnectorFlow == ConnectorFlow.Output ? this : other;
+			var parentData = ConnectorFlow == ConnectorFlow.Destination ? this : other;
+			var childData = ConnectorFlow == ConnectorFlow.Source ? this : other;
 
 			// Perform the link
 			parentData.Node.Link(programContext, parentData.PropertyName, childData.Node);
@@ -112,10 +112,10 @@ namespace VisualProgrammer.WPF {
 	/// The data flow of a connector, either in or out.
 	/// </summary>
 	public enum ConnectorFlow {
-		/// <summary>This connector represents a connection that expects an incoming parameter value or previous statement reference.</summary>
-		Input,
-
 		/// <summary>This connector represents a connection that expects an outgoing return value or statement flow.</summary>
-		Output
+		Source,
+
+		/// <summary>This connector represents a connection that expects an incoming parameter value or previous statement reference.</summary>
+		Destination
 	}
 }

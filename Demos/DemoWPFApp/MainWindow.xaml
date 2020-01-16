@@ -9,5 +9,6 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <vp:VisualProgramEditor Program="{Binding Program}" />
-    </Grid>
+		<Button Content="Execute" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="4" Margin="8" Click="Button_Click" />
+	</Grid>
 </Window>

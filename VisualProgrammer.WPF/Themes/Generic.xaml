@@ -9,6 +9,7 @@
 
     <pe:NodeToPropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, NodeToPropertyListConverter}" />
 	<u:TypeIsConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}" />
+	<local:VisualNodePropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}" />
 
 	<Style TargetType="{x:Type local:VisualProgramEditor}">
         <Setter Property="Template">
@@ -54,17 +55,39 @@
                 <ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
 						<Grid>
+							<!-- Main node content -->
 							<StackPanel Orientation="Vertical" Background="LightGray">
+								<!-- Title -->
 								<TextBlock Text="{Binding Key}" />
+								
+								<!-- Properties list -->
 								<pe:MultiEditor Node="{Binding .}" />
+								
+								<!-- Output statements -->
+								<ItemsControl ItemsSource="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}}, ConverterParameter={x:Static vpcore:VisualNodePropertyType.Statement}}">
+									<ItemsControl.ItemTemplate>
+										<ItemContainerTemplate>
+											<local:VisualNodeConnector Node="{Binding Path=DataContext.Value, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}" NodeID="{Binding Path=DataContext.Key, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}" PropertyName="{Binding Name, Mode=OneWay}" ConnectorFlow="Destination" HorizontalAlignment="Center" />
+										</ItemContainerTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
 							</StackPanel>
-							<local:VisualNodeConnector Node="{Binding Value, Mode=OneWay}" NodeID="{Binding Key, Mode=OneWay}" ConnectorFlow="Output" VerticalAlignment="Top" HorizontalAlignment="Center">
+
+							<!-- Expression output & statement input connector -->
+							<local:VisualNodeConnector Node="{Binding Value, Mode=OneWay}" NodeID="{Binding Key, Mode=OneWay}" ConnectorFlow="Source" VerticalAlignment="Top">
 								<local:VisualNodeConnector.Style>
 									<Style TargetType="{x:Type local:VisualNodeConnector}">
 										<Setter Property="Visibility" Value="Collapsed" />
 										<Style.Triggers>
+											<!-- For expressions -->
 											<DataTrigger Binding="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}}, ConverterParameter={x:Type vpcore:IVisualExpression}}" Value="True">
 												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="HorizontalAlignment" Value="Right" />
+											</DataTrigger>
+											<!-- For statements -->
+											<DataTrigger Binding="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}}, ConverterParameter={x:Type vpcore:VisualStatement}}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="HorizontalAlignment" Value="Center" />
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
@@ -154,7 +177,7 @@
         <Setter Property="Template">
             <Setter.Value>
 				<ControlTemplate TargetType="{x:Type pe:ExpressionEditor}">
-					<local:VisualNodeConnector Node="{Binding Node, Mode=OneWay}" NodeID="{Binding NodeId, Mode=OneWay}" PropertyName="{Binding Path=Definition.Name, Mode=OneWay}" ConnectorFlow="Input"  HorizontalAlignment="Left" />
+					<local:VisualNodeConnector Node="{Binding Node, Mode=OneWay}" NodeID="{Binding NodeId, Mode=OneWay}" PropertyName="{Binding Path=Definition.Name, Mode=OneWay}" ConnectorFlow="Destination"  HorizontalAlignment="Left" />
 				</ControlTemplate>
             </Setter.Value>
         </Setter>

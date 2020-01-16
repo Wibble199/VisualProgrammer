@@ -29,16 +29,12 @@ namespace VisualProgrammer.WPF {
 
 			// Draw lines between connectors
 			if (Program?.Nodes != null) {
-				// Draw statement links
-				// TODO
-
-				// Draw expression links
 				foreach (var node in Program.Nodes) {
-					foreach (var prop in node.Value.GetPropertiesOfType(VisualNodePropertyType.Expression)) {
+					foreach (var prop in node.Value.GetPropertiesOfType(VisualNodePropertyType.Expression, VisualNodePropertyType.Statement)) {
 						// Check if the property has a reference to an expression, if so, find the connector points
 						if (prop.Getter(node.Value) is INodeReference nr && nr.Id.HasValue) {
-							var start = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.Node == node.Value && c.PropertyName == prop.Name && c.ConnectorFlow == ConnectorFlow.Input);
-							var end = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == nr.Id.Value && c.ConnectorFlow == ConnectorFlow.Output);
+							var start = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == node.Key && c.PropertyName == prop.Name && c.ConnectorFlow == ConnectorFlow.Destination);
+							var end = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == nr.Id.Value && c.ConnectorFlow == ConnectorFlow.Source);
 
 							if (start != null && end != null)
 								drawingContext.DrawLine(

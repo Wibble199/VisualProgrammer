@@ -58,9 +58,9 @@
 								<TextBlock Text="{Binding Key}" />
 								<pe:MultiEditor Node="{Binding .}" />
 							</StackPanel>
-							<Ellipse x:Name="PART_ExpressionReturnConnector" Fill="Green" Width="10" Height="10" VerticalAlignment="Top" HorizontalAlignment="Center">
-								<Ellipse.Style>
-									<Style TargetType="{x:Type Ellipse}">
+							<local:VisualNodeConnector x:Name="PART_ExpressionReturnConnector" Node="{Binding Value, Mode=OneWay}" NodeID="{Binding Key, Mode=OneWay}" ConnectorFlow="Output" VerticalAlignment="Top" HorizontalAlignment="Center">
+								<local:VisualNodeConnector.Style>
+									<Style TargetType="{x:Type local:VisualNodeConnector}">
 										<Setter Property="Visibility" Value="Collapsed" />
 										<Style.Triggers>
 											<DataTrigger Binding="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}}, ConverterParameter={x:Type vpcore:IVisualExpression}}" Value="True">
@@ -68,8 +68,8 @@
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
-								</Ellipse.Style>
-							</Ellipse>
+								</local:VisualNodeConnector.Style>
+							</local:VisualNodeConnector>
 						</Grid>
 					</Border>
                 </ControlTemplate>
@@ -153,11 +153,9 @@
     <Style TargetType="{x:Type pe:ExpressionEditor}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type pe:ExpressionEditor}">
-					<Grid>
-						<Ellipse x:Name="PART_ExpressionConnector" HorizontalAlignment="Left" Width="10" Height="10" Fill="Red" />
-					</Grid>
-                </ControlTemplate>
+				<ControlTemplate TargetType="{x:Type pe:ExpressionEditor}">
+					<local:VisualNodeConnector x:Name="PART_ExpressionConnector" Node="{Binding Node, Mode=OneWay}" NodeID="{Binding NodeId, Mode=OneWay}" PropertyName="{Binding Path=Definition.Name, Mode=OneWay}" ConnectorFlow="Input"  HorizontalAlignment="Left" />
+				</ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
@@ -170,6 +168,16 @@
 						<Run Text="Expected type:" FontWeight="Bold" />
 						<Run Text="{Binding Path=Definition.PropertyDataType.Name, Mode=OneWay}" />
 					</TextBlock>
+				</ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:VisualNodeConnector}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VisualNodeConnector}">
+					<Ellipse Width="10" Height="10" Fill="Red" />
 				</ControlTemplate>
             </Setter.Value>
         </Setter>

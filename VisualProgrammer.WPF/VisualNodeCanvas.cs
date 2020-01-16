@@ -4,27 +4,53 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using VisualProgrammer.Core;
+using VisualProgrammer.WPF.Util;
 
 namespace VisualProgrammer.WPF {
 
     public class VisualNodeCanvas : ItemsControl {
 
 		// Holds data that can uniquely identify the connector that is currently being dragged.
-		private ConnectorData dragData;
+		private VisualNodeConnector dragSource;
 
         static VisualNodeCanvas() {
             // Indicate that we need to use our custom style (which is based off the default ItemsControl style)
             DefaultStyleKeyProperty.OverrideMetadata(typeof(VisualNodeCanvas), new FrameworkPropertyMetadata(typeof(VisualNodeCanvas)));
         }
 
-        protected override void OnRender(DrawingContext drawingContext) {
+		public VisualNodeCanvas() {
+			// For some reason the lines do not appear when the control is first created, even though
+			// a breakpoint on DrawLine is hit before the control appears, so it should be drawing it?
+			// So, as a hacky work around, we can trigger another re-render just after the control has loaded
+			Loaded += (sender, e) => InvalidateVisual();
+		}
+
+		protected override void OnRender(DrawingContext drawingContext) {
             base.OnRender(drawingContext);
 
-            // Draw lines between connectors
-            if (Program?.Nodes != null)
-                // Temporarily testing line drawing method
-                foreach (var temp in Program.Nodes)
-                    drawingContext.DrawLine(new Pen(Brushes.Red, 2d), new Point(temp.Value.Position.X, temp.Value.Position.Y), new Point(0, 0));
+			// Draw lines between connectors
+			if (Program?.Nodes != null) {
+				// Draw statement links
+				// TODO
+
+				// Draw expression links
+				foreach (var node in Program.Nodes) {
+					foreach (var prop in node.Value.GetPropertiesOfType(VisualNodePropertyType.Expression)) {
+						// Check if the property has a reference to an expression, if so, find the connector points
+						if (prop.Getter(node.Value) is INodeReference nr && nr.Id.HasValue) {
+							var start = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.Node == node.Value && c.PropertyName == prop.Name && c.ConnectorFlow == ConnectorFlow.Input);
+							var end = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == nr.Id.Value && c.ConnectorFlow == ConnectorFlow.Output);
+
+							if (start != null && end != null)
+								drawingContext.DrawLine(
+									new Pen(Brushes.Red, 2d),
+									start.TransformToAncestor(this).Transform(new Point()),
+									end.TransformToAncestor(this).Transform(new Point())
+								);
+						}
+					}
+				}
+			}
         }
 
 		internal void StartDrag(Guid nodeId, object p, string v1, bool v2) {
@@ -44,46 +70,23 @@ namespace VisualProgrammer.WPF {
 		/// <summary>
 		/// Indicates to the canvas that a drag operation (originating from a node connector) has begun.
 		/// </summary>
-		/// <param name="dragData">The data of the connector that the drag operation started on.</param>
-		internal void StartDrag(ConnectorData dragData) {
-			this.dragData = dragData;
+		/// <param name="dragSource">The connector that the drag operation started on.</param>
+		internal void StartDrag(VisualNodeConnector dragSource) {
+			this.dragSource = dragSource;
 		}
 
 		/// <summary>
 		/// Indicates to the canvas that a drag operation has finished (terminating on a node connector).
 		/// Creates a link if valid.
 		/// </summary>
-		/// <param name="dropData">The data of the connector that the drop happened on.</param>
-		internal void EndDrag(ConnectorData dropData) {
-			// Check the types match, the `isInput`s do not and the IDs are not the same
-			if (dragData == null
-			 || dragData.nodeId == dropData.nodeId
-			 || dragData.isInput == dropData.isInput
-			 || dragData.type != dropData.type) return;
-
-			// Figure out which of the drag ends is the input/output of the connection
-			var parentData = dragData.isInput ? dragData : dropData;
-			var childData = !dragData.isInput ? dragData : dropData;
-
-			// Perform the link
+		/// <param name="dropSource">The connector that the drop happened on.</param>
+		internal void EndDrag(VisualNodeConnector dropSource) {
 			try {
-				parentData.node.Link(Program, parentData.name, childData.node);
-				InvalidateVisual(); // Indicate that the canvas needs to be redrawn with the new line
+				dragSource?.ConnectTo(Program, dropSource);
+
 			} catch (VisualNodeLinkException ex) {
 				// TODO: Add user feedback
 			}
 		}
-	}
-
-
-	/// <summary>
-	/// Simple object that stores data able to indentify a connector.
-	/// </summary>
-	internal class ConnectorData {
-		internal Guid nodeId;
-		internal VisualNode node;
-		internal VisualNodePropertyType type;
-		internal string name;
-		internal bool isInput;
 	}
 }

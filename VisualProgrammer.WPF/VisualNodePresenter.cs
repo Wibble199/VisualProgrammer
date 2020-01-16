@@ -9,7 +9,7 @@ using VisualProgrammer.WPF.Util;
 
 namespace VisualProgrammer.WPF {
 
-	[TemplatePart(Name = PART_ExpressionReturnConnector, Type = typeof(Ellipse))]
+	[TemplatePart(Name = PART_ExpressionReturnConnector, Type = typeof(VisualNodeConnector))]
     public class VisualNodePresenter : Control {
 
 		private const string PART_ExpressionReturnConnector = "PART_ExpressionReturnConnector";
@@ -20,7 +20,7 @@ namespace VisualProgrammer.WPF {
 
 		public override void OnApplyTemplate() {
 			base.OnApplyTemplate();
-			if (GetTemplateChild(PART_ExpressionReturnConnector) is Ellipse connector) {
+			if (GetTemplateChild(PART_ExpressionReturnConnector) is VisualNodeConnector connector) {
 				connector.MouseDown += StartConnectorDrag;
 				connector.MouseUp += EndConnectorDrag;
 			}
@@ -28,24 +28,16 @@ namespace VisualProgrammer.WPF {
 
 		private void StartConnectorDrag(object sender, System.Windows.Input.MouseButtonEventArgs e) {
 			// Check both the canvas and the context exist
-			if (DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this) is VisualNodeCanvas canvas && DataContext is KeyValuePair<Guid, VisualNode> context)
+			if (DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this) is VisualNodeCanvas canvas)
 				// Tell the canvas that the user has started dragging this node
-				canvas.EndDrag(GetConnectorData(context));
+				canvas.StartDrag((VisualNodeConnector)sender);
 		}
 
 		private void EndConnectorDrag(object sender, System.Windows.Input.MouseButtonEventArgs e) {
 			// Check both the canvas and the context exist
-			if (DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this) is VisualNodeCanvas canvas && DataContext is KeyValuePair<Guid, VisualNode> context)
+			if (DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this) is VisualNodeCanvas canvas)
 				// Tell the canvas that the user has started dragging this node
-				canvas.EndDrag(GetConnectorData(context));
+				canvas.EndDrag((VisualNodeConnector)sender);
 		}
-
-		private ConnectorData GetConnectorData(KeyValuePair<Guid, VisualNode> context) => new ConnectorData {
-			nodeId = context.Key,
-			node = context.Value,
-			type = context.Value is VisualStatement ? VisualNodePropertyType.Statement : VisualNodePropertyType.Expression,
-			name = "",
-			isInput = false // Since this connector is on the node presenter, it is always an output
-		};
 	}
 }

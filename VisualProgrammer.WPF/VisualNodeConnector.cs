@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using VisualProgrammer.Core;
 using VisualProgrammer.WPF.Util;
 
 namespace VisualProgrammer.WPF {
 
+	/// <summary>
+	/// A control that represents a connector attached to a visual node which the user can drag-drop onto another connector to form a link between nodes.<para/>
+	/// Note that this connector will automatically attach events to itself for starting/ending the drag on the <see cref="VisualNodeCanvas"/> ancestor.
+	/// </summary>
 	public class VisualNodeConnector : Control {
 
 		static VisualNodeConnector() {
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(VisualNodeConnector), new FrameworkPropertyMetadata(typeof(VisualNodeConnector)));
 		}
 
+		public VisualNodeConnector() {
+			MouseDown += StartConnectorDrag;
+			MouseUp += EndConnectorDrag;
+		}
+
 		#region Node DependencyProperty
+		/// <summary>
+		/// The node that this connector is attached to.
+		/// </summary>
 		public VisualNode Node {
 			get { return (VisualNode)GetValue(NodeProperty); }
 			set { SetValue(NodeProperty, value); }
@@ -23,6 +36,9 @@ namespace VisualProgrammer.WPF {
 		#endregion
 
 		#region NodeID DependencyProperty
+		/// <summary>
+		/// The ID of the node that this connector is attached to.
+		/// </summary>
 		public Guid NodeID {
 			get => (Guid)GetValue(NodeIDProperty);
 			set => SetValue(NodeIDProperty, value);
@@ -33,6 +49,10 @@ namespace VisualProgrammer.WPF {
 		#endregion
 
 		#region PropertyName DependencyProperty
+		/// <summary>
+		/// The name of the property or statement that this connector represents.<para/>
+		/// If this connector is the input node of a statement or the output node of an expression, this will be an empty string.
+		/// </summary>
 		public string PropertyName {
 			get => (string)GetValue(PropertyNameProperty);
 			set => SetValue(PropertyNameProperty, value);
@@ -43,6 +63,9 @@ namespace VisualProgrammer.WPF {
 		#endregion
 
 		#region ConnectorFlow DependencyProperty
+		/// <summary>
+		/// The direction of data flow from this connector.
+		/// </summary>
 		public ConnectorFlow ConnectorFlow {
 			get => (ConnectorFlow)GetValue(ConnectorFlowProperty);
 			set => SetValue(ConnectorFlowProperty, value);
@@ -51,13 +74,23 @@ namespace VisualProgrammer.WPF {
 		public static readonly DependencyProperty ConnectorFlowProperty =
 			DependencyProperty.Register("ConnectorFlow", typeof(ConnectorFlow), typeof(VisualNodeConnector), new PropertyMetadata(ConnectorFlow.Input));
 		#endregion
-		
+
+		#region Event Handlers
+		private void StartConnectorDrag(object sender, MouseButtonEventArgs e) =>
+			DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.StartDrag(this);
+
+		private void EndConnectorDrag(object sender, MouseButtonEventArgs e) =>
+			DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.EndDrag(this);
+		#endregion
+
 		/// <summary>
-		/// 
+		/// Attempts to create a link in the given <see cref="VisualProgram"/> context from this connector to another connector.<para/>
+		/// Does not catch any exceptions thrown by <see cref="VisualNode.Link(VisualProgram, string, VisualNode)"/>.
 		/// </summary>
-		/// <param name="programContext"></param>
-		/// <param name="other"></param>
-		/// <exception cref="VisualNodeLinkException"></exception>
+		/// <param name="programContext">The program in which the link will be created.</param>
+		/// <param name="other">The other connector that should be connected to this one.</param>
+		/// <exception cref="VisualNodeLinkException">Forwarded from <see cref="VisualNode.Link(VisualProgram, string, VisualNode)"/>.</exception>
+		/// <seealso cref="VisualNode.Link(VisualProgram, string, VisualNode)"/>
 		public void ConnectTo(VisualProgram programContext, VisualNodeConnector other) {
 			// Perform a quick initial check to see if we maybe can connect the two connectors
 			if (other == null

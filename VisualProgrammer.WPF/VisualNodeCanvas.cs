@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -8,7 +7,7 @@ using VisualProgrammer.WPF.Util;
 
 namespace VisualProgrammer.WPF {
 
-    public class VisualNodeCanvas : ItemsControl {
+	public class VisualNodeCanvas : ItemsControl {
 
 		// Holds data that can uniquely identify the connector that is currently being dragged.
 		private VisualNodeConnector dragSource;

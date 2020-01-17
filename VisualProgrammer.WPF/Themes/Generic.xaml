@@ -55,18 +55,18 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+					<Border Background="#FFF" BorderBrush="#26000000" BorderThickness="1" CornerRadius="4">
 						<Grid>
 							<!-- Main node content -->
-							<StackPanel Orientation="Vertical" Background="LightGray">
+							<StackPanel Orientation="Vertical" Margin="5,5,10,0">
 								<!-- Title -->
-								<TextBlock Text="{Binding Key}" />
+								<TextBlock Text="Node Name" FontWeight="Bold" />
 								
 								<!-- Properties list -->
-								<pe:MultiEditor Node="{Binding .}" />
+								<pe:MultiEditor Node="{Binding .}" Margin="0,8" />
 								
 								<!-- Output statements -->
-								<ItemsControl ItemsSource="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}}, ConverterParameter={x:Static vpcore:VisualNodePropertyType.Statement}}">
+								<ItemsControl ItemsSource="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}}, ConverterParameter={x:Static vpcore:VisualNodePropertyType.Statement}}" Margin="0,0,0,-8">
 									<ItemsControl.ItemTemplate>
 										<ItemContainerTemplate>
 											<StackPanel>
@@ -115,17 +115,23 @@
 											<DataTrigger Binding="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}}, ConverterParameter={x:Type vpcore:IVisualExpression}}" Value="True">
 												<Setter Property="Visibility" Value="Visible" />
 												<Setter Property="HorizontalAlignment" Value="Right" />
+												<Setter Property="Margin" Value="0,5,-7,0" />
 											</DataTrigger>
 											<!-- For statements -->
 											<DataTrigger Binding="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}}, ConverterParameter={x:Type vpcore:VisualStatement}}" Value="True">
 												<Setter Property="Visibility" Value="Visible" />
 												<Setter Property="HorizontalAlignment" Value="Center" />
+												<Setter Property="Margin" Value="0,-8,0,0" />
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
 								</local:VisualNodeConnector.Style>
 							</local:VisualNodeConnector>
 						</Grid>
+
+						<Border.Effect>
+							<DropShadowEffect Color="#999" BlurRadius="8" Direction="0" ShadowDepth="1" />
+						</Border.Effect>
 					</Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -209,7 +215,7 @@
         <Setter Property="Template">
             <Setter.Value>
 				<ControlTemplate TargetType="{x:Type pe:ExpressionEditor}">
-					<local:VisualNodeConnector Node="{Binding Node, Mode=OneWay}" NodeID="{Binding NodeId, Mode=OneWay}" PropertyName="{Binding Path=Definition.Name, Mode=OneWay}" ConnectorFlow="Destination"  HorizontalAlignment="Left" />
+					<local:VisualNodeConnector Node="{Binding Node, Mode=OneWay}" NodeID="{Binding NodeId, Mode=OneWay}" PropertyName="{Binding Path=Definition.Name, Mode=OneWay}" ConnectorFlow="Destination"  HorizontalAlignment="Left" Margin="-12,0,0,0" />
 				</ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -232,7 +238,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VisualNodeConnector}">
-					<Ellipse Width="10" Height="10" Fill="Red" />
+					<Grid Cursor="Cross">
+						<Ellipse Width="14" Height="14" Fill="#FFF" />
+						<Ellipse Width="7" Height="7" Fill="#4000" />
+					</Grid>
 				</ControlTemplate>
             </Setter.Value>
         </Setter>

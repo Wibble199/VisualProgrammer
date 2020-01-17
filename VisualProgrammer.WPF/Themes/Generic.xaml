@@ -7,64 +7,65 @@
 	xmlns:u="clr-namespace:VisualProgrammer.WPF.Util"
     xmlns:vpcore="clr-namespace:VisualProgrammer.Core;assembly=VisualProgrammer.Core">
 
-    <pe:NodeToPropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, NodeToPropertyListConverter}" />
+	<pe:NodeToPropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, NodeToPropertyListConverter}" />
 	<u:TypeIsConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}" />
 	<local:VisualNodePropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}" />
 	<u:EnumerableIndexConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableIndexConverter}" />
 	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableCountConverter}" />
 
 	<Style TargetType="{x:Type local:VisualProgramEditor}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:VisualProgramEditor}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <local:VisualNodeCanvas Program="{Binding Program, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualProgramEditor}}" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:VisualProgramEditor}">
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+						<local:VisualNodeCanvas Program="{Binding Program, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:VisualProgramEditor}}" />
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type local:VisualNodeCanvas}" BasedOn="{StaticResource {x:Type ItemsControl}}">
-        <Setter Property="ItemsSource" Value="{Binding Program.Nodes, RelativeSource={RelativeSource Mode=Self}}" />
-        <Setter Property="ItemTemplate">
-            <Setter.Value>
-                <DataTemplate>
+	<Style TargetType="{x:Type local:VisualNodeCanvas}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="ItemsSource" Value="{Binding Program.Nodes, RelativeSource={RelativeSource Mode=Self}}" />
+		<Setter Property="ItemTemplate">
+			<Setter.Value>
+				<DataTemplate>
 					<local:VisualNodePresenter />
 				</DataTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style>
-                    <Setter Property="Canvas.Left" Value="{Binding Path=Value.Position.X, Mode=OneWay}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Path=Value.Position.Y, Mode=OneWay}" />
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<Canvas />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="ItemContainerStyle">
+			<Setter.Value>
+				<Style>
+					<Setter Property="Canvas.Left" Value="{Binding Path=Value.Position.X, Mode=OneWay}" />
+					<Setter Property="Canvas.Top" Value="{Binding Path=Value.Position.Y, Mode=OneWay}" />
+				</Style>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type local:VisualNodePresenter}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
+	<Style TargetType="{x:Type local:VisualNodePresenter}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
 					<Border Background="#FFF" BorderBrush="#26000000" BorderThickness="1" CornerRadius="4">
 						<Grid>
 							<!-- Main node content -->
 							<StackPanel Orientation="Vertical" Margin="5,5,10,0">
 								<!-- Title -->
 								<TextBlock Text="Node Name" FontWeight="Bold" />
-								
+
 								<!-- Properties list -->
 								<pe:MultiEditor Node="{Binding .}" Margin="0,8" />
-								
+
 								<!-- Output statements -->
 								<ItemsControl ItemsSource="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}}, ConverterParameter={x:Static vpcore:VisualNodePropertyType.Statement}}" Margin="0,0,0,-8">
 									<ItemsControl.ItemTemplate>
@@ -82,7 +83,7 @@
 										<ItemsPanelTemplate>
 											<!-- Using a grid for each of the output statements since we want each one to take up an even amount of space and also use up the total room available (so StackPanels, DockPanels, etc. are unsuitable). -->
 											<!-- Using a custom AttachedProperty on the Grid so that we can set the ColumnDefinitions property based on a number instead, the number being the total number of statement properties. -->
-											<Grid local:GridColumnCountHelper.ColumnCount="{Binding ItemsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableCountConverter}}}" />
+											<Grid u:GridColumnCountHelper.ColumnCount="{Binding ItemsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableCountConverter}}}" />
 										</ItemsPanelTemplate>
 									</ItemsControl.ItemsPanel>
 
@@ -133,20 +134,20 @@
 							<DropShadowEffect Color="#999" BlurRadius="8" Direction="0" ShadowDepth="1" />
 						</Border.Effect>
 					</Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type if:InputFieldDynamic}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type if:InputFieldDynamic}">
+	<Style TargetType="{x:Type if:InputFieldDynamic}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type if:InputFieldDynamic}">
 					<TextBox Text="{Binding Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type if:InputFieldDynamic}}}" />
 				</ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
 	<Style TargetType="{x:Type pe:MultiEditor}" BasedOn="{StaticResource {x:Type ItemsControl}}">
 		<Setter Property="ItemsSource" Value="{Binding Path=Node, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, NodeToPropertyListConverter}}}" />
@@ -201,49 +202,49 @@
 		</Style.Triggers>
 	</Style>
 
-    <Style TargetType="{x:Type pe:ValueEditor}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type pe:ValueEditor}">
+	<Style TargetType="{x:Type pe:ValueEditor}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type pe:ValueEditor}">
 					<if:InputFieldDynamic Value="{Binding Value, Mode=TwoWay}" />
 				</ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type pe:ExpressionEditor}">
-        <Setter Property="Template">
-            <Setter.Value>
+	<Style TargetType="{x:Type pe:ExpressionEditor}">
+		<Setter Property="Template">
+			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type pe:ExpressionEditor}">
 					<local:VisualNodeConnector Node="{Binding Node, Mode=OneWay}" NodeID="{Binding NodeId, Mode=OneWay}" PropertyName="{Binding Path=Definition.Name, Mode=OneWay}" ConnectorFlow="Destination"  HorizontalAlignment="Left" Margin="-12,0,0,0" />
 				</ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type pe:VariableEditor}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type pe:VariableEditor}">
+	<Style TargetType="{x:Type pe:VariableEditor}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type pe:VariableEditor}">
 					<TextBlock>
 						<Run Text="Expected type:" FontWeight="Bold" />
 						<Run Text="{Binding Path=Definition.PropertyDataType.Name, Mode=OneWay}" />
 					</TextBlock>
 				</ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="{x:Type local:VisualNodeConnector}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:VisualNodeConnector}">
+	<Style TargetType="{x:Type local:VisualNodeConnector}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:VisualNodeConnector}">
 					<Grid Cursor="Cross">
 						<Ellipse Width="14" Height="14" Fill="#FFF" />
 						<Ellipse Width="7" Height="7" Fill="#4000" />
 					</Grid>
 				</ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+			</Setter.Value>
+		</Setter>
+	</Style>
 </ResourceDictionary>

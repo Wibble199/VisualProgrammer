@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using VisualProgrammer.Core;
 using VisualProgrammer.WPF.Util;
@@ -22,6 +23,9 @@ namespace VisualProgrammer.WPF {
 			// a breakpoint on DrawLine is hit before the control appears, so it should be drawing it?
 			// So, as a hacky work around, we can trigger another re-render just after the control has loaded
 			Loaded += (sender, e) => InvalidateVisual();
+
+			// Drag-related handlers
+			MouseUp += EndDrag;
 		}
 
 		protected override void OnRender(DrawingContext drawingContext) {
@@ -96,6 +100,13 @@ namespace VisualProgrammer.WPF {
 			} catch (VisualNodeLinkException ex) {
 				// TODO: Add user feedback
 			}
+		}
+
+		/// <summary>
+		/// Indicates the drag has finished without any action.
+		/// </summary>
+		private void EndDrag(object sender, MouseEventArgs e) {
+			dragSource = null;
 		}
 	}
 }

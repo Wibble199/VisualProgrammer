@@ -10,6 +10,8 @@
     <pe:NodeToPropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, NodeToPropertyListConverter}" />
 	<u:TypeIsConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, TypeIsConverter}" />
 	<local:VisualNodePropertyListConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}" />
+	<u:EnumerableIndexConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableIndexConverter}" />
+	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableCountConverter}" />
 
 	<Style TargetType="{x:Type local:VisualProgramEditor}">
         <Setter Property="Template">
@@ -67,9 +69,39 @@
 								<ItemsControl ItemsSource="{Binding Value, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, VisualNodePropertyListConverter}}, ConverterParameter={x:Static vpcore:VisualNodePropertyType.Statement}}">
 									<ItemsControl.ItemTemplate>
 										<ItemContainerTemplate>
-											<local:VisualNodeConnector Node="{Binding Path=DataContext.Value, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}" NodeID="{Binding Path=DataContext.Key, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}" PropertyName="{Binding Name, Mode=OneWay}" ConnectorFlow="Destination" HorizontalAlignment="Center" />
+											<StackPanel>
+												<TextBlock Text="{Binding Path=DisplayName, Mode=OneWay}" HorizontalAlignment="Center" />
+												<local:VisualNodeConnector Node="{Binding Path=DataContext.Value, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}"
+																		   NodeID="{Binding Path=DataContext.Key, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}"
+																		   PropertyName="{Binding Name, Mode=OneWay}" ConnectorFlow="Destination" HorizontalAlignment="Center" />
+											</StackPanel>
 										</ItemContainerTemplate>
 									</ItemsControl.ItemTemplate>
+
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<!-- Using a grid for each of the output statements since we want each one to take up an even amount of space and also use up the total room available (so StackPanels, DockPanels, etc. are unsuitable). -->
+											<!-- Using a custom AttachedProperty on the Grid so that we can set the ColumnDefinitions property based on a number instead, the number being the total number of statement properties. -->
+											<Grid local:GridColumnCountHelper.ColumnCount="{Binding ItemsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}, Converter={StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableCountConverter}}}" />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+
+									<ItemsControl.ItemContainerStyle>
+										<Style>
+											<!-- Bind the Grid.Colummn to the index of the item in the Statement property list. -->
+											<Setter Property="Grid.Column">
+												<Setter.Value>
+													<!-- This EnumerableIndexConverter takes 2 parameters - [0] = an IEnumerable, [1] = an item - and returns the index of the item in the IEnumerable -->
+													<MultiBinding Converter="{StaticResource {ComponentResourceKey {x:Type pe:MultiEditor}, EnumerableIndexConverter}}">
+														<!-- [0] We pass in the ItemsSource of the parent ItemsControl (this is the statement property list) to be the IEnumerable -->
+														<Binding Path="ItemsSource" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}" />
+														<!-- [1] We pass in the current DataContext as our item to search for. -->
+														<Binding />
+													</MultiBinding>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ItemsControl.ItemContainerStyle>
 								</ItemsControl>
 							</StackPanel>
 

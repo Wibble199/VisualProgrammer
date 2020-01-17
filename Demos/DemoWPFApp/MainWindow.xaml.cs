@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using VisualProgrammer.Core;
-using VisualProgrammer.Core.Nodes.Debug;
+using VisualProgrammer.Core.Flow;
 using VisualProgrammer.Core.Nodes.Variables;
 
 namespace DemoWPFApp {
@@ -38,6 +38,7 @@ namespace DemoWPFApp {
                     [stringLitGuid] = new Literal<string> { Value = "Hello World!", Position = new System.Drawing.Point(5, 100) },
 					//[Guid.NewGuid()] = new SetVariable<string> { Variable = new VariableReference<string>("SomeString"), Position = new System.Drawing.Point(250, 150) }
 					[Guid.NewGuid()] = new Trace { Position = new System.Drawing.Point(250, 150) },
+					[Guid.NewGuid()] = new If { Position = new System.Drawing.Point(0, 250) }
 				}
             };
         }

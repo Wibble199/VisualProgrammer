@@ -37,19 +37,33 @@ namespace VisualProgrammer.WPF {
 							var end = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == nr.Id.Value && c.ConnectorFlow == ConnectorFlow.Source);
 
 							if (start != null && end != null)
-								drawingContext.DrawLine(
-									new Pen(Brushes.Red, 2d),
-									start.TransformToAncestor(this).Transform(new Point()),
-									end.TransformToAncestor(this).Transform(new Point())
-								);
+								DrawLine(drawingContext, start, end, prop.PropertyType == VisualNodePropertyType.Statement);
 						}
 					}
 				}
 			}
         }
 
-		internal void StartDrag(Guid nodeId, object p, string v1, bool v2) {
-			throw new NotImplementedException();
+		/// <summary>
+		/// Draws a connection line between the given connectors.
+		/// </summary>
+		/// <param name="isVertical">Whether the curve should be drawn as if it is connecting elements vertically (true) or horizontally (false).</param>
+		private void DrawLine(DrawingContext ctx, VisualNodeConnector start, VisualNodeConnector end, bool isVertical) {
+			// Start and end points of the connectors relative to the canvas
+			var sp = start.TransformToAncestor(this).Transform(start.MidPoint);
+			var ep = end.TransformToAncestor(this).Transform(end.MidPoint);
+
+			// Bezier control points
+			var cp1 = isVertical ? new Point(sp.X, (sp.Y + ep.Y) / 2) : new Point((sp.X + ep.X) / 2, sp.Y);
+			var cp2 = isVertical ? new Point(ep.X, (sp.Y + ep.Y) / 2) : new Point((sp.X + ep.X) / 2, ep.Y);
+
+			ctx.DrawGeometry(Brushes.Transparent, new Pen(Brushes.Red, 2d), new PathGeometry(new[] {
+				new PathFigure(
+					start.TransformToAncestor(this).Transform(start.MidPoint),
+					new[] { new BezierSegment(cp1, cp2, ep, true) },
+					false
+				)
+			}));
 		}
 
 		#region Program DependencyProperty

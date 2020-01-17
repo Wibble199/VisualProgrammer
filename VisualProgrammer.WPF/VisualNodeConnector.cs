@@ -22,13 +22,16 @@ namespace VisualProgrammer.WPF {
 			MouseUp += EndConnectorDrag;
 		}
 
+		/// <summary>Gets the midpoint of this connector (relative to this visual element).</summary>
+		public Point MidPoint => new Point(ActualWidth / 2, ActualHeight / 2);
+
 		#region Node DependencyProperty
 		/// <summary>
 		/// The node that this connector is attached to.
 		/// </summary>
 		public VisualNode Node {
-			get { return (VisualNode)GetValue(NodeProperty); }
-			set { SetValue(NodeProperty, value); }
+			get => (VisualNode)GetValue(NodeProperty);
+			set => SetValue(NodeProperty, value);
 		}
 
 		public static readonly DependencyProperty NodeProperty =

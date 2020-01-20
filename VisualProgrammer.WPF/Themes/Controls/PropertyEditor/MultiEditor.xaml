@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:VisualProgrammer.WPF.PropertyEditor">
+
+	<Style TargetType="{x:Type local:MultiEditor}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+		<Setter Property="ItemsSource" Value="{Binding Path=Node.ListableProperties, RelativeSource={RelativeSource Mode=Self}}" />
+		<Setter Property="ItemTemplate">
+			<Setter.Value>
+				<ItemContainerTemplate>
+					<StackPanel>
+						<TextBlock Text="{Binding Path=DisplayName}" HorizontalAlignment="Left" />
+						<local:SingleEditor />
+					</StackPanel>
+				</ItemContainerTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

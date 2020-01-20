@@ -1,0 +1,95 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:VisualProgrammer.WPF"
+					xmlns:pe="clr-namespace:VisualProgrammer.WPF.PropertyEditor"
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
+
+	<u:EnumerableIndexConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableIndexConverter}" />
+	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableCountConverter}" />
+
+	<Style TargetType="{x:Type local:VisualNodePresenter}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
+					<Border Background="#FFF" BorderBrush="#26000000" BorderThickness="1" CornerRadius="4">
+						<Grid>
+							<!-- Main node content -->
+							<StackPanel Orientation="Vertical" Margin="5,5,10,0">
+								<!-- Title -->
+								<TextBlock Text="Node Name" FontWeight="Bold" />
+
+								<!-- Properties list -->
+								<pe:MultiEditor Node="{Binding .}" Margin="0,8" />
+
+								<!-- Output statements -->
+								<ItemsControl ItemsSource="{Binding StatementProperties}" Margin="0,0,0,-8">
+									<ItemsControl.ItemTemplate>
+										<ItemContainerTemplate>
+											<StackPanel>
+												<TextBlock Text="{Binding Path=DisplayName, Mode=OneWay}" HorizontalAlignment="Center" />
+												<local:VisualNodeConnector NodeID="{Binding Path=DataContext.ID, RelativeSource={RelativeSource AncestorType={x:Type local:VisualNodePresenter}}, Mode=OneWay}"
+																		   PropertyName="{Binding Name, Mode=OneWay}" ConnectorFlow="Destination" HorizontalAlignment="Center" />
+											</StackPanel>
+										</ItemContainerTemplate>
+									</ItemsControl.ItemTemplate>
+
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<!-- Using a grid for each of the output statements since we want each one to take up an even amount of space and also use up the total room available (so StackPanels, DockPanels, etc. are unsuitable). -->
+											<!-- Using a custom AttachedProperty on the Grid so that we can set the ColumnDefinitions property based on a number instead, the number being the total number of statement properties. -->
+											<Grid u:GridColumnCountHelper.ColumnCount="{Binding ItemsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}, Converter={StaticResource {ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableCountConverter}}}" />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+
+									<ItemsControl.ItemContainerStyle>
+										<Style>
+											<!-- Bind the Grid.Colummn to the index of the item in the Statement property list. -->
+											<Setter Property="Grid.Column">
+												<Setter.Value>
+													<!-- This EnumerableIndexConverter takes 2 parameters - [0] = an IEnumerable, [1] = an item - and returns the index of the item in the IEnumerable -->
+													<MultiBinding Converter="{StaticResource {ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableIndexConverter}}">
+														<!-- [0] We pass in the ItemsSource of the parent ItemsControl (this is the statement property list) to be the IEnumerable -->
+														<Binding Path="ItemsSource" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}" />
+														<!-- [1] We pass in the current DataContext as our item to search for. -->
+														<Binding />
+													</MultiBinding>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ItemsControl.ItemContainerStyle>
+								</ItemsControl>
+							</StackPanel>
+
+							<!-- Expression output & statement input connector -->
+							<local:VisualNodeConnector NodeID="{Binding ID, Mode=OneWay}" ConnectorFlow="Source" VerticalAlignment="Top">
+								<local:VisualNodeConnector.Style>
+									<Style TargetType="{x:Type local:VisualNodeConnector}">
+										<Setter Property="Visibility" Value="Collapsed" />
+										<Style.Triggers>
+											<!-- For expressions -->
+											<DataTrigger Binding="{Binding IsExpression}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="HorizontalAlignment" Value="Right" />
+												<Setter Property="Margin" Value="0,5,-7,0" />
+											</DataTrigger>
+											<!-- For statements -->
+											<DataTrigger Binding="{Binding IsStatement}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="HorizontalAlignment" Value="Center" />
+												<Setter Property="Margin" Value="0,-8,0,0" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</local:VisualNodeConnector.Style>
+							</local:VisualNodeConnector>
+						</Grid>
+
+						<Border.Effect>
+							<DropShadowEffect Color="#999" BlurRadius="8" Direction="0" ShadowDepth="1" />
+						</Border.Effect>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

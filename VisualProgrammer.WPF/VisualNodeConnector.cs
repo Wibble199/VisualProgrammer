@@ -25,19 +25,6 @@ namespace VisualProgrammer.WPF {
 		/// <summary>Gets the midpoint of this connector (relative to this visual element).</summary>
 		public Point MidPoint => new Point(ActualWidth / 2, ActualHeight / 2);
 
-		#region Node DependencyProperty
-		/// <summary>
-		/// The node that this connector is attached to.
-		/// </summary>
-		public VisualNode Node {
-			get => (VisualNode)GetValue(NodeProperty);
-			set => SetValue(NodeProperty, value);
-		}
-
-		public static readonly DependencyProperty NodeProperty =
-			DependencyProperty.Register("Node", typeof(VisualNode), typeof(VisualNodeConnector), new PropertyMetadata(null));
-		#endregion
-
 		#region NodeID DependencyProperty
 		/// <summary>
 		/// The ID of the node that this connector is attached to.
@@ -105,7 +92,7 @@ namespace VisualProgrammer.WPF {
 			var childData = ConnectorFlow == ConnectorFlow.Source ? this : other;
 
 			// Perform the link
-			parentData.Node.Link(programContext, parentData.PropertyName, childData.Node);
+			programContext.Nodes[parentData.NodeID].Link(programContext, parentData.PropertyName, programContext.Nodes[childData.NodeID]);
 			DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.InvalidateVisual(); // Indicate that the canvas needs to be redrawn with a new connection line
 		}
 	}

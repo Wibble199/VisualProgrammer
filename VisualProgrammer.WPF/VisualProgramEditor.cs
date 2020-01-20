@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using VisualProgrammer.Core;
+using VisualProgrammer.WPF.ViewModels;
 
 namespace VisualProgrammer.WPF {
 
@@ -20,4 +24,9 @@ namespace VisualProgrammer.WPF {
             DependencyProperty.Register("Program", typeof(VisualProgram), typeof(VisualProgramEditor), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
     }
+
+	public class ProgramViewModelConverter : IValueConverter {
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is VisualProgram vp ? new VisualProgramViewModel(vp) : null;
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+	}
 }

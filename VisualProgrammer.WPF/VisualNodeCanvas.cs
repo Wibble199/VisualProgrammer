@@ -1,10 +1,11 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using VisualProgrammer.Core;
+using VisualProgrammer.WPF.AttachedProperties;
 using VisualProgrammer.WPF.Util;
+using VisualProgrammer.WPF.ViewModels;
 
 namespace VisualProgrammer.WPF {
 
@@ -28,16 +29,18 @@ namespace VisualProgrammer.WPF {
 			MouseUp += EndDrag;
 		}
 
+		internal VisualProgramViewModel ViewModel => VisualProgramViewModelAttachedProperty.GetVisualProgramModel(this);
+
 		protected override void OnRender(DrawingContext drawingContext) {
             base.OnRender(drawingContext);
 
 			// Draw lines between connectors
-			if (Program?.Nodes != null) {
-				foreach (var node in Program.Nodes) {
-					foreach (var prop in node.Value.GetPropertiesOfType(VisualNodePropertyType.Expression, VisualNodePropertyType.Statement)) {
+			if (ViewModel?.Nodes != null) {
+				foreach (var node in ViewModel.Nodes) {
+					foreach (var prop in node.LinkableProperties) {
 						// Check if the property has a reference to an expression, if so, find the connector points
-						if (prop.Getter(node.Value) is INodeReference nr && nr.Id.HasValue) {
-							var start = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == node.Key && c.PropertyName == prop.Name && c.ConnectorFlow == ConnectorFlow.Destination);
+						if (prop.Value is INodeReference nr && nr.Id.HasValue) {
+							var start = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == node.ID && c.PropertyName == prop.Name && c.ConnectorFlow == ConnectorFlow.Destination);
 							var end = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == nr.Id.Value && c.ConnectorFlow == ConnectorFlow.Source);
 
 							if (start != null && end != null)
@@ -70,16 +73,6 @@ namespace VisualProgrammer.WPF {
 			}));
 		}
 
-		#region Program DependencyProperty
-		public VisualProgram Program {
-            get => (VisualProgram)GetValue(ProgramProperty);
-            set => SetValue(ProgramProperty, value);
-        }
-
-        public static readonly DependencyProperty ProgramProperty =
-            DependencyProperty.Register("Program", typeof(VisualProgram), typeof(VisualNodeCanvas), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
-		#endregion
-
 		/// <summary>
 		/// Indicates to the canvas that a drag operation (originating from a node connector) has begun.
 		/// </summary>
@@ -95,7 +88,7 @@ namespace VisualProgrammer.WPF {
 		/// <param name="dropSource">The connector that the drop happened on.</param>
 		internal void EndDrag(VisualNodeConnector dropSource) {
 			try {
-				dragSource?.ConnectTo(Program, dropSource);
+				dragSource?.ConnectTo(ViewModel.model, dropSource);
 
 			} catch (VisualNodeLinkException ex) {
 				// TODO: Add user feedback

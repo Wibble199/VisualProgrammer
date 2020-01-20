@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using VisualProgrammer.Core;
+using VisualProgrammer.WPF.ViewModels;
 
 namespace VisualProgrammer.WPF.PropertyEditor {
 
@@ -21,29 +17,13 @@ namespace VisualProgrammer.WPF.PropertyEditor {
 		/// <summary>
 		/// The Visual Node whose properties an editor will be generated for.
 		/// </summary>
-		public KeyValuePair<Guid, VisualNode>? Node {
-			get => (KeyValuePair<Guid, VisualNode>)GetValue(NodeProperty);
+		public VisualNodeViewModel Node {
+			get => (VisualNodeViewModel)GetValue(NodeProperty);
 			set => SetValue(NodeProperty, value);
 		}
 
 		public static readonly DependencyProperty NodeProperty =
-			DependencyProperty.Register("Node", typeof(KeyValuePair<Guid, VisualNode>?), typeof(MultiEditor), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+			DependencyProperty.Register("Node", typeof(VisualNodeViewModel), typeof(MultiEditor), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 		#endregion
-	}
-
-
-	/// <summary>
-	/// Converter that takes a <see cref="VisualNode"/> and returns a collection of sorted <see cref="BoundVisualNodePropertyContext"/> objects, one for
-	/// each editable property of the node.
-	/// </summary>
-	public class NodeToPropertyListConverter : IValueConverter {
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is KeyValuePair<Guid, VisualNode> v
-				? v.Value.GetPropertiesOfType(VisualNodePropertyType.Expression, VisualNodePropertyType.Value, VisualNodePropertyType.Variable)
-					.OrderBy(p => p.Meta.Order)
-					.ThenBy(p => p.DisplayName)
-					.Select(p => new BoundVisualNodePropertyContext(v, p))
-				: null;
-
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 	}
 }

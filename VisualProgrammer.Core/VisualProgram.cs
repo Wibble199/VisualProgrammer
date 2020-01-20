@@ -69,26 +69,16 @@ namespace VisualProgrammer.Core {
         #endregion
 
         #region Variables
-		public Dictionary<string, (Type type, object? @default)> variableDefinitions = new Dictionary<string, (Type, object?)>();
+		public Dictionary<string, Variable> variableDefinitions = new Dictionary<string, Variable>();
 		/// <summary>
 		/// The recognised variables for this program. The dictionary key is the name of the variable, and the dictionary value is a tuple containing the variable type and default value.
 		/// </summary>
-		public ReadOnlyDictionary<string, (Type type, object? @default)> VariableDefinitions => new ReadOnlyDictionary<string, (Type type, object? @default)>(variableDefinitions);
-
-        /// <summary>
-        /// The current variable storage. The dictionary's key is the name of the variable and the dictionary value is the current value of that variable.
-        /// </summary>
-        internal Dictionary<string, object?> VariableValues { get; private set; } = new Dictionary<string, object?>();
+		public ReadOnlyDictionary<string, Variable> VariableDefinitions => new ReadOnlyDictionary<string, Variable>(variableDefinitions);
 
 		/// <summary>
 		/// A parameter that will be the first parameter of all compiled functions which provides them access to their instance context (e.g. allows for accessing variable store).
 		/// </summary>
 		internal ParameterExpression compiledInstanceParameter = Expression.Parameter(typeof(CompiledInstanceBase), "context");
-
-        /// <summary>
-        /// Resets all the variables currently stored to their default values.
-        /// </summary>
-        public void ResetVariables() => VariableValues = VariableDefinitions.ToDictionary(v => v.Key, v => v.Value.@default);
 
 		/// <summary>
 		/// Attempts to define a new variable on this program.
@@ -100,12 +90,9 @@ namespace VisualProgrammer.Core {
 				throw new ArgumentException("Name must not be null, empty or whitespace.", nameof(name));
 			if (type == null)
 				throw new ArgumentNullException(nameof(type), "Variable type must not be null.");
-			if (!type.CanBeSetTo(@default))
-				throw new ArgumentException($"Value '{@default?.ToString()}' cannot be set as the default value for this variable because it cannot be assigned to type '{type.Name}'.", nameof(@default));
 			if (variableDefinitions.ContainsKey(name))
 				throw new Exception(); // TODO: Throw error if variable with name already exists
-			variableDefinitions.Add(name, (type, @default));
-			VariableValues.Add(name, @default);
+			variableDefinitions.Add(name, new Variable(type, @default));
 		}
 
 		/// <summary>
@@ -138,9 +125,6 @@ namespace VisualProgrammer.Core {
 					entry.ParameterMap[paramKey] = "";
 				foreach (var (node, prop) in varRefsToReset)
 					prop.Setter(node, Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(prop.PropertyDataType), "")); // Create a new empty reference of the relevant type
-
-				// Remove the variable from the runtime store
-				VariableValues.Remove(name);
 			}
 		}
 		#endregion

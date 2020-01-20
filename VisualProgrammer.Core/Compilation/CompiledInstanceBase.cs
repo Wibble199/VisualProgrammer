@@ -13,13 +13,12 @@ namespace VisualProgrammer.Core.Compilation {
 
 		// The delegates for each of the compiled functions
 		private readonly Dictionary<string, Delegate> functions;
-		private readonly Dictionary<string, (Type type, object @default)> variableDefinitions;
-		private Dictionary<string, object> variableValues;
+		private readonly Dictionary<string, Variable> variables;
 
 #pragma warning disable CS8618 // Disable warning saying that variableValues is unset, because the compiler doesn't realise it's set during the ResetVariables() call.
-		protected CompiledInstanceBase(Dictionary<string, Delegate> functions, Dictionary<string, (Type type, object @default)> variableDefinitions) {
+		protected CompiledInstanceBase(Dictionary<string, Delegate> functions, Dictionary<string, Variable> variables) {
 			this.functions = new Dictionary<string, Delegate>(functions ?? new Dictionary<string, Delegate>(), StringComparer.OrdinalIgnoreCase);
-			this.variableDefinitions = new Dictionary<string, (Type type, object @default)>(variableDefinitions ?? new Dictionary<string, (Type type, object @default)>(), StringComparer.OrdinalIgnoreCase);
+			this.variables = new Dictionary<string, Variable>(variables ?? new Dictionary<string, Variable>(), StringComparer.OrdinalIgnoreCase);
 			ResetVariables();
 		}
 #pragma warning restore CS8618
@@ -27,17 +26,20 @@ namespace VisualProgrammer.Core.Compilation {
 		/// <summary>
 		/// Resets all variables to their default values as defined by the given variable definitions dictionary.
 		/// </summary>
-		public void ResetVariables() => variableValues = new Dictionary<string, object>(variableDefinitions.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.@default), StringComparer.OrdinalIgnoreCase);
+		public void ResetVariables() {
+			foreach (var kvp in variables)
+				kvp.Value.Reset();
+		}
 
 		/// <summary>
 		/// Attempts to get the value of the variable with the given name.
 		/// </summary>
 		/// <param name="key">The name/key of the variable. Case-insensitive.</param>
 		/// <exception cref="ArgumentException">When a variable with the target name has not been defined.</exception>
-		public object GetVariable(string key) {
-			if (!variableDefinitions.ContainsKey(key))
+		public object? GetVariable(string key) {
+			if (!variables.ContainsKey(key))
 				throw new ArgumentException($"Variable '{key}' has not been defined.", nameof(key));
-			return variableValues[key];
+			return variables[key].Value;
 		}
 
 		/// <summary>
@@ -45,12 +47,10 @@ namespace VisualProgrammer.Core.Compilation {
 		/// </summary>
 		/// <param name="key">The name/key of the variable. Case-insensitive.</param>
 		/// <exception cref="ArgumentException">When a variable with the target name has not been defined or the given value cannot be assigned to the type defined by the target variable.</exception>
-		public void SetVariable(string key, object value) {
-			if (!variableDefinitions.TryGetValue(key, out var def))
+		public void SetVariable(string key, object? value) {
+			if (!variables.ContainsKey(key))
 				throw new ArgumentException($"Variable '{key}' has not been defined.", nameof(key));
-			if (!def.type.CanBeSetTo(value))
-				throw new ArgumentException($"Value of '{value?.ToString() ?? "null"}' cannot be assigned to variable of type '{def.type.Name}'.", nameof(value));
-			variableValues[key] = value;
+			variables[key].Value = value;
 		}
 
 		/// <summary>Invokes the target delegate method with the given arguments.</summary>
@@ -87,12 +87,12 @@ namespace VisualProgrammer.Core.Compilation {
 		/// Attempts to get the value of the variable with the given name.
 		/// </summary>
 		/// <param name="key">The name/key of the variable. Case-insensitive.</param>
-		object GetVariable(string key);
+		object? GetVariable(string key);
 
 		/// <summary>
 		/// Attempts to set the value of the variable with the given name to the given value.
 		/// </summary>
 		/// <param name="key">The name/key of the variable. Case-insensitive.</param>
-		void SetVariable(string key, object value);
+		void SetVariable(string key, object? value);
 	}
 }

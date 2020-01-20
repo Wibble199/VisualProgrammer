@@ -32,24 +32,24 @@ namespace VisualProgrammer.Core.Compilation {
 
 		// Dynamic type that is generated from the functions passed to the CompiledProgram ctor.
 		private readonly Dictionary<string, Delegate> functions;
-		private readonly Dictionary<string, (Type, object)> varDefs;
+		private readonly Dictionary<string, Variable> vars;
 		private readonly Type programType;
 
 
-		internal CompiledProgramFactory(Dictionary<string, Delegate> functions, Dictionary<string, (Type type, object @default)> variableDefinitions) {
+		internal CompiledProgramFactory(Dictionary<string, Delegate> functions, Dictionary<string, Variable> variableDefinitions) {
 			// Guard to ensure the TImplements in an interface
 			if (!typeof(TImplements).IsInterface)
 				throw new ArgumentException($"Type parameter '{nameof(TImplements)}' must be an interface.", nameof(TImplements));
 
 			this.functions = functions;
-			varDefs = variableDefinitions;
+			vars = variableDefinitions;
 
 			// Create a new type that implements the TImplements type (and also has other methods as per the function IDs)
 			var typeBuilder = moduleBuilder.DefineType("Dynamic_" + Guid.NewGuid().ToString(), TypeAttributes.Class | TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.BeforeFieldInit | TypeAttributes.AutoLayout, typeof(CompiledInstanceBase));
 			typeBuilder.AddInterfaceImplementation(typeof(TImplements));
 
 			// Generate constructor
-			var ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis, new[] { typeof(Dictionary<string, Delegate>), typeof(Dictionary<string, (Type, object)>) });
+			var ctorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis, new[] { typeof(Dictionary<string, Delegate>), typeof(Dictionary<string, Variable>) });
 			var ctorIl = ctorBuilder.GetILGenerator();
 			ctorIl.Emit(Ldarg_0);
 			ctorIl.Emit(Ldarg_1);
@@ -140,6 +140,6 @@ namespace VisualProgrammer.Core.Compilation {
 		/// Creates a new instance of the target program, with its own set of variables.<para/>
 		/// Note that the returned type also inherits <see cref="CompiledInstanceBase"/> (and, by extension, <see cref="System.Dynamic.DynamicObject"/>).
 		/// </summary>
-		public TImplements CreateProgram() => (TImplements)Activator.CreateInstance(programType, functions, varDefs);
+		public TImplements CreateProgram() => (TImplements)Activator.CreateInstance(programType, functions, vars);
 	}
 }

@@ -17,8 +17,8 @@
             {
                 <tr>
                     <td>@varDef.Key</td>
-                    <td>@varDef.Value.type.Name</td>
-                    <td>@(varDef.Value.@default.ToString())</td>
+                    <td>@varDef.Value.Type.Name</td>
+                    <td>@(varDef.Value.DefaultValue.ToString())</td>
                     <td><button @onclick="e => RemoveVariable(varDef.Key)">&times;</button></td>
                 </tr>
             }

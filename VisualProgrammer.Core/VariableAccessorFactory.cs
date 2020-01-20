@@ -10,19 +10,22 @@ namespace VisualProgrammer.Core {
     internal static class VariableAccessorFactory {
 
 		/// <summary>
-		/// Creates a property accessing expression that points to the desired variable with the 
+		/// Creates a property accessing expression that points to the variable with the given reference.
 		/// </summary>
 		/// <param name="context">The program context whose variable dictionary will be used.</param>
 		/// <param name="variable">A reference to the desired variable.</param>
-		private static IndexExpression GetMemberExpressionFor(VisualProgram context, IVariableReference variable) =>
+		private static Expression GetMemberExpressionFor(VisualProgram context, IVariableReference variable) =>
             Property(
-                PropertyOrField(
-					context.compiledInstanceParameter,
-					"variableValues"
+				Property(
+					PropertyOrField(
+						context.compiledInstanceParameter,
+						"variables"
+					),
+					"Item",
+					Constant(variable.Name, typeof(string))
 				),
-                "Item",
-                Constant(variable.Name, typeof(string))
-            );
+				nameof(Variable.Value)
+			);
 
 		/// <summary>
 		/// Creates an expression that gets the value of a visual program variable.

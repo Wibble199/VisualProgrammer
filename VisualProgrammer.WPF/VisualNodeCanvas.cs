@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using VisualProgrammer.Core;
 using VisualProgrammer.WPF.AttachedProperties;
 using VisualProgrammer.WPF.Util;
@@ -10,9 +11,6 @@ using VisualProgrammer.WPF.ViewModels;
 namespace VisualProgrammer.WPF {
 
 	public class VisualNodeCanvas : ItemsControl {
-
-		// Holds data that can uniquely identify the connector that is currently being dragged.
-		private VisualNodeConnector dragSource;
 
         static VisualNodeCanvas() {
             // Indicate that we need to use our custom style (which is based off the default ItemsControl style)
@@ -26,7 +24,11 @@ namespace VisualProgrammer.WPF {
 			Loaded += (sender, e) => InvalidateVisual();
 
 			// Drag-related handlers
+			MouseMove += StepDrag;
 			MouseUp += EndDrag;
+
+			// Routed Commands
+			CommandBindings.Add(new CommandBinding(Commands.StartMove, NodePresenterStartMove));
 		}
 
 		internal VisualProgramViewModel ViewModel => VisualProgramViewModelAttachedProperty.GetVisualProgramModel(this);
@@ -74,32 +76,45 @@ namespace VisualProgrammer.WPF {
 		}
 
 		/// <summary>
-		/// Indicates to the canvas that a drag operation (originating from a node connector) has begun.
+		/// Command handler for when a node presenters drag starts.
 		/// </summary>
-		/// <param name="dragSource">The connector that the drag operation started on.</param>
-		internal void StartDrag(VisualNodeConnector dragSource) {
-			this.dragSource = dragSource;
+		private void NodePresenterStartMove(object sender, ExecutedRoutedEventArgs e) {
+			if (!(e.OriginalSource is VisualNodePresenter presenter)) return;
+			var vm = (VisualNodeViewModel)presenter.DataContext;
+			ViewModel.DragBehaviour = new VisualNodePresenterDragBehaviour(vm, new Point(20, 10));
 		}
 
 		/// <summary>
-		/// Indicates to the canvas that a drag operation has finished (terminating on a node connector).
-		/// Creates a link if valid.
+		/// Steps the drag action.
 		/// </summary>
-		/// <param name="dropSource">The connector that the drop happened on.</param>
-		internal void EndDrag(VisualNodeConnector dropSource) {
-			try {
-				dragSource?.ConnectTo(ViewModel.model, dropSource);
-
-			} catch (VisualNodeLinkException ex) {
-				// TODO: Add user feedback
-			}
+		private void StepDrag(object sender, MouseEventArgs e) {
+			if (ViewModel.DragBehaviour?.MoveStep(e, e.GetPosition(this)) == true)
+				DispatchDelayedInvalidate();
+			if (ViewModel.DragBehaviour?.ShouldCapture == true && !IsMouseCaptured)
+				CaptureMouse();
 		}
 
 		/// <summary>
-		/// Indicates the drag has finished without any action.
+		/// Finishes the drag action.
 		/// </summary>
 		private void EndDrag(object sender, MouseEventArgs e) {
-			dragSource = null;
+			if (ViewModel.DragBehaviour?.StopMove(e, e.GetPosition(this)) == true)
+				DispatchDelayedInvalidate();
+			ViewModel.DragBehaviour = null;
+			ReleaseMouseCapture();
+		}
+
+		/// <summary>
+		/// Executes a InvalidateArrange and InvalidateVisual call when the dispatcher's context is next idle.
+		/// </summary>
+		private void DispatchDelayedInvalidate() {
+			// Updating the position will cause the node presenter to re-render. We need to wait for it to have it's new layout
+			// before we cause a line re-rendering (which we trigger by InvalidateVisual) since the line renderer fetches the
+			// position of the connectors when drawing the lines.
+			Dispatcher.Invoke(() => {
+				InvalidateArrange();
+				InvalidateVisual();
+			}, DispatcherPriority.ContextIdle);
 		}
 	}
 }

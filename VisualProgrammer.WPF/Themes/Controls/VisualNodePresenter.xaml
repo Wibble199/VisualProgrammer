@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VisualProgrammer.WPF"
 					xmlns:pe="clr-namespace:VisualProgrammer.WPF.PropertyEditor"
-					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util"
+					xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
 
 	<u:EnumerableIndexConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableIndexConverter}" />
 	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableCountConverter}" />
@@ -59,6 +60,9 @@
 									</ItemsControl.ItemContainerStyle>
 								</ItemsControl>
 							</StackPanel>
+
+							<!-- Area that the user can drag to move this node -->
+							<Rectangle x:Name="PART_NodeDragArea" Fill="Transparent" VerticalAlignment="Top" Height="26" />
 
 							<!-- Expression output & statement input connector -->
 							<local:VisualNodeConnector NodeID="{Binding ID, Mode=OneWay}" ConnectorFlow="Source" VerticalAlignment="Top">

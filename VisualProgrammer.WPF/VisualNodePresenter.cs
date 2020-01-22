@@ -1,25 +1,78 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using VisualProgrammer.Core;
+using System.Windows.Input;
+using VisualProgrammer.WPF.Util;
+using VisualProgrammer.WPF.ViewModels;
 
 namespace VisualProgrammer.WPF {
 
-	public class VisualNodePresenter : Control {
+	public class VisualNodePresenter : Control, ICommandSource {
+
+		private const string PART_NodeDragArea = nameof(PART_NodeDragArea);
 
 		static VisualNodePresenter() {
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(VisualNodePresenter), new FrameworkPropertyMetadata(typeof(VisualNodePresenter)));
 		}
+
+		public override void OnApplyTemplate() {
+			base.OnApplyTemplate();
+			if (GetTemplateChild(PART_NodeDragArea) is UIElement r)
+				r.MouseDown += (sender, e) => this.InvokeCommand();
+		}
+
+		#region ICommandSource
+		#region Command DependencyProperty
+		public ICommand Command {
+			get => (ICommand)GetValue(CommandProperty);
+			set => SetValue(CommandProperty, value);
+		}
+
+		public static readonly DependencyProperty CommandProperty =
+			DependencyProperty.Register("Command", typeof(ICommand), typeof(VisualNodePresenter), new PropertyMetadata(null));
+		#endregion
+
+		#region CommandParameter DependencyProperty
+		public object CommandParameter {
+			get => GetValue(CommandParameterProperty);
+			set => SetValue(CommandParameterProperty, value);
+		}
+
+		public static readonly DependencyProperty CommandParameterProperty =
+			DependencyProperty.Register("CommandParameter", typeof(object), typeof(VisualNodePresenter), new PropertyMetadata(null));
+		#endregion
+
+		#region CommandTarget DependencyProperty
+		public IInputElement CommandTarget {
+			get => (IInputElement)GetValue(CommandTargetProperty);
+			set => SetValue(CommandTargetProperty, value);
+		}
+
+		public static readonly DependencyProperty CommandTargetProperty =
+			DependencyProperty.Register("CommandTarget", typeof(IInputElement), typeof(VisualNodePresenter), new PropertyMetadata(null));
+		#endregion
+		#endregion
 	}
 
-
 	/// <summary>
-	/// Value converter that takes a VisualNode and returns a collection of <see cref="VisualNodePropertyDefinition" />s of the <see cref="VisualNodePropertyType"/> specified in the parameter.
+	/// Drag behaviour for moving a node presenter.
 	/// </summary>
-	public class VisualNodePropertyListConverter : IValueConverter {
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (value as VisualNode)?.GetPropertiesOfType((VisualNodePropertyType)parameter);
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+	internal class VisualNodePresenterDragBehaviour : ICanvasDragBehaviour {
+
+		private VisualNodeViewModel nodeViewModel;
+		private Point nodeRelativePoint;
+
+		public VisualNodePresenterDragBehaviour(VisualNodeViewModel nodeViewModel, Point nodeRelativePoint) {
+			this.nodeViewModel = nodeViewModel;
+			this.nodeRelativePoint = nodeRelativePoint;
+		}
+
+		public bool ShouldCapture => true;
+
+		public bool MoveStep(MouseEventArgs e, Point canvasPoint) {
+			nodeViewModel.Position = new System.Drawing.Point((int)(canvasPoint.X - nodeRelativePoint.X), (int)(canvasPoint.Y - nodeRelativePoint.Y));
+			return true;
+		}
+
+		public bool StopMove(MouseEventArgs e, Point canvasPoint) => false;
 	}
 }

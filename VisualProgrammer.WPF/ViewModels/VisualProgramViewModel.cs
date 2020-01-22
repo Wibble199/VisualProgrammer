@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using VisualProgrammer.Core;
+using VisualProgrammer.WPF.Util;
 
 namespace VisualProgrammer.WPF.ViewModels {
 
@@ -22,6 +23,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 			// Initialise commands
 			// TODO
 		}
+
+		/// <summary>The drag behaviour currently being executed. This determines what happens when the user moves or releases their mouse.</summary>
+		internal ICanvasDragBehaviour DragBehaviour { get; set; }
 
 		/// <summary>A collection of all nodes that currently exist on the Visual Program's canvas.</summary>
 		public ObservableCollection<VisualNodeViewModel> Nodes { get; }

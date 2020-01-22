@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using VisualProgrammer.Core;
+using VisualProgrammer.WPF.AttachedProperties;
 using VisualProgrammer.WPF.Util;
 
 namespace VisualProgrammer.WPF {
@@ -67,10 +68,13 @@ namespace VisualProgrammer.WPF {
 
 		#region Event Handlers
 		private void StartConnectorDrag(object sender, MouseButtonEventArgs e) =>
-			DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.StartDrag(this);
+			VisualProgramViewModelAttachedProperty.GetVisualProgramModel(this).DragBehaviour = new ConnectorDragBehaviour(this);
 
-		private void EndConnectorDrag(object sender, MouseButtonEventArgs e) =>
-			DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.EndDrag(this);
+		private void EndConnectorDrag(object sender, MouseButtonEventArgs e) {
+			var vpvm = VisualProgramViewModelAttachedProperty.GetVisualProgramModel(this);
+			if (!(vpvm.DragBehaviour is ConnectorDragBehaviour cdb)) return;
+			ConnectTo(vpvm.model, cdb.Connector);
+		}
 		#endregion
 
 		/// <summary>
@@ -91,9 +95,12 @@ namespace VisualProgrammer.WPF {
 			var parentData = ConnectorFlow == ConnectorFlow.Destination ? this : other;
 			var childData = ConnectorFlow == ConnectorFlow.Source ? this : other;
 
-			// Perform the link
-			programContext.Nodes[parentData.NodeID].Link(programContext, parentData.PropertyName, programContext.Nodes[childData.NodeID]);
-			DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.InvalidateVisual(); // Indicate that the canvas needs to be redrawn with a new connection line
+			try {
+				// Perform the link
+				programContext.Nodes[parentData.NodeID].Link(programContext, parentData.PropertyName, programContext.Nodes[childData.NodeID]);
+				DependencyObjectUtils.AncestorOfType<VisualNodeCanvas>(this)?.InvalidateVisual(); // Indicate that the canvas needs to be redrawn with a new connection line
+
+			} catch { }
 		}
 	}
 
@@ -107,5 +114,19 @@ namespace VisualProgrammer.WPF {
 
 		/// <summary>This connector represents a connection that expects an incoming parameter value or previous statement reference.</summary>
 		Destination
+	}
+
+
+	internal class ConnectorDragBehaviour : ICanvasDragBehaviour {
+
+		public ConnectorDragBehaviour(VisualNodeConnector source) {
+			Connector = source;
+		}
+
+		public VisualNodeConnector Connector { get; }
+
+		public bool MoveStep(MouseEventArgs e, Point canvasPoint) => false;
+
+		public bool StopMove(MouseEventArgs e, Point canvasPoint) => false;
 	}
 }

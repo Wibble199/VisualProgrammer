@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VisualProgrammer.WPF"
-					xmlns:ap="clr-namespace:VisualProgrammer.WPF.AttachedProperties">
+					xmlns:ap="clr-namespace:VisualProgrammer.WPF.AttachedProperties"
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
 
 	<Style TargetType="{x:Type local:VisualNodeCanvas}" BasedOn="{StaticResource {x:Type ItemsControl}}">
 		<Setter Property="Background" Value="Transparent" />
@@ -9,7 +10,7 @@
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<local:VisualNodePresenter />
+					<local:VisualNodePresenter Command="{x:Static u:Commands.StartMove}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>

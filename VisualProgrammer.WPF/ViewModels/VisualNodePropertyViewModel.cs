@@ -27,7 +27,12 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// </summary>
 		public object Value {
 			get => model.Getter(nodeContext);
-			set => SetAndNotify(v => model.Setter(nodeContext, v), value);
+			set {
+				if (!Equals(model.Getter(nodeContext), value)) {
+					model.Setter(nodeContext, value);
+					Notify();
+				}
+			}
 		}
 	}
 }

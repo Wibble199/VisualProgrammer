@@ -38,7 +38,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// <summary>Gets or sets the position of this node in the canvas.</summary>
 		public Point Position {
 			get => model.Position;
-			set => SetAndNotify(v => model.Position = v, value);
+			set => SetAndNotify(v => model.Position, value);
 		}
 
 		// Booleans for easily checking the type of node this is in WPF.

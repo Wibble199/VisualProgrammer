@@ -29,6 +29,16 @@ namespace VisualProgrammer.Core {
 		public override int GetHashCode() => Name.GetHashCode();
 	}
 
+	/// <summary>Contains helper methods for <see cref="VariableReference{TVar}"/>.</summary>
+	public static class VariableReference {
+		/// <summary>Constructs a new <see cref="VariableReference{TVar}"/> of the target type with the given variable name.<para/>
+		/// Does not validate that the variable name is correct and of the correct type.</summary>
+		/// <param name="variableType">The type of variable being referenced.</param>
+		/// <param name="varName">The name of the variable to be referenced.</param>
+		public static IVariableReference Create(Type variableType, string varName) =>
+			(IVariableReference)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(variableType), varName);
+	}
+
 	public interface IVariableReference {
 		string Name { get; }
 		Type Type { get; }

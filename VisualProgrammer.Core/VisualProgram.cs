@@ -124,7 +124,7 @@ namespace VisualProgrammer.Core {
 				foreach (var (entry, paramKey) in paramMapsToReset)
 					entry.ParameterMap[paramKey] = "";
 				foreach (var (node, prop) in varRefsToReset)
-					prop.Setter(node, Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(prop.PropertyDataType), "")); // Create a new empty reference of the relevant type
+					prop.Setter(node, VariableReference.Create(prop.PropertyDataType!, "")); // Create a new empty reference of the relevant type
 			}
 		}
 		#endregion

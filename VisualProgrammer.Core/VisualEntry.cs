@@ -40,7 +40,7 @@ namespace VisualProgrammer.Core {
                         .Where(mapping => !string.IsNullOrWhiteSpace(mapping.Value)) // Exclude any that don't actually map to anything
                         .Select(p => VariableAccessorFactory.CreateSetterExpression(
                             context,
-                            (IVariableReference)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(def.Parameters[p.Key]), p.Value),
+                            VariableReference.Create(def.Parameters[p.Key], p.Value),
                             parameters[p.Key]
                         )
                     ).Concat(

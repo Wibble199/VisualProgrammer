@@ -19,7 +19,7 @@
 
     void UpdateReference(ChangeEventArgs e) {
         ValueChanged.InvokeAsync(
-            Value = (TVarRef)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(variableType), e.Value.ToString())
+            Value = (TVarRef)VariableReference.Create(variableType, e.Value.ToString())
         );
     }
 }

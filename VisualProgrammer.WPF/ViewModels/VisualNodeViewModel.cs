@@ -35,10 +35,13 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// <summary>The read-only ID of this node.</summary>
 		public Guid ID { get; }
 
+		/// <summary>Gets the name of the type of this node.</summary>
+		public string NodeName => model.GetType().Name;
+
 		/// <summary>Gets or sets the position of this node in the canvas.</summary>
 		public Point Position {
 			get => model.Position;
-			set => SetAndNotify(v => model.Position, value);
+			set => SetAndNotify(model => model.Position, value);
 		}
 
 		// Booleans for easily checking the type of node this is in WPF.

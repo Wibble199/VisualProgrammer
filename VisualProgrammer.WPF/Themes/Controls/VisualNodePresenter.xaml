@@ -17,7 +17,7 @@
 							<!-- Main node content -->
 							<StackPanel Orientation="Vertical" Margin="5,5,10,0">
 								<!-- Title -->
-								<TextBlock Text="Node Name" FontWeight="Bold" />
+								<TextBlock Text="{Binding NodeName, Mode=OneWay}" FontWeight="Bold" />
 
 								<!-- Properties list -->
 								<pe:MultiEditor Node="{Binding .}" Margin="0,8" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using VisualProgrammer.Core;
 using VisualProgrammer.WPF.Util;
@@ -17,8 +18,8 @@ namespace VisualProgrammer.WPF.ViewModels {
 			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Key, kvp => new VisualNodeViewModel(kvp.Value, kvp.Key));
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
 
-			variableIdViewModelMap = model.variableDefinitions.ToDictionary(kvp => kvp.Key, kvp => new VariableDefinitionViewModel(kvp.Value, kvp.Key));
-			Variables = new ObservableCollection<VariableDefinitionViewModel>(variableIdViewModelMap.Values);
+			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.variableDefinitions.Select(kvp => new VariableDefinitionViewModel(kvp.Value, kvp.Key)));
+			Variables.CollectionChanged += Variables_CollectionChanged;
 
 			// Initialise commands
 			// TODO
@@ -50,11 +51,19 @@ namespace VisualProgrammer.WPF.ViewModels {
 		#endregion
 
 		#region Variables
-		// Dictionary with holds the VariableDefinitionViewModels by their Varaible IDs.
-		private readonly Dictionary<string, VariableDefinitionViewModel> variableIdViewModelMap;
-
 		/// <summary>A collection of variables currently defined on the VisualProgram model.</summary>
 		public ObservableCollection<VariableDefinitionViewModel> Variables { get; }
+
+		/// <summary>
+		/// Handler that executes when the Variable collection is changed and propogates the changes to the model.
+		/// </summary>
+		private void Variables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+			if (e.Action == NotifyCollectionChangedAction.Remove) {
+				foreach (var item in e.OldItems.Cast<VariableDefinitionViewModel>())
+					model.RemoveVariable(item.ID);
+			}
+			Notify(nameof(Variables));
+		}
 		#endregion
 	}
 }

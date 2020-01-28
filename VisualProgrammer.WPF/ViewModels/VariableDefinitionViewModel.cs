@@ -12,5 +12,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 		public string ID { get; }
 
 		public Type Type => model.Type;
+
+		public object Default => model.DefaultValue;
 	}
 }

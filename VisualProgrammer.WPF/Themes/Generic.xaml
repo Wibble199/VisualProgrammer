@@ -4,6 +4,7 @@
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualNodeConnector.xaml" />
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualNodePresenter.xaml" />
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualProgramEditor.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VariableListEditor.xaml" />
 
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/InputFieldDynamic.xaml" />
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/VariablePicker.xaml" />

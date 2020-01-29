@@ -17,6 +17,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 			// Initialise nested models
 			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Key, kvp => new VisualNodeViewModel(kvp.Value, kvp.Key));
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
+			AvailableNodes = model.AvailableNodes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
 
 			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.variableDefinitions.Select(kvp => new VariableDefinitionViewModel(kvp.Value, kvp.Key)));
 			Variables.CollectionChanged += Variables_CollectionChanged;
@@ -35,12 +36,15 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// <summary>A collection of all nodes that currently exist on the Visual Program's canvas.</summary>
 		public ObservableCollection<VisualNodeViewModel> Nodes { get; }
 
-		public Guid CreateNode(Type nodeType, params Type[] genericTypes) {
+		/// <summary>A list of all available node types that can be added to this program.</summary>
+		public IEnumerable<ToolboxItemViewModel> AvailableNodes { get; }
+
+		public VisualNodeViewModel CreateNode(Type nodeType, params Type[] genericTypes) {
 			var guid = model.CreateNode(nodeType, genericTypes);
 			var vm = new VisualNodeViewModel(model.Nodes[guid], guid);
 			nodeIdViewModelMap.Add(guid, vm);
 			Nodes.Add(vm);
-			return guid;
+			return vm;
 		}
 
 		public void RemoveNode(Guid nodeId) {

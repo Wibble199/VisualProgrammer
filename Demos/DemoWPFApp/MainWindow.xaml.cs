@@ -14,10 +14,14 @@ namespace DemoWPFApp {
         }
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
-			var fac = ((MainWindowModel)DataContext).Program.Compile();
+			var fac = ((MainWindowModel)DataContext).Program.Compile<IDemoProgram>();
 			var prog = fac.CreateProgram();
-			((dynamic)prog).DemoEntry();
+			prog.DemoEntry();
 		}
+	}
+
+	public interface IDemoProgram {
+		void DemoEntry();
 	}
 
 	public class MainWindowModel {

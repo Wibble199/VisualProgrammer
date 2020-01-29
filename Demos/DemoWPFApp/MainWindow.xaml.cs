@@ -24,7 +24,7 @@ namespace DemoWPFApp {
 
         public VisualProgram Program { get; set; }
 
-        public MainWindowModel() {
+		public MainWindowModel() {
             var printGuid = Guid.NewGuid();
             var stringLitGuid = Guid.NewGuid();
 

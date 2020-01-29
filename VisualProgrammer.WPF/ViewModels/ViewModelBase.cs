@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -41,23 +42,42 @@ namespace VisualProgrammer.WPF.ViewModels {
             // Run the property selector to get the current value and compare that to the incoming value
             // If they are different, we need to update the property at this location
             if (!EqualityComparer<T>.Default.Equals(property.Compile()(model))) {
-                // Check the property selector is a member expression
-                if (!(property.Body is MemberExpression expr))
-                    throw new ArgumentException("Property selector does not have a member expression as the body.", nameof(property));
+				switch (property.Body) {
+					// Check the property selector is a member expression
+					case MemberExpression expr:
+						// Make a getter that returns the parent object since we need to pass this to SetValue
+						// E.G. if we had (model) => model.Foo.Bar.A, then expr.Expression points to model.Foo.Bar
+						// We also need to pass the model parameter in so that the property can be selected properly
+						var parent = Expression.Lambda<Func<TModel, object>>(expr.Expression, property.Parameters).Compile();
 
-                // Make a getter that returns the parent object since we need to pass this to SetValue
-                // E.G. if we had (model) => model.Foo.Bar.A, then expr.Expression points to model.Foo.Bar
-                // We also need to pass the model parameter in so that the property can be selected properly
-                var parent = Expression.Lambda<Func<TModel, object>>(expr.Expression, property.Parameters).Compile();
+						// Actually set the property on the target "parent" instance
+						if (expr.Member is PropertyInfo pi)
+							pi.SetValue(parent(model), value);
+						else if (expr.Member is FieldInfo fi)
+							fi.SetValue(parent(model), value);
+						break;
 
-                // Actually set the property on the target "parent" instance
-                if (expr.Member is PropertyInfo pi)
-                    pi.SetValue(parent(model), value);
-                else if (expr.Member is FieldInfo fi)
-                    fi.SetValue(parent(model), value);
+					// Check if the property selector is a method called get_Item (this is what's created when accessing indexed things such as lists by myList[2])
+					case MethodCallExpression expr when expr.Object != null && expr.Method.IsSpecialName && expr.Method.Name == "get_Item":
+						// Try find a matching set_Item method. Making an assumption here that it will have the same parameters (with the addition of the value at the end)
+						if (expr.Method.DeclaringType.GetMethod("set_Item", BindingFlags.Instance | BindingFlags.Public) is { } setter) {
+							// Add the new value to the end of the get_Item's argument expression list (this means that the indexes are preserved properly)
+							var args = expr.Arguments.Concat(new[] { Expression.Constant(value) });
+							// Create an action which takes the model as a parameter and calls the set_Item method with the arguments specified above
+							var execute = Expression.Lambda<Action<TModel>>(Expression.Call(expr.Object, setter, args), property.Parameters).Compile();
+							// Actually execute the compiled setter method
+							execute(model);
 
-                // Notify that it's changed
-                Notify(propertyName);
+						} else
+							throw new ArgumentException("Property selector uses a 'get_Item' method which does not have a corresponding 'set_Item' method.", nameof(property));
+						break;
+
+					default:
+						throw new ArgumentException("Property selector does not have a member expression as the body.", nameof(property));
+				}
+
+				// Notify that it's changed
+				Notify(propertyName);
             }
         }
 

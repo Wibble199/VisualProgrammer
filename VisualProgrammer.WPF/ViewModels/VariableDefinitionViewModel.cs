@@ -3,7 +3,7 @@ using VisualProgrammer.Core;
 
 namespace VisualProgrammer.WPF.ViewModels {
 
-	public class VariableDefinitionViewModel : ViewModelBase<Variable> {
+	public sealed class VariableDefinitionViewModel : ViewModelBase<Variable> {
 
 		public VariableDefinitionViewModel(Variable model, string id) : base(model) {
 			ID = id;

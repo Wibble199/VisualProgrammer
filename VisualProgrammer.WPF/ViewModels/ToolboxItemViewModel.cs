@@ -9,9 +9,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 	/// <summary>
 	/// A model for the items displayed in the toolbox.
 	/// </summary>
-	public class ToolboxItemViewModel : ViewModelBase<Type> {
+	public sealed class ToolboxItemViewModel : ViewModelBase<Type> {
 
-		private VisualProgramViewModel parent;
+		private readonly VisualProgramViewModel parent;
 		internal ObservableCollection<Type> selectedGenericTypes = new ObservableCollection<Type>();
 
 		public ToolboxItemViewModel(VisualProgramViewModel parent, Type type) : base(type) {
@@ -52,7 +52,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 	/// <summary>
 	/// View-Model to allow two-way binding for the generic types selected by the user.
 	/// </summary>
-	public class ToolboxItemGenericArgumentViewModel : ViewModelBase<int> {
+	public sealed class ToolboxItemGenericArgumentViewModel : ViewModelBase<int> {
 		private readonly ToolboxItemViewModel parent;
 
 		public ToolboxItemGenericArgumentViewModel(ToolboxItemViewModel parent, int index) : base(index) {

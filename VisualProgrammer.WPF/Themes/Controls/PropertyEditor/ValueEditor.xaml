@@ -7,7 +7,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:ValueEditor}">
-					<input:InputFieldDynamic Value="{Binding Value, Mode=TwoWay}" />
+					<input:InputFieldDynamic Value="{Binding Value, Mode=TwoWay}" InputType="{Binding Type, Mode=OneWay}" MaxWidth="220" />
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

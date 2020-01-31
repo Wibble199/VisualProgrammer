@@ -8,6 +8,7 @@
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualProgramEditor.xaml" />
 
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/InputFieldDynamic.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/NumericStepper.xaml" />
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/VariablePicker.xaml" />
 
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/ExpressionEditor.xaml" />

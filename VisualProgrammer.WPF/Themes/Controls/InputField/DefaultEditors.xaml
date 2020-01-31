@@ -8,13 +8,11 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Int32}}">
-		<!-- Need a custom numeric stepper control. Do not want to add Xceed incase users of this library override these
-			 controls and then there would be a dependency on Xceed when it's not actually being used. -->
-		<TextBlock Text="TODO" />
+		<local:IntegerStepper Value="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
 
 	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Double}}">
-		<TextBlock Text="TODO" />
+		<local:DoubleStepper Value="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
 
 	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Boolean}}">

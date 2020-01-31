@@ -18,4 +18,8 @@
 	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Boolean}}">
 		<CheckBox IsChecked="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
+
+	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Enum}}">
+		<local:EnumPicker />
+	</DataTemplate>
 </ResourceDictionary>

@@ -53,9 +53,11 @@ namespace VisualProgrammer.WPF.InputField {
 		public override DataTemplate SelectTemplate(object item, DependencyObject container) {
 			if (!(container is ContentPresenter presenter)) return null;
 			if (item is InputFieldViewModel vm) {
-				// First, try to find a template for this exact type
-				if (presenter.TryFindResource(new ComponentResourceKey(typeof(InputFieldDynamic), vm.InputType)) is DataTemplate dt)
-					return dt;
+				// Func to return a DataTemplate for the type (or null if not found)
+				DataTemplate TemplateFor(Type type) => presenter.TryFindResource(new ComponentResourceKey(typeof(InputFieldDynamic), type)) as DataTemplate;
+
+				return TemplateFor(vm.InputType) // First, try to find a template for this exact type
+					?? TemplateFor(typeof(Enum)); // Next, if the type is an enum (and no specialised control is registered as above), then use the general enum editor
 			}
 			return presenter.FindResource(errorKey) as DataTemplate;
 		}

@@ -2,8 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VisualProgrammer.WPF"
 					xmlns:pe="clr-namespace:VisualProgrammer.WPF.PropertyEditor"
-					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util"
-					xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
 
 	<u:EnumerableIndexConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableIndexConverter}" />
 	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableCountConverter}" />
@@ -12,7 +11,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
-					<Border Background="#FFF" BorderBrush="#26000000" BorderThickness="1" CornerRadius="4">
+					<Border BorderBrush="#26000000" BorderThickness="1" CornerRadius="4">
 						<Grid>
 							<!-- Main node content -->
 							<StackPanel Orientation="Vertical" Margin="5,5,10,0">
@@ -75,6 +74,7 @@
 												<Setter Property="Visibility" Value="Visible" />
 												<Setter Property="HorizontalAlignment" Value="Right" />
 												<Setter Property="Margin" Value="0,5,-7,0" />
+												<Setter Property="Background" Value="{u:DataTypeColorBrushBinding {Binding ExpressionType}}" />
 											</DataTrigger>
 											<!-- For statements -->
 											<DataTrigger Binding="{Binding IsStatement}" Value="True">
@@ -88,6 +88,16 @@
 							</local:VisualNodeConnector>
 						</Grid>
 
+						<Border.Style>
+							<Style TargetType="{x:Type Border}">
+								<Setter Property="Background" Value="{u:DataTypeColorBrushBinding {Binding ExpressionType}}" />
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding IsEntry}" Value="True">
+										<Setter Property="Background" Value="Gray" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</Border.Style>
 						<Border.Effect>
 							<DropShadowEffect Color="#999" BlurRadius="8" Direction="0" ShadowDepth="1" />
 						</Border.Effect>

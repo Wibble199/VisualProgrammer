@@ -16,5 +16,7 @@
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/SingleEditor.xaml" />
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/ValueEditor.xaml" />
 		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/VariableEditor.xaml" />
+
+		<u:LocalResourceDictionary SourceFile="Themes/TypeColors.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

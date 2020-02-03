@@ -44,9 +44,10 @@ namespace VisualProgrammer.WPF {
 						if (prop.Value is INodeReference nr && nr.Id.HasValue) {
 							var start = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == node.ID && c.PropertyName == prop.Name && c.ConnectorFlow == ConnectorFlow.Destination);
 							var end = DependencyObjectUtils.ChildOfType<VisualNodeConnector>(this, c => c.NodeID == nr.Id.Value && c.ConnectorFlow == ConnectorFlow.Source);
+							var isStatement = prop.PropertyType == VisualNodePropertyType.Statement;
 
 							if (start != null && end != null)
-								DrawLine(drawingContext, start, end, prop.PropertyType == VisualNodePropertyType.Statement);
+								DrawLine(drawingContext, start, end, isStatement ? Colors.Gray : this.ColorForDataType(prop.Type), isStatement);
 						}
 					}
 				}
@@ -57,7 +58,7 @@ namespace VisualProgrammer.WPF {
 		/// Draws a connection line between the given connectors.
 		/// </summary>
 		/// <param name="isVertical">Whether the curve should be drawn as if it is connecting elements vertically (true) or horizontally (false).</param>
-		private void DrawLine(DrawingContext ctx, VisualNodeConnector start, VisualNodeConnector end, bool isVertical) {
+		private void DrawLine(DrawingContext ctx, VisualNodeConnector start, VisualNodeConnector end, Color color, bool isVertical) {
 			// Start and end points of the connectors relative to the canvas
 			var sp = start.TransformToAncestor(this).Transform(start.MidPoint);
 			var ep = end.TransformToAncestor(this).Transform(end.MidPoint);
@@ -66,7 +67,7 @@ namespace VisualProgrammer.WPF {
 			var cp1 = isVertical ? new Point(sp.X, (sp.Y + ep.Y) / 2) : new Point((sp.X + ep.X) / 2, sp.Y);
 			var cp2 = isVertical ? new Point(ep.X, (sp.Y + ep.Y) / 2) : new Point((sp.X + ep.X) / 2, ep.Y);
 
-			ctx.DrawGeometry(Brushes.Transparent, new Pen(Brushes.Red, 2d), new PathGeometry(new[] {
+			ctx.DrawGeometry(Brushes.Transparent, new Pen(new SolidColorBrush(color), 2d), new PathGeometry(new[] {
 				new PathFigure(
 					start.TransformToAncestor(this).Transform(start.MidPoint),
 					new[] { new BezierSegment(cp1, cp2, ep, true) },

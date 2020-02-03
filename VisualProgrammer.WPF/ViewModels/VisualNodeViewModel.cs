@@ -38,6 +38,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// <summary>Gets the name of the type of this node.</summary>
 		public string NodeName => model.GetType().Name;
 
+		/// <summary>For expression nodes, returns the type of expression. For anything else returns null.</summary>
+		public Type ExpressionType => (model as IVisualExpression)?.ReturnType;
+
 		/// <summary>Gets or sets the position of this node in the canvas.</summary>
 		public Point Position {
 			get => model.Position;

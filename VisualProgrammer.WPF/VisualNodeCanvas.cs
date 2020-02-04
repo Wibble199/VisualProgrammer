@@ -47,34 +47,20 @@ namespace VisualProgrammer.WPF {
 							var isStatement = prop.PropertyType == VisualNodePropertyType.Statement;
 
 							if (start != null && end != null)
-								DrawLine(drawingContext, start, end, isStatement ? Colors.Gray : this.ColorForDataType(prop.Type), isStatement);
+								drawingContext.DrawConnectorLine(
+									new Pen(new SolidColorBrush(isStatement ? Colors.Gray : this.ColorForDataType(prop.Type)), 2d),
+									start.TransformToAncestor(this).Transform(start.MidPoint),
+									end.TransformToAncestor(this).Transform(end.MidPoint),
+									isStatement
+								);
 						}
 					}
 				}
 			}
+
+			// If there is a drag going on, run the behaviours custom render method
+			ViewModel?.DragBehaviour?.OnRender(this, drawingContext);
         }
-
-		/// <summary>
-		/// Draws a connection line between the given connectors.
-		/// </summary>
-		/// <param name="isVertical">Whether the curve should be drawn as if it is connecting elements vertically (true) or horizontally (false).</param>
-		private void DrawLine(DrawingContext ctx, VisualNodeConnector start, VisualNodeConnector end, Color color, bool isVertical) {
-			// Start and end points of the connectors relative to the canvas
-			var sp = start.TransformToAncestor(this).Transform(start.MidPoint);
-			var ep = end.TransformToAncestor(this).Transform(end.MidPoint);
-
-			// Bezier control points
-			var cp1 = isVertical ? new Point(sp.X, (sp.Y + ep.Y) / 2) : new Point((sp.X + ep.X) / 2, sp.Y);
-			var cp2 = isVertical ? new Point(ep.X, (sp.Y + ep.Y) / 2) : new Point((sp.X + ep.X) / 2, ep.Y);
-
-			ctx.DrawGeometry(Brushes.Transparent, new Pen(new SolidColorBrush(color), 2d), new PathGeometry(new[] {
-				new PathFigure(
-					start.TransformToAncestor(this).Transform(start.MidPoint),
-					new[] { new BezierSegment(cp1, cp2, ep, true) },
-					false
-				)
-			}));
-		}
 
 		/// <summary>
 		/// Command handler for when a node presenters drag starts.

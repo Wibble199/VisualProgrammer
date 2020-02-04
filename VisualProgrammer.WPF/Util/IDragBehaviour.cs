@@ -2,6 +2,7 @@
 using System.Windows.Input;
 
 namespace VisualProgrammer.WPF.Util {
+
 	/// <summary>
 	/// An interface that defines a behaviour for a specific type of drag action.
 	/// </summary>
@@ -26,5 +27,12 @@ namespace VisualProgrammer.WPF.Util {
 		/// <param name="canvasPoint">The mouse position relative to the canvas.</param>
 		/// <returns>Returns whether or not the canvas should invalidate.</returns>
 		bool StopMove(MouseEventArgs e, Point canvasPoint);
+
+		/// <summary>
+		/// Method that will be called at the end of the Canvas's OnRender method.
+		/// </summary>
+		/// <param name="canvas">The canvas that triggered the render.</param>
+		/// <param name="drawingContext">The drawing context of the canvas.</param>
+		void OnRender(VisualNodeCanvas canvas, System.Windows.Media.DrawingContext drawingContext) { }
 	}
 }

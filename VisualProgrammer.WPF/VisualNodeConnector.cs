@@ -2,9 +2,11 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using VisualProgrammer.Core;
 using VisualProgrammer.WPF.AttachedProperties;
 using VisualProgrammer.WPF.Util;
+using VisualProgrammer.WPF.ViewModels;
 
 namespace VisualProgrammer.WPF {
 
@@ -119,14 +121,34 @@ namespace VisualProgrammer.WPF {
 
 	internal class ConnectorDragBehaviour : ICanvasDragBehaviour {
 
+		private Point lastPoint;
+		private readonly bool isStatement;
+		private readonly Pen linePen;
+
 		public ConnectorDragBehaviour(VisualNodeConnector source) {
 			Connector = source;
+
+			var vm = source.DataContext as VisualNodeViewModel;
+			isStatement = vm.IsStatement;
+			linePen = new Pen(new SolidColorBrush(isStatement ? Colors.Gray : source.ColorForDataType(vm.ExpressionType)), 2d);
 		}
 
 		public VisualNodeConnector Connector { get; }
 
-		public bool MoveStep(MouseEventArgs e, Point canvasPoint) => false;
+		public bool MoveStep(MouseEventArgs e, Point canvasPoint) {
+			lastPoint = canvasPoint;
+			return true;
+		}
 
-		public bool StopMove(MouseEventArgs e, Point canvasPoint) => false;
+		public bool StopMove(MouseEventArgs e, Point canvasPoint) => true;
+
+		public void OnRender(VisualNodeCanvas canvas, DrawingContext drawingContext) {
+			drawingContext.DrawConnectorLine(
+				linePen,
+				Connector.TransformToAncestor(canvas).Transform(Connector.MidPoint),
+				lastPoint,
+				isStatement
+			);
+		}
 	}
 }

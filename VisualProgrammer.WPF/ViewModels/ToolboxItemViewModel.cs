@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using VisualProgrammer.Core;
 
 namespace VisualProgrammer.WPF.ViewModels {
@@ -43,9 +45,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// <summary>
 		/// Creates a new node on the parent program view-model and starts drag behaviourfor it.
 		/// </summary>
-		public void CreateNode() {
+		public void CreateNode(object sender, MouseEventArgs e) {
 			var nodeVm = parent.CreateNode(model, selectedGenericTypes.ToArray());
-			parent.DragBehaviour = new VisualNodePresenterDragBehaviour(nodeVm, new System.Windows.Point(10, 10));
+			parent.DragBehaviour = new VisualNodePresenterDragBehaviour(nodeVm, e.GetPosition((IInputElement)sender));
 		}
 	}
 

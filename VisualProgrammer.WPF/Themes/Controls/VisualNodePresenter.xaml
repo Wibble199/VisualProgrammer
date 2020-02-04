@@ -8,10 +8,11 @@
 	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableCountConverter}" />
 
 	<Style TargetType="{x:Type local:VisualNodePresenter}">
+		<Setter Property="Width" Value="140px" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:VisualNodePresenter}">
-					<Border BorderBrush="#26000000" BorderThickness="1" CornerRadius="4">
+					<Border BorderBrush="#26000000" BorderThickness="1" CornerRadius="4" Width="{TemplateBinding Width}" MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">
 						<Grid>
 							<!-- Main node content -->
 							<StackPanel Orientation="Vertical" Margin="5,5,10,0">

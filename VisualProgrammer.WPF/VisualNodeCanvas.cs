@@ -80,9 +80,9 @@ namespace VisualProgrammer.WPF {
 		/// Command handler for when a node presenters drag starts.
 		/// </summary>
 		private void NodePresenterStartMove(object sender, ExecutedRoutedEventArgs e) {
-			if (!(e.OriginalSource is VisualNodePresenter presenter)) return;
+			if (!(e.OriginalSource is VisualNodePresenter presenter && e.Parameter is Point p)) return;
 			var vm = (VisualNodeViewModel)presenter.DataContext;
-			ViewModel.DragBehaviour = new VisualNodePresenterDragBehaviour(vm, new Point(20, 10));
+			ViewModel.DragBehaviour = new VisualNodePresenterDragBehaviour(vm, p);
 		}
 
 		/// <summary>

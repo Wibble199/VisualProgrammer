@@ -6,7 +6,7 @@ using VisualProgrammer.WPF.ViewModels;
 
 namespace VisualProgrammer.WPF {
 
-	public class VisualNodePresenter : Control, ICommandSource {
+	public class VisualNodePresenter : Control {
 
 		private const string PART_NodeDragArea = nameof(PART_NodeDragArea);
 
@@ -17,40 +17,26 @@ namespace VisualProgrammer.WPF {
 		public override void OnApplyTemplate() {
 			base.OnApplyTemplate();
 			if (GetTemplateChild(PART_NodeDragArea) is UIElement r)
-				r.MouseDown += (sender, e) => this.InvokeCommand();
+				r.MouseDown += ExecuteDragCommand;
 		}
 
-		#region ICommandSource
 		#region Command DependencyProperty
-		public ICommand Command {
-			get => (ICommand)GetValue(CommandProperty);
-			set => SetValue(CommandProperty, value);
+		public ICommand StartDragCommand {
+			get => (ICommand)GetValue(StartDragCommandProperty);
+			set => SetValue(StartDragCommandProperty, value);
 		}
 
-		public static readonly DependencyProperty CommandProperty =
-			DependencyProperty.Register("Command", typeof(ICommand), typeof(VisualNodePresenter), new PropertyMetadata(null));
+		public static readonly DependencyProperty StartDragCommandProperty =
+			DependencyProperty.Register("StartDragCommand", typeof(ICommand), typeof(VisualNodePresenter), new PropertyMetadata(null));
 		#endregion
 
-		#region CommandParameter DependencyProperty
-		public object CommandParameter {
-			get => GetValue(CommandParameterProperty);
-			set => SetValue(CommandParameterProperty, value);
+		private void ExecuteDragCommand(object sender, MouseButtonEventArgs e) {
+			var param = e.GetPosition(this);
+			if (StartDragCommand is RoutedCommand rc)
+				rc.Execute(param, this);
+			else if (StartDragCommand is ICommand c)
+				c.Execute(param);
 		}
-
-		public static readonly DependencyProperty CommandParameterProperty =
-			DependencyProperty.Register("CommandParameter", typeof(object), typeof(VisualNodePresenter), new PropertyMetadata(null));
-		#endregion
-
-		#region CommandTarget DependencyProperty
-		public IInputElement CommandTarget {
-			get => (IInputElement)GetValue(CommandTargetProperty);
-			set => SetValue(CommandTargetProperty, value);
-		}
-
-		public static readonly DependencyProperty CommandTargetProperty =
-			DependencyProperty.Register("CommandTarget", typeof(IInputElement), typeof(VisualNodePresenter), new PropertyMetadata(null));
-		#endregion
-		#endregion
 	}
 
 	/// <summary>

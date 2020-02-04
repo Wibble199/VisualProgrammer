@@ -11,7 +11,7 @@
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<local:VisualNodePresenter Command="{x:Static u:Commands.StartMove}" />
+					<local:VisualNodePresenter StartDragCommand="{x:Static u:Commands.StartMove}" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>

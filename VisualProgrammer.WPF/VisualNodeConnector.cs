@@ -128,9 +128,15 @@ namespace VisualProgrammer.WPF {
 		public ConnectorDragBehaviour(VisualNodeConnector source) {
 			Connector = source;
 
-			var vm = source.DataContext as VisualNodeViewModel;
-			isStatement = vm.IsStatement;
-			linePen = new Pen(new SolidColorBrush(isStatement ? Colors.Gray : source.ColorForDataType(vm.ExpressionType)), 2d);
+			Type t = null;
+			if (source.DataContext is VisualNodeViewModel vnvm) {
+				isStatement = vnvm.IsStatement;
+				t = vnvm.ExpressionType;
+			} else if (source.DataContext is VisualNodePropertyViewModel vnpvm) {
+				isStatement = vnpvm.PropertyType == VisualNodePropertyType.Statement;
+				t = vnpvm.Type;
+			}
+			linePen = new Pen(new SolidColorBrush(isStatement ? Colors.Gray : source.ColorForDataType(t)), 2d);
 		}
 
 		public VisualNodeConnector Connector { get; }

@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
+	<ResourceDictionary.MergedDictionaries>
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VariableListEditor.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualNodeCanvas.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualNodeConnector.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualNodePresenter.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualNodeToolbox.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/VisualProgramEditor.xaml" />
+
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/InputFieldDynamic.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/NumericStepper.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/VariablePicker.xaml" />
+
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/ExpressionEditor.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/MultiEditor.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/SingleEditor.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/ValueEditor.xaml" />
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/PropertyEditor/VariableEditor.xaml" />
+
+		<u:LocalResourceDictionary SourceFile="Themes/TypeColors.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -18,8 +18,8 @@
             } }
         },
 
-        variableDefinitions = new Dictionary<string, (Type type, object @default)> {
-            { "doubleVar", (typeof(double), 0d) }
+        variableDefinitions = new Dictionary<string, Variable> {
+            { "doubleVar", new Variable(typeof(double), 0d) }
         },
 
         Nodes = new Dictionary<Guid, VisualNode> {

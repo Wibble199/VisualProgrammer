@@ -34,10 +34,8 @@ namespace VisualProgrammer.Core {
         );
 
         /// <summary>Gets all the properties of a specific <see cref="VisualNodePropertyType"/>, for example getting all statements.</summary>
-        /// <param name="type">The type of property to filter by.</param>
-        public IEnumerable<PropDef> GetPropertiesOfType(VisualNodePropertyType type) => from prop in Properties let def = prop.Value where def.PropertyType == type select def;
-
-
+        /// <param name="types">The type(s) of property to filter by.</param>
+        public IEnumerable<PropDef> GetPropertiesOfType(params VisualNodePropertyType[] types) => from prop in Properties let def = prop.Value where types.Contains(def.PropertyType) select def;
 
         /// <summary>Gets the value of the property with the given name.</summary>
         /// <exception cref="ArgumentException">If the property with the given name is not found.</exception>
@@ -178,18 +176,9 @@ namespace VisualProgrammer.Core {
         /// <param name="context">The program context. Required for variables, resolving links, etc.</param>
         Expression CreateExpression(VisualProgram context);
 
-        /// <summary>Gets all the properties of a specific <see cref="VisualNodePropertyType"/>, for example getting all statements.</summary>
+        /// <summary>Gets all the properties of one or more <see cref="VisualNodePropertyType"/>s, for example getting all statements.</summary>
         /// <param name="type">The type of property to filter by.</param>
-        IEnumerable<PropDef> GetPropertiesOfType(VisualNodePropertyType type);
-
-		/// <summary>Gets all the properties of a range of specific <see cref="VisualNodePropertyType"/>s, for example getting all statements AND all values.</summary>
-		/// <param name="types">The types of property to filter by.</param>
-		IEnumerable<PropDef> GetPropertiesOfTypes(params VisualNodePropertyType[] types) {
-			var props = Enumerable.Empty<PropDef>();
-			foreach (var type in types)
-				props = props.Concat(GetPropertiesOfType(type));
-			return props;
-		}
+        IEnumerable<PropDef> GetPropertiesOfType(params VisualNodePropertyType[] type);
 
         /// <summary>Gets the value of the property with the given name.</summary>
         object GetPropertyValue(string name);

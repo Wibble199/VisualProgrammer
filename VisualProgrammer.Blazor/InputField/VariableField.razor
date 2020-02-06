@@ -6,7 +6,7 @@
     <option value="@string.Empty">&mdash; None &mdash;</option>
 
     <!-- For every defined variable in the program context whose type matches the given variable type, add that variable to a select list -->
-    @foreach (var variableDef in Context.VariableDefinitions.Where(d => d.Value.type == variableType)) {
+    @foreach (var variableDef in Context.VariableDefinitions.Where(d => d.Value.Type == variableType)) {
         <option value="@variableDef.Key" selected="@(variableDef.Key == Value.Name)">@variableDef.Key</option>
     }
 </select>
@@ -19,7 +19,7 @@
 
     void UpdateReference(ChangeEventArgs e) {
         ValueChanged.InvokeAsync(
-            Value = (TVarRef)Activator.CreateInstance(typeof(VariableReference<>).MakeGenericType(variableType), e.Value.ToString())
+            Value = (TVarRef)VariableReference.Create(variableType, e.Value.ToString())
         );
     }
 }

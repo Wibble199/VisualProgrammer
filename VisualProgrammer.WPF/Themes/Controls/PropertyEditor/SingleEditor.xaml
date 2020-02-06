@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:VisualProgrammer.WPF.PropertyEditor"
+					xmlns:vpcore="clr-namespace:VisualProgrammer.Core;assembly=VisualProgrammer.Core">
+
+	<Style TargetType="{x:Type local:SingleEditor}">
+		<!-- Conditionally choose template based on field type -->
+		<Style.Triggers>
+			<!-- Template for Expression references -->
+			<!-- Is there a cleaner way of doing this? Probably, but idk how -->
+			<DataTrigger Binding="{Binding Path=PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Expression}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<local:ExpressionEditor />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+
+			<!-- Template for Variable references -->
+			<DataTrigger Binding="{Binding Path=PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Variable}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<local:VariableEditor />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+
+			<!-- Template for raw values -->
+			<DataTrigger Binding="{Binding Path=PropertyType}" Value="{x:Static vpcore:VisualNodePropertyType.Value}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<local:ValueEditor />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

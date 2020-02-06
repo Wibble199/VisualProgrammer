@@ -13,7 +13,7 @@
                 &rarr;
                 <select @onchange="e => Entry.ParameterMap[param.Key] = (string)e.Value">
                     <option value="@string.Empty">&mdash; None &mdash;</option>
-                    @foreach (var variableDef in Context.VariableDefinitions.Where(d => d.Value.type == Definition.Parameters[param.Key])) {
+                    @foreach (var variableDef in Context.VariableDefinitions.Where(d => d.Value.Type == Definition.Parameters[param.Key])) {
                         <option value="@variableDef.Key" selected="@(variableDef.Key == varName)">@variableDef.Key</option>
                     }
                 </select>

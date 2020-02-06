@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:VisualProgrammer.WPF.InputField"
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util"
+					xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+	<ResourceDictionary.MergedDictionaries>
+		<u:LocalResourceDictionary SourceFile="Themes/Controls/InputField/DefaultEditors.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
+	<local:InputFieldDataTemplateSelector x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, InputFieldSelector}" />
+
+	<Style TargetType="{x:Type local:InputFieldDynamic}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:InputFieldDynamic}">
+					<ContentControl x:Name="PART_ContentControl" Content="{Binding}" ContentTemplateSelector="{StaticResource {ComponentResourceKey {x:Type local:InputFieldDynamic}, InputFieldSelector}}" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, MissingInputFieldDataTemplate}">
+		<TextBlock Foreground="Red" TextWrapping="Wrap">
+			<Run Text="Could not find a template to edit type" />
+			<Run Text="{Binding Path=InputType.Name, Mode=OneWay}" FontStyle="Italic" />
+		</TextBlock>
+	</DataTemplate>
+</ResourceDictionary>

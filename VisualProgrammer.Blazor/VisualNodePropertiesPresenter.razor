@@ -18,7 +18,7 @@
     [Parameter] public IVisualNode Node { get; set; }
 
     /// <summary>Gets an enumerable for all the editable properties of the assigned node.</summary>
-    IOrderedEnumerable<VisualNodePropertyDefinition> Properties => Node.GetPropertiesOfTypes(VisualNodePropertyType.Expression, VisualNodePropertyType.Value, VisualNodePropertyType.Variable)
+    IOrderedEnumerable<VisualNodePropertyDefinition> Properties => Node.GetPropertiesOfType(VisualNodePropertyType.Expression, VisualNodePropertyType.Value, VisualNodePropertyType.Variable)
         .OrderBy(p => p.Meta.Order)
         .ThenBy(p => p.DisplayName);
 }

@@ -36,13 +36,13 @@ namespace VisualProgrammer.Core.Compilation {
 		private readonly Type programType;
 
 
-		internal CompiledProgramFactory(Dictionary<string, Delegate> functions, Dictionary<string, Variable> variableDefinitions) {
+		internal CompiledProgramFactory(Dictionary<string, Delegate> functions, IEnumerable<Variable> variableDefinitions) {
 			// Guard to ensure the TImplements in an interface
 			if (!typeof(TImplements).IsInterface)
 				throw new ArgumentException($"Type parameter '{nameof(TImplements)}' must be an interface.", nameof(TImplements));
 
 			this.functions = functions;
-			vars = variableDefinitions;
+            vars = variableDefinitions.ToDictionary(v => v.Name, v => v);
 
 			// Create a new type that implements the TImplements type (and also has other methods as per the function IDs)
 			var typeBuilder = moduleBuilder.DefineType("Dynamic_" + Guid.NewGuid().ToString(), TypeAttributes.Class | TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.BeforeFieldInit | TypeAttributes.AutoLayout, typeof(CompiledInstanceBase));

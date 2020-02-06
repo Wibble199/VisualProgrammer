@@ -18,7 +18,7 @@ namespace VisualProgrammer.Core {
             Property(
 				Property(
 					PropertyOrField(
-						context.compiledInstanceParameter,
+						context.Variables.compiledInstanceParameter,
 						"variables"
 					),
 					"Item",

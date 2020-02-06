@@ -28,14 +28,16 @@ namespace VisualProgrammer.Core {
         /// <summary>
         /// Creates a new <see cref="StatementReference"/> by looking up the given node's key in the given program context.
         /// </summary>
-        public StatementReference(VisualProgram context, VisualNode node) {
-            nodeId = context.Nodes.First(n => Equals(n.Value, node)).Key;
+        public StatementReference(VisualNode node) {
+            nodeId = node.Id;
         }
 
-		public VisualNode? ResolveNode(VisualProgram context) => context.ResolveReference(nodeId);
+		public VisualNode? ResolveNode(VisualProgram context) => context.Nodes[nodeId];
 		public VisualNode ResolveRequiredNode(VisualProgram context) => ResolveNode(context) ?? throw new Exception();
-		public Expression? ResolveExpression(VisualProgram context) => context.ResolveReference(nodeId)?.CreateExpression(context);
+
+		public Expression? ResolveExpression(VisualProgram context) => ResolveNode(context)?.CreateExpression(context);
 		public Expression ResolveRequiredExpression(VisualProgram context) => ResolveExpression(context) ?? throw new Exception();
+
 		public bool HasValue => nodeId.HasValue;
 		public Guid? Id => nodeId;
 

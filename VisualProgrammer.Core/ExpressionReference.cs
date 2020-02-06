@@ -35,9 +35,9 @@ namespace VisualProgrammer.Core {
 		/// <summary>
 		/// Initializes a new instance of <see cref="ExpressionReference{TValue}"/> that points to the given node within the context of the given program.
 		/// </summary>
-		public ExpressionReference(VisualProgram context, VisualNode node) {
+		public ExpressionReference(VisualNode node) {
 			isValue = false;
-			nodeId = context.Nodes.First(n => Equals(n.Value, node)).Key;
+			nodeId = node.Id;
 			value = default;
 		}
 
@@ -53,12 +53,14 @@ namespace VisualProgrammer.Core {
 		}
 #pragma warning restore CS8653
 
-		public VisualNode? ResolveNode(VisualProgram context) => isValue || !nodeId.HasValue ? null : context.ResolveReference(nodeId.Value);
+		public VisualNode? ResolveNode(VisualProgram context) => isValue || !nodeId.HasValue ? null : context.Nodes[nodeId.Value];
 		public VisualNode ResolveRequiredNode(VisualProgram context) => ResolveNode(context) ?? throw new Exception();
+
 		public Expression? ResolveExpression(VisualProgram context) => isValue
 			? Expression.Constant(value, typeof(TValue))
-			: nodeId.HasValue ? context.ResolveReference(nodeId.Value)?.CreateExpression(context) : null;
+			: nodeId.HasValue ? context.Nodes[nodeId.Value]?.CreateExpression(context) : null;
 		public Expression ResolveRequiredExpression(VisualProgram context) => ResolveExpression(context) ?? throw new Exception();
+
 		public bool HasValue => isValue || nodeId.HasValue;
 		public Guid? Id => nodeId;
 
@@ -70,5 +72,14 @@ namespace VisualProgrammer.Core {
 		public static bool operator ==(ExpressionReference<TValue> a, ExpressionReference<TValue> b) => a.Equals(b);
 		public static bool operator !=(ExpressionReference<TValue> a, ExpressionReference<TValue> b) => !a.Equals(b);
 		public override int GetHashCode() => HashCode.Combine(isValue, nodeId, value);
+	}
+
+	/// <summary>Contains helper methods for <see cref="ExpressionReference{TValue}"/>.</summary>
+	public static class ExpressionReference {
+		/// <summary>Creates a new <see cref="ExpressionReference{TValue}"/> of the given type that points to the given node.</summary>
+		/// <param name="refType">The inner data type of the expression reference.</param>
+		/// <param name="node">The node that the reference will point to.</param>
+		public static INodeReference Create(Type refType, VisualNode node) =>
+			(INodeReference)Activator.CreateInstance(typeof(ExpressionReference<>).MakeGenericType(refType), node);
 	}
 }

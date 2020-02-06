@@ -5,11 +5,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 
 	public sealed class VariableDefinitionViewModel : ViewModelBase<Variable> {
 
-		public VariableDefinitionViewModel(Variable model, string id) : base(model) {
-			ID = id;
-		}
+		public VariableDefinitionViewModel(Variable model) : base(model) { }
 
-		public string ID { get; }
+		public string ID => model.Name;
 
 		public Type Type => model.Type;
 

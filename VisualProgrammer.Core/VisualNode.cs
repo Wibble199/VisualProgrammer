@@ -13,6 +13,9 @@ namespace VisualProgrammer.Core {
 	/// </summary>
 	public abstract class VisualNode : IVisualNode {
 
+		/// <summary>The ID of this node.</summary>
+		public Guid Id { get; internal set; }
+
         /// <summary>A cache of all properties on this visual node type.</summary>
         private Dictionary<string, PropDef>? properties;
 
@@ -87,7 +90,7 @@ namespace VisualProgrammer.Core {
 #warning TODO: Remove other links if required
 
 					// If we got here, validation has passed so make the link
-					SetPropertyValue(targetProperty, Activator.CreateInstance(typeof(ExpressionReference<>).MakeGenericType(prop.PropertyDataType), context, node));
+					SetPropertyValue(targetProperty, ExpressionReference.Create(prop.PropertyDataType, node));
 					break;
 
                 case VisualNodePropertyType.Statement:
@@ -102,7 +105,7 @@ namespace VisualProgrammer.Core {
 #warning TODO: Remove other links if required
 
 					// If we got here, validation has passed so make the link
-					SetPropertyValue(targetProperty, new StatementReference(context, node));
+					SetPropertyValue(targetProperty, new StatementReference(node));
 					break;
 
 				default:
@@ -159,6 +162,17 @@ namespace VisualProgrammer.Core {
                         itemsToCheck.Enqueue(childItem);
             }
         }
+
+		/// <summary>
+		/// Creates a new node of the given type and returns it.
+		/// </summary>
+		/// <param name="nodeType">The type of node to create. Must be a <see cref="VisualNode"/>.</param>
+		/// <param name="genericTypes">If the node to create is a generic node, these are the types to use as the type arguments.</param>
+		public static VisualNode Construct(Type nodeType, params Type[] genericTypes) {
+			// TODO: Validate that the given generic types can be assigned to the node type (e.g. check type contraints)
+			var targetType = nodeType.IsGenericType ? nodeType.MakeGenericType(genericTypes) : nodeType;
+			return (VisualNode)Activator.CreateInstance(targetType);
+		}
     }
 
 
@@ -168,6 +182,9 @@ namespace VisualProgrammer.Core {
     /// </summary>
     /// <remarks>This is required in addition to the abstract class above because we need to provide a contract to the non-generic <see cref="IVisualExpression"/>.</remarks>
     public interface IVisualNode {
+
+		/// <summary>The ID of this node in the program context.</summary>
+		Guid Id { get; }
 
         /// <summary>The position of this node on the program canvas.</summary>
         Point Position { get; set; }

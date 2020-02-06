@@ -33,9 +33,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// Gets the ViewModel instance that can be given to a <see cref="VisualNodePresenter"/> to show a template of the node.
 		/// </summary>
 		public VisualNodeViewModel TemplateInstance => new VisualNodeViewModel(
-			(VisualNode)Activator.CreateInstance(model.ContainsGenericParameters ? model.MakeGenericType(selectedGenericTypes.ToArray()) : model),
-			Guid.Empty
-		);
+            (VisualNode)Activator.CreateInstance(model.ContainsGenericParameters ? model.MakeGenericType(selectedGenericTypes.ToArray()) : model));
 
 		/// <summary>
 		/// A collection of the ViewModels for generic arguments that the user has selected.

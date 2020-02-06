@@ -6,42 +6,37 @@
 <button class="execute-button" @onclick="Execute">Execute</button>
 
 @code {
-    static string testEntryId = "testentry";
+	static string testEntryId = "testentry";
 
-    static VisualProgram program = new VisualProgram(env => env
-        .ConfigureEntries(e => e
-            .Add(testEntryId, "Test Entry", p => p
-                .WithParameter<double>("someDouble")
-            )
-        )
-        .ConfigureDataTypes(dt => dt
-            .AddDefault()
-            .Add<long>()
-        )
-    ) {
-        variableDefinitions = new Dictionary<string, Variable> {
-            { "doubleVar", new Variable(typeof(double), 0d) }
-        },
+	static VisualProgram program = new VisualProgram(env => env
+		.ConfigureEntries(e => e
+			.Add(testEntryId, "Test Entry", p => p
+				.WithParameter<double>("someDouble")
+			)
+		)
+		.ConfigureDataTypes(dt => dt
+			.AddDefault()
+			.Add<long>()
+		),
+		new VisualNodeCollection {
+			{ new VisualEntry(testEntryId) { ParameterMap = new Dictionary<string, string> { ["someDouble"] = "doubleVar" }, Position = new System.Drawing.Point(100, 10) } }
+		},
+		new VariableCollection {
+			{ "doubleVar", typeof(double), 0d }
+		}
+	);
 
-        Nodes = new Dictionary<Guid, VisualNode> {
-            { Guid.NewGuid(), new VisualEntry(testEntryId) {
-                ParameterMap = new Dictionary<string, string> { { "someDouble", "doubleVar" } }, // Map the "someInt" parameter onto the "intVar" variable
-                Position = new System.Drawing.Point(100, 10) }
-            },
-        }
-    };
+	void Execute() {
+		var programFactory = program.Compile<IDemoProgram>();
+		var inst = programFactory.CreateProgram();
+		inst.TestEntry(10d);
+		Console.WriteLine($"Double var = {inst.DoubleVar}");
+		Console.WriteLine($"Double var other = {inst.GetVariable("doubleVar")}");
+	}
 
-    void Execute() {
-        var programFactory = program.Compile<IDemoProgram>();
-        var inst = programFactory.CreateProgram();
-        inst.TestEntry(10d);
-        Console.WriteLine($"Double var = {inst.DoubleVar}");
-        Console.WriteLine($"Double var other = {inst.GetVariable("doubleVar")}");
-    }
-
-    public interface IDemoProgram : VisualProgrammer.Core.Compilation.ICompiledInstanceBase
-    {
-        void TestEntry(double d);
-        double DoubleVar { get; set; }
-    }
+	public interface IDemoProgram : VisualProgrammer.Core.Compilation.ICompiledInstanceBase
+	{
+		void TestEntry(double d);
+		double DoubleVar { get; set; }
+	}
 }

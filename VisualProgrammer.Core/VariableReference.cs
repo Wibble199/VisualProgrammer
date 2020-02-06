@@ -17,7 +17,7 @@ namespace VisualProgrammer.Core {
 		public void Validate(VisualProgram context) {
 			if (string.IsNullOrWhiteSpace(Name))
 				throw new Exception(); // TODO: Add meaningful error message. If this is thrown, variable isn't provided
-			if (!context.VariableDefinitions.TryGetValue(Name, out var def))
+			if (!context.Variables.TryGetVariable(Name, out var def))
 				throw new Exception(); // TODO: Add meaninful error message. If this is thrown, could not find a variable with the target name.
 			if (def.Type != Type)
 				throw new Exception(); // TODO: Add meaningful message. If this is thrown, variable is wrong type

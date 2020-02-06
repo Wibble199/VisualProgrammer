@@ -13,13 +13,13 @@
 
         @* Current variables table *@
         <tbody>
-            @foreach (var varDef in Context.VariableDefinitions)
+            @foreach (var varDef in Context.Variables)
             {
                 <tr>
-                    <td>@varDef.Key</td>
-                    <td>@varDef.Value.Type.Name</td>
-                    <td>@(varDef.Value.DefaultValue.ToString())</td>
-                    <td><button @onclick="e => RemoveVariable(varDef.Key)">&times;</button></td>
+                    <td>@varDef.Name</td>
+                    <td>@varDef.Type.Name</td>
+                    <td>@(varDef.DefaultValue.ToString())</td>
+                    <td><button @onclick="e => RemoveVariable(varDef.Name)">&times;</button></td>
                 </tr>
             }
         </tbody>
@@ -67,7 +67,7 @@
     /// </summary>
     void CreateVariable() {
         if (!string.IsNullOrWhiteSpace(NewVariableName) && NewVariableType != null) {
-            Context.CreateVariable(NewVariableName, NewVariableType, NewVariableDefault);
+            Context.Variables.Add(NewVariableName, NewVariableType, NewVariableDefault);
             NewVariableName = "";
             Editor.StateChanged();
         }
@@ -77,7 +77,7 @@
     /// Removes the specified variable from the program.
     /// </summary>
     void RemoveVariable(string name) {
-        Context.RemoveVariable(name);
+        Context.Variables.Remove(name);
         Editor.StateChanged();
     }
 }

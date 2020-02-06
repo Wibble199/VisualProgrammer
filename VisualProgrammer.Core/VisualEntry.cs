@@ -52,7 +52,7 @@ namespace VisualProgrammer.Core {
 				// All lambdas will get a context parameter
 				// We also pass the defined parameters to the lambda so it knows what types to expect and what signature to have.
 				// This needs to happen regardless or not of whether the parameters are actually used by the entry function as this determines the delegate's signature.
-				new[] { context.compiledInstanceParameter }.Concat(parameters)
+				new[] { context.Variables.compiledInstanceParameter }.Concat(parameters)
             );
         }
 

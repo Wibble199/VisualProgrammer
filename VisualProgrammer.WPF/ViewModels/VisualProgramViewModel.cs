@@ -15,11 +15,11 @@ namespace VisualProgrammer.WPF.ViewModels {
 
 		internal VisualProgramViewModel(VisualProgram model) : base(model) {
 			// Initialise nested models
-			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Key, kvp => new VisualNodeViewModel(kvp.Value, kvp.Key));
+			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Id, kvp => new VisualNodeViewModel(kvp));
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
 			AvailableNodes = model.Environment.AvailableNodeTypes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
 
-			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.variableDefinitions.Select(kvp => new VariableDefinitionViewModel(kvp.Value, kvp.Key)));
+			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.Variables.Select(var => new VariableDefinitionViewModel(var)));
 			Variables.CollectionChanged += Variables_CollectionChanged;
 
 			// Initialise commands
@@ -40,15 +40,15 @@ namespace VisualProgrammer.WPF.ViewModels {
 		public IEnumerable<ToolboxItemViewModel> AvailableNodes { get; }
 
 		public VisualNodeViewModel CreateNode(Type nodeType, params Type[] genericTypes) {
-			var guid = model.CreateNode(nodeType, genericTypes);
-			var vm = new VisualNodeViewModel(model.Nodes[guid], guid);
-			nodeIdViewModelMap.Add(guid, vm);
+			var node = model.Nodes.Create(nodeType, genericTypes);
+			var vm = new VisualNodeViewModel(node);
+			nodeIdViewModelMap.Add(node.Id, vm);
 			Nodes.Add(vm);
 			return vm;
 		}
 
 		public void RemoveNode(Guid nodeId) {
-			model.RemoveNode(nodeId);
+			model.Nodes.Remove(nodeId);
 			Nodes.Remove(nodeIdViewModelMap[nodeId]);
 			nodeIdViewModelMap.Remove(nodeId);
 		}
@@ -64,7 +64,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 		private void Variables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
 			if (e.Action == NotifyCollectionChangedAction.Remove) {
 				foreach (var item in e.OldItems.Cast<VariableDefinitionViewModel>())
-					model.RemoveVariable(item.ID);
+					model.Variables.Remove(item.ID);
 			}
 			Notify(nameof(Variables));
 		}

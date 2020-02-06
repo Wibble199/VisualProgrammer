@@ -12,10 +12,10 @@
                 @* Create a line for every single expression property of every single node in the program *@
                 @foreach (var type in new[] { VisualNodePropertyType.Expression, VisualNodePropertyType.Statement }) { // For statements and expressions
                     @foreach (var line in from n in Program.Nodes
-                                          let vn = n.Value
+                                          let vn = n
                                           from p in vn.GetPropertiesOfType(type)
-                                          select new { n.Key, Name = p.Name, End = (INodeReference)p.Getter(vn), Type = p.PropertyDataType }) {
-                        <path data-line-source-id="@line.Key" data-line-source-name="@line.Name" data-type="@(line.Type?.Name.ToString().ToLower() ?? "")" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
+                                          select new { n.Id, Name = p.Name, End = (INodeReference)p.Getter(vn), Type = p.PropertyDataType }) {
+                        <path data-line-source-id="@line.Id" data-line-source-name="@line.Name" data-type="@(line.Type?.Name.ToString().ToLower() ?? "")" data-line-dest-id="@(line.End.Id?.ToString() ?? "")" /> <!-- Have to use a null-coalesing operator and an empty string because, at time of writing, Blazor crashes when trying to set null attributes on SVG elements. https://github.com/aspnet/AspNetCore/issues/15311 -->
                     }
                 }
 
@@ -26,8 +26,8 @@
             @* Display to hold all the nodes *@
             <div class="vp--node-container">
                 @foreach (var node in Program.Nodes) {
-                    <div class="vp--visual-node-container" style="top:@(node.Value.Position.Y)px;left:@(node.Value.Position.X)px">
-                        <VisualNodePresenter Node="node.Value" Key="node.Key" />
+                    <div class="vp--visual-node-container" style="top:@(node.Position.Y)px;left:@(node.Position.X)px">
+                        <VisualNodePresenter Node="node" Key="node.Id" />
                     </div>
                 }
             </div>
@@ -75,8 +75,8 @@
         // Figure out which node is the one that has the NodeReference property (which is referred to here as the parent node). Whether this is the start or end
         // will depend on which way the user dragged, so we check instead which connector is a "source" role (parent) and which is a "destination" role (child).
         var (parentData, childData) = startData.Role == "source" ? (startData, endData) : (endData, startData);
-        var parentNode = Program.ResolveReference(parentData.Id.Value); // Get the actual nodes for the child and parent
-        var childNode = Program.ResolveReference(childData.Id.Value);
+        var parentNode = Program.Nodes[parentData.Id.Value]; // Get the actual nodes for the child and parent
+        var childNode = Program.Nodes[childData.Id.Value];
 
         // Perform the link
         try {
@@ -104,7 +104,7 @@
     /// <param name="nodeId">The ID of the node whose position to update.</param>
     [JSInvokable]
     public void SetPosition(Guid nodeId, int x, int y) {
-        if (!Program.TryResolveReference(nodeId, out var node)) return;
+        if (!Program.Nodes.TryGetNode(nodeId, out var node)) return;
         node.Position = new System.Drawing.Point(x, y);
         StateHasChanged();
     }
@@ -115,7 +115,7 @@
     [JSInvokable]
     public void DeleteNodes(Guid[] nodes) {
         foreach (var id in nodes)
-            Program.RemoveNode(id);
+            Program.Nodes.Remove(id);
         this.StateHasChanged();
     }
 

@@ -16,9 +16,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 		private readonly Lazy<IEnumerable<VisualNodePropertyViewModel>> linkableProperties;
 		private readonly Lazy<IEnumerable<VisualNodePropertyViewModel>> statementProperties;
 
-		internal VisualNodeViewModel(VisualNode model, Guid id) : base(model) {
-			ID = id;
-
+		internal VisualNodeViewModel(VisualNode model) : base(model) {
 			//// Initialise lazy properties
 			// Note that these are being cast 'ToArray'ed so that the IEnumerable does not get re-evaluated every time it is accessed (because otherwise this causes the view
 			// models to be different instances EVERY time you would access the property, so listableProperties.Value.First() == listableProperties.Value.First() would be false)
@@ -33,7 +31,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 		}
 
 		/// <summary>The read-only ID of this node.</summary>
-		public Guid ID { get; }
+		public Guid ID => model.Id;
 
 		/// <summary>Gets the name of the type of this node.</summary>
 		public string NodeName => model.GetType().Name;

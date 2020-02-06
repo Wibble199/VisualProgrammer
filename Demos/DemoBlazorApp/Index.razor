@@ -8,16 +8,17 @@
 @code {
     static string testEntryId = "testentry";
 
-    static VisualProgram program = new VisualProgram {
-        EntryDefinitions = new Dictionary<string, EntryDefinition> {
-            { testEntryId, new EntryDefinition {
-                Name = "Test Entry",
-                Parameters = new VisualProgrammer.Core.Utils.IndexedDictionary<string, Type> {
-                    { "someDouble", typeof(double) }
-                }
-            } }
-        },
-
+    static VisualProgram program = new VisualProgram(env => env
+        .ConfigureEntries(e => e
+            .Add(testEntryId, "Test Entry", p => p
+                .WithParameter<double>("someDouble")
+            )
+        )
+        .ConfigureDataTypes(dt => dt
+            .AddDefault()
+            .Add<long>()
+        )
+    ) {
         variableDefinitions = new Dictionary<string, Variable> {
             { "doubleVar", new Variable(typeof(double), 0d) }
         },

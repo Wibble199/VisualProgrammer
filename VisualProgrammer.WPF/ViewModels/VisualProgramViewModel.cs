@@ -17,7 +17,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 			// Initialise nested models
 			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Key, kvp => new VisualNodeViewModel(kvp.Value, kvp.Key));
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
-			AvailableNodes = model.AvailableNodes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
+			AvailableNodes = model.Environment.AvailableNodeTypes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
 
 			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.variableDefinitions.Select(kvp => new VariableDefinitionViewModel(kvp.Value, kvp.Key)));
 			Variables.CollectionChanged += Variables_CollectionChanged;

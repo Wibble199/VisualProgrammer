@@ -35,5 +35,5 @@
     [Parameter] public VisualEntry Entry { get; set; }
     [Parameter] public Guid EntryId { get; set; }
     [CascadingParameter] public VisualProgram Context { get; set; }
-    EntryDefinition Definition => Context.EntryDefinitions[Entry.VisualEntryId];
+    EntryDefinition Definition => Context.Environment.EntryDefinitions[Entry.VisualEntryId];
 }

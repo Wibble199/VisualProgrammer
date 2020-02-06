@@ -15,6 +15,8 @@ namespace VisualProgrammer.Core.Environment {
 		private VisualEntryConfigurator? entryConfigurator;
 		private DataTypesConfigurator? dataTypesConfigurator;
 
+		internal VisualProgramEnvironmentBuilder() { }
+
 		/// <summary>
 		/// Configures the nodes that are available to be added to the program.
 		/// </summary>
@@ -55,7 +57,7 @@ namespace VisualProgrammer.Core.Environment {
 		/// <summary>
 		/// Constructs an environment configuration to be passed to a VisualProgram.
 		/// </summary>
-		public VisualProgramEnvironment Build() => new VisualProgramEnvironment {
+		internal VisualProgramEnvironment Build() => new VisualProgramEnvironment {
 			AvailableNodeTypes = (nodeConfigurator ?? defaultNodes).Types,
 			DataTypes = (dataTypesConfigurator ?? defaultDataTypes).types,
 			EntryDefinitions = entryConfigurator?.entries ?? new Dictionary<string, EntryDefinition>()

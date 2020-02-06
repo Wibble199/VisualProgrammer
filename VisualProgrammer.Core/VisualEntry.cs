@@ -27,7 +27,7 @@ namespace VisualProgrammer.Core {
         /// Creates the lambda expression from the statements attached to this entry and the parameter definitions in the provided program context.
         /// </summary>
         public LambdaExpression CreateLambda(VisualProgram context) {
-            if (!context.EntryDefinitions.TryGetValue(VisualEntryId, out var def))
+            if (!context.Environment.EntryDefinitions.TryGetValue(VisualEntryId, out var def))
                 throw new KeyNotFoundException($"Could not find an entry with ID '{VisualEntryId}' in the VisualProgram's entry definitions.");
 
             // Create a parameter for each expected/defined parameter

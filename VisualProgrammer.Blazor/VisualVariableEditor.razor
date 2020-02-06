@@ -30,7 +30,7 @@
                 <td><InputFieldGeneric TValue="string" @bind-Value="NewVariableName" /></td>
                 <td>
                     <select @onchange="e => NewVariableType = Type.GetType((string)e.Value)">
-                        @foreach (var type in Context.AvailableDataTypes) {
+                        @foreach (var type in Context.Environment.DataTypes) {
                             <option value="@type.AssemblyQualifiedName" selected="@(NewVariableType == type)">@type.Name</option>
                         }
                     </select>

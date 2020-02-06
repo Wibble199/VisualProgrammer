@@ -2,7 +2,7 @@
 
 <div class="vp--node-toolbox">
     @* For every different node type the user can choose (e.g. If statement, Literal expression, etc.) *@
-    @foreach (var nodeType in Context.AvailableNodes) {
+    @foreach (var nodeType in Context.Environment.AvailableNodeTypes) {
 
         @* Create a preview dummy node that the user can drag *@
         <div class="vp--visual-node-toolbox-template" @onmousedown="() => CreateNode(GetDataItem(nodeType))">
@@ -13,7 +13,7 @@
         @for (var i = 0; i < GetDataItem(nodeType).GenericTypes.Length; i++) {
             <select @onchange="BindSetGenericType(nodeType, i)">
                 @* TODO: Restrict the available types based on type argument data (e.g. generic contraints, attributes, etc.) *@
-                @foreach (var type in Context.AvailableDataTypes) {
+                @foreach (var type in Context.Environment.DataTypes) {
                     <option value="@type.AssemblyQualifiedName" selected="@(GetDataItem(nodeType).GenericTypes[i] == type)">@type.Name</option>
                 }
             </select>

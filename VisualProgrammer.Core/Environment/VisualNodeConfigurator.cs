@@ -41,7 +41,7 @@ namespace VisualProgrammer.Core.Environment {
 		/// Adds a single node type to the environment.
 		/// </summary>
 		public VisualNodeConfigurator Include(Type type) {
-			if (typeof(VisualNode).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
+			if (typeof(VisualNode).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface && type != typeof(VisualEntry))
 				includedTypes.Add(type);
 			return this;
 		}

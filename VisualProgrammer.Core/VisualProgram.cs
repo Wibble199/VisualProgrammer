@@ -5,14 +5,23 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using VisualProgrammer.Core.Compilation;
-using VisualProgrammer.Core.Utils;
+using VisualProgrammer.Core.Environment;
 
 namespace VisualProgrammer.Core {
 
 	/// <summary>
 	/// The class that is responsible for storing and editing program data which can be compiled.
 	/// </summary>
-    public sealed class VisualProgram {
+	public sealed class VisualProgram {
+
+		public VisualProgram() : this(_ => { }) { }
+		public VisualProgram(Action<VisualProgramEnvironmentBuilder> environmentConfig) {
+			var builder = new VisualProgramEnvironmentBuilder();
+			environmentConfig(builder);
+			Environment = builder.Build();
+		}
+
+		public VisualProgramEnvironment Environment { get; }
 
 		#region Nodes
 		/// <summary>
@@ -38,7 +47,7 @@ namespace VisualProgrammer.Core {
         public Guid CreateNode(Type nodeType, params Type[] genericTypes) {
 			// Check the given type is actually a VisualNode
             if (!typeof(VisualNode).IsAssignableFrom(nodeType))
-                throw new ArgumentException($"Supplied node type must be a '${nameof(VisualNode)}'.", nameof(nodeType));
+                throw new ArgumentException($"Supplied node type must be a '{nameof(VisualNode)}'.", nameof(nodeType));
 			// Check the given type's generic parameter count matches the given genericTypes param array count
             if (nodeType.GetGenericArguments().Length != genericTypes.Length)
                 throw new ArgumentException($"Node type generic argument count must match given generic type parameter count. Expected {nodeType.GetGenericArguments().Length}, got {genericTypes.Length}.", nameof(genericTypes));
@@ -59,15 +68,6 @@ namespace VisualProgrammer.Core {
 		}
         #endregion
 
-        #region Entries
-        /// <summary>
-        /// Contains a list of available entry definitions in this program. Any entry defined in here will be able to be added to the program
-        /// and will be available for the user to use.<para/>
-        /// Note that entries are serialized by their IDs, so the keys of the dictionary should generally be kept constant between updates.</summary>
-        /// <remarks>This should not be serialized, but set directly after/during serialization or the constructor.</remarks>
-        public Dictionary<string, EntryDefinition> EntryDefinitions { get; set; } = new Dictionary<string, EntryDefinition>();
-        #endregion
-
         #region Variables
 		public Dictionary<string, Variable> variableDefinitions = new Dictionary<string, Variable>();
 		/// <summary>
@@ -78,7 +78,7 @@ namespace VisualProgrammer.Core {
 		/// <summary>
 		/// A parameter that will be the first parameter of all compiled functions which provides them access to their instance context (e.g. allows for accessing variable store).
 		/// </summary>
-		internal ParameterExpression compiledInstanceParameter = Expression.Parameter(typeof(CompiledInstanceBase), "context");
+		internal readonly ParameterExpression compiledInstanceParameter = Expression.Parameter(typeof(CompiledInstanceBase), "context");
 
 		/// <summary>
 		/// Attempts to define a new variable on this program.
@@ -88,10 +88,10 @@ namespace VisualProgrammer.Core {
 		public void CreateVariable(string name, Type type, object? @default) {
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentException("Name must not be null, empty or whitespace.", nameof(name));
+			if (variableDefinitions.ContainsKey(name))
+				throw new ArgumentException($"A variable with the name '{name}' already exists.", nameof(name));
 			if (type == null)
 				throw new ArgumentNullException(nameof(type), "Variable type must not be null.");
-			if (variableDefinitions.ContainsKey(name))
-				throw new Exception(); // TODO: Throw error if variable with name already exists
 			variableDefinitions.Add(name, new Variable(type, @default));
 		}
 
@@ -129,23 +129,6 @@ namespace VisualProgrammer.Core {
 		}
 		#endregion
 
-		#region NodeTypes
-		/// <summary>
-		/// Gets a list of all node types that can be added to this program.
-		/// </summary>
-		public IEnumerable<Type> AvailableNodes { get; } = AppDomain.CurrentDomain.GetAssemblies()
-			.SelectMany(a => a.GetTypes())
-            .Where(t => (typeof(IVisualExpression).IsAssignableFrom(t) || typeof(VisualStatement).IsAssignableFrom(t)) && !t.IsAbstract); // Get anything that extends IExpression or VisualStatement but is not abstract
-
-		// TODO: In future add the possibility of adding per-program nodes and removing default blocks
-		
-		/// <summary>
-		/// Gets a list of all types that are supported for use as variables or as generic arguments for nodes.
-		/// </summary>
-		// TODO: Add some way of adding additional types?
-		public IEnumerable<Type> AvailableDataTypes { get; } = new[] { typeof(string), typeof(double), typeof(int), typeof(bool) };
-        #endregion
-
         /// <summary>
         /// Compiles the VisualProgram into a compiled program factory, which can then be used to create independent instances of the program.<para/>
 		/// The program instances generated from this factory will attempt to implement the given interface.
@@ -159,24 +142,5 @@ namespace VisualProgrammer.Core {
 		/// Compiles the VisualProgram into a compiled program factory, which can then be used to create independent instances of the program.
 		/// </summary>
 		public CompiledProgramFactory<IAnonymousProgram> Compile() => Compile<IAnonymousProgram>();
-    }
-
-
-    /// <summary>
-    /// Class that defines a single entry point for a VisualProgram.
-    /// </summary>
-    public sealed class EntryDefinition {
-		/// <summary>
-		/// The user-friendly display name of the definition.
-		/// </summary>
-		public string Name { get; set; } = "";
-
-        /// <summary>
-        /// Specifies the parameters that will be passed to this entry. This will define the signature of the compiled delegate generated by this VisualEntry.<para/>
-        /// Note that it IS safe to re-order parameters between versions without breaking existing programs (since the lambda is recompiled at runtime), however it IS
-        /// NOT safe to rename or change the type of existing parameters (because this may break existing parameter maps in the VisualEntry instances). It is also safe
-        /// to add new parameters without affecting existing programs.
-        /// </summary>
-        public IndexedDictionary<string, Type> Parameters { get; set; } = new IndexedDictionary<string, Type>();
     }
 }

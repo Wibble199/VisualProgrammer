@@ -9,7 +9,7 @@ namespace VisualProgrammer.Core.Environment {
 	/// </summary>
 	public sealed class VisualEntryConfigurator {
 
-		internal Dictionary<string, EntryDefinition> entries;
+		internal readonly Dictionary<string, EntryDefinition> entries = new Dictionary<string, EntryDefinition>();
 
 		internal VisualEntryConfigurator() { }
 
@@ -42,7 +42,7 @@ namespace VisualProgrammer.Core.Environment {
 	/// </summary>
 	public sealed class VisualEntryParameterConfigurator {
 
-		internal readonly IndexedDictionary<string, Type> parameters;
+		internal readonly IndexedDictionary<string, Type> parameters = new IndexedDictionary<string, Type>();
 
 		internal VisualEntryParameterConfigurator() { }
 
@@ -58,5 +58,14 @@ namespace VisualProgrammer.Core.Environment {
 			parameters.Add(name, type);
 			return this;
 		}
+
+		/// <summary>
+		/// Appends a new parameter with the given name and type.<para/>
+		/// Note that the parameters are ordered in the same order they are added.
+		/// </summary>
+		/// <param name="name">The (unique) name for this parameter.</param>
+		/// <exception cref="ArgumentNullException">If the given parameter name is null or empty.</exception>
+		/// <exception cref="ArgumentException">If a parameter with this name has already been added.</exception>
+		public VisualEntryParameterConfigurator WithParameter<T>(string name) => WithParameter(name, typeof(T));
 	}
 }

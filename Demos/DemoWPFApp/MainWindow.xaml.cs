@@ -32,10 +32,11 @@ namespace DemoWPFApp {
             var printGuid = Guid.NewGuid();
             var stringLitGuid = Guid.NewGuid();
 
-            Program = new VisualProgram {
-                EntryDefinitions = new Dictionary<string, EntryDefinition> {
-                    ["demoEntry"] = new EntryDefinition { Name = "Demo Entry" }
-                },
+            Program = new VisualProgram(env => env
+				.ConfigureEntries(e => e
+					.Add("demoEntry", "Demo Entry")
+				)
+			) {
 				variableDefinitions = new Dictionary<string, Variable> {
 					["someStringVar"] = new Variable(typeof(string), "Hello from the someStringVar!"),
 					["otherStrVar"] = new Variable(typeof(string), "Greetings from the otherStrVar!"),

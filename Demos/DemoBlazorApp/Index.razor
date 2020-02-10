@@ -17,6 +17,9 @@
 		.ConfigureDataTypes(dt => dt
 			.AddDefault()
 			.Add<long>()
+		)
+		.ConfigureLockedVariables(v => v
+			.Add<double>("someLockedDouble", 10d)
 		),
 		new VisualNodeCollection {
 			{ new VisualEntry(testEntryId) { ParameterMap = new Dictionary<string, string> { ["someDouble"] = "doubleVar" }, Position = new System.Drawing.Point(100, 10) } }

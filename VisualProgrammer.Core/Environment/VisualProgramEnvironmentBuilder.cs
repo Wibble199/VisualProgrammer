@@ -63,7 +63,7 @@ namespace VisualProgrammer.Core.Environment {
 		/// <param name="config">A function that is passed a configurator that can be used to configure the locked variables.</param>
 		/// <exception cref="InvalidOperationException">When the locked variables have already been configured.</exception>
 		public VisualProgramEnvironmentBuilder ConfigureLockedVariables(Action<LockedVariableConfigurator> config) {
-			if (dataTypesConfigurator != null) throw new InvalidOperationException("Cannot configure the locked variables. They have already been configured.");
+			if (lockedVarConfigurator != null) throw new InvalidOperationException("Cannot configure the locked variables. They have already been configured.");
 			lockedVarConfigurator = new LockedVariableConfigurator();
 			config(lockedVarConfigurator);
 			return this;

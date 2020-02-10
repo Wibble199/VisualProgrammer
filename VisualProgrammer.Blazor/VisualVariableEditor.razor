@@ -19,7 +19,7 @@
                     <td>@varDef.Name</td>
                     <td>@varDef.Type.Name</td>
                     <td>@(varDef.DefaultValue.ToString())</td>
-                    <td><button @onclick="e => RemoveVariable(varDef.Name)">&times;</button></td>
+                    <td><button disabled="@Context.Environment.LockedVariables.Any(v => v.Name.Equals(varDef.Name, StringComparison.OrdinalIgnoreCase))" @onclick="e => RemoveVariable(varDef.Name)">&times;</button></td>
                 </tr>
             }
         </tbody>

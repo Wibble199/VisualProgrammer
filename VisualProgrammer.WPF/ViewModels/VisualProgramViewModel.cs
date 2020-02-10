@@ -19,8 +19,11 @@ namespace VisualProgrammer.WPF.ViewModels {
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
 			AvailableNodes = model.Environment.AvailableNodeTypes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
 
-			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.Variables.Select(var => new VariableDefinitionViewModel(var)));
-			Variables.CollectionChanged += Variables_CollectionChanged;
+			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.Variables.Select(var => {
+				var varVm = new VariableDefinitionViewModel(var, model.Environment);
+				varVm.RequestDelete += DeleteVariable;
+				return varVm;
+			}));
 
 			// Initialise commands
 			// TODO
@@ -59,14 +62,13 @@ namespace VisualProgrammer.WPF.ViewModels {
 		public ObservableCollection<VariableDefinitionViewModel> Variables { get; }
 
 		/// <summary>
-		/// Handler that executes when the Variable collection is changed and propogates the changes to the model.
+		/// Handler for when a VariableDefinitionViewModel requests to be deleted.
 		/// </summary>
-		private void Variables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-			if (e.Action == NotifyCollectionChangedAction.Remove) {
-				foreach (var item in e.OldItems.Cast<VariableDefinitionViewModel>())
-					model.Variables.Remove(item.ID);
+		private void DeleteVariable(object sender, EventArgs e) {
+			if (sender is VariableDefinitionViewModel varVM && model.Variables.Remove(varVM.ID)) {
+				Variables.Remove(varVM);
+				Notify(nameof(Variables));
 			}
-			Notify(nameof(Variables));
 		}
 		#endregion
 	}

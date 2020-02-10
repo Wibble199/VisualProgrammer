@@ -12,12 +12,19 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
 						<DockPanel LastChildFill="True">
 							<!--<StackPanel DockPanel.Dock="Bottom"></StackPanel>-->
-							<DataGrid AutoGenerateColumns="False" CanUserResizeRows="False" CanUserAddRows="False"
+							<DataGrid AutoGenerateColumns="False" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False"
 								ItemsSource="{Binding Path=(ap:VisualProgramViewModelAttachedProperty.VisualProgramModel).Variables, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:VariableListEditor}}}">
 								<DataGrid.Columns>
 									<DataGridTextColumn Header="Name" Binding="{Binding Path=ID, Mode=OneWay}" IsReadOnly="True" />
 									<DataGridTextColumn Header="Type" Binding="{Binding Path=Type.Name, Mode=OneWay}" IsReadOnly="True" />
 									<DataGridTextColumn Header="Default Value" Binding="{Binding Path=Default, Mode=OneWay}" IsReadOnly="True" CanUserSort="False" />
+									<DataGridTemplateColumn CanUserResize="False" CanUserSort="False">
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<Button Content="Delete" Command="{Binding DeleteCommand}" />
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
 								</DataGrid.Columns>
 							</DataGrid>
 						</DockPanel>

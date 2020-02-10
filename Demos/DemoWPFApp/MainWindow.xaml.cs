@@ -35,6 +35,9 @@ namespace DemoWPFApp {
 			Program = new VisualProgram(env => env
 				.ConfigureEntries(e => e
 					.Add("demoEntry", "Demo Entry")
+				).ConfigureLockedVariables(v => v
+					.Add<int>("someIntVar", 20)
+					.Add<double>("somenewLockedDouble")
 				),
 				new VisualNodeCollection {
 					{ new VisualEntry("demoEntry") { FirstStatement = new StatementReference(printGuid), Position = new System.Drawing.Point(250, 0) } },

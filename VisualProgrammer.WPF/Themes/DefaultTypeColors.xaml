@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
+	
+	<Color x:Key="{u:NodeTypeColorKey {x:Type sys:Int32}}">#44AE90</Color>
+	<Color x:Key="{u:NodeTypeColorKey {x:Type sys:Double}}">#42759F</Color>
+	<Color x:Key="{u:NodeTypeColorKey {x:Type sys:String}}">#5E9B4E</Color>
+	<Color x:Key="{u:NodeTypeColorKey {x:Type sys:Boolean}}">#AE4444</Color>
+</ResourceDictionary>

@@ -54,12 +54,26 @@ namespace VisualProgrammer.WPF.InputField {
 			if (!(container is ContentPresenter presenter)) return null;
 			if (item is InputFieldViewModel vm) {
 				// Func to return a DataTemplate for the type (or null if not found)
-				DataTemplate TemplateFor(Type type) => presenter.TryFindResource(new ComponentResourceKey(typeof(InputFieldDynamic), type)) as DataTemplate;
+				DataTemplate TemplateFor(Type type) => presenter.TryFindResource(new InputFieldTemplateKey(type)) as DataTemplate;
 
 				return TemplateFor(vm.InputType) // First, try to find a template for this exact type
 					?? TemplateFor(typeof(Enum)); // Next, if the type is an enum (and no specialised control is registered as above), then use the general enum editor
 			}
 			return presenter.FindResource(errorKey) as DataTemplate;
 		}
+	}
+
+
+	/// <summary>
+	/// A specialised key that can be used to specify a DataTemplate to use by the InputField for the target type.
+	/// </summary>
+	public class InputFieldTemplateKey : ComponentResourceKey {
+
+		/// <summary>
+		/// Creates a new <see cref="InputFieldTemplateKey"/> that provides a data template for the given type.
+		/// </summary>
+		/// <param name="targetType">The type of data that this editor is for.</param>
+		public InputFieldTemplateKey(Type targetType)
+			: base(typeof(InputFieldTemplateKey), targetType) { }
 	}
 }

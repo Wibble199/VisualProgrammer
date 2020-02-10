@@ -33,6 +33,11 @@ namespace DemoWPFApp {
             var stringLitGuid = Guid.NewGuid();
 
 			Program = new VisualProgram(env => env
+				.ConfigureNodes(n => n
+					.IncludeDefault()
+					.Exclude<VisualProgrammer.Core.Nodes.Debug.Print>()
+					.Include<Trace>()
+				)
 				.ConfigureEntries(e => e
 					.Add("demoEntry", "Demo Entry")
 				).ConfigureLockedVariables(v => v

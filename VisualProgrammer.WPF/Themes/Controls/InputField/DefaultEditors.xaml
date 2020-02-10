@@ -3,23 +3,23 @@
                     xmlns:local="clr-namespace:VisualProgrammer.WPF.InputField"
 					xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
-	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:String}}">
+	<DataTemplate x:Key="{local:InputFieldTemplateKey {x:Type sys:String}}">
 		<TextBox Text="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
 
-	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Int32}}">
+	<DataTemplate x:Key="{local:InputFieldTemplateKey {x:Type sys:Int32}}">
 		<local:IntegerStepper Value="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
 
-	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Double}}">
+	<DataTemplate x:Key="{local:InputFieldTemplateKey {x:Type sys:Double}}">
 		<local:DoubleStepper Value="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
 
-	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Boolean}}">
+	<DataTemplate x:Key="{local:InputFieldTemplateKey {x:Type sys:Boolean}}">
 		<CheckBox IsChecked="{Binding Path=Value, Mode=TwoWay}" />
 	</DataTemplate>
 
-	<DataTemplate x:Key="{ComponentResourceKey {x:Type local:InputFieldDynamic}, {x:Type sys:Enum}}">
+	<DataTemplate x:Key="{local:InputFieldTemplateKey {x:Type sys:Enum}}">
 		<local:EnumPicker />
 	</DataTemplate>
 </ResourceDictionary>

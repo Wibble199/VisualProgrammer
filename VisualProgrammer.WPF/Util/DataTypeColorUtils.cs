@@ -8,16 +8,25 @@ namespace VisualProgrammer.WPF.Util {
 
 	internal static class DataTypeColorUtils {
 
-		/// <summary>Resource key that points to the ResourceDictionary that contains a map of data types to their colors.</summary>
-		private static readonly ResourceKey colorMapResourceKey = new ComponentResourceKey(typeof(VisualProgramEditor), "NodeColors");
-
 		/// <summary>
 		/// Resolves the line/node color for the given type.
 		/// </summary>
 		internal static Color ColorForDataType(this FrameworkElement el, Type type) =>
-			type != null && el.TryFindResource(colorMapResourceKey) is ResourceDictionary colorMap && colorMap.Contains(type)
-				? (Color)colorMap[type]
-				: Colors.White;
+			type != null && el.TryFindResource(new NodeTypeColorKey(type)) is Color color ? color : Colors.White;
+	}
+
+
+	/// <summary>
+	/// Specialised key for specifying a color the visual node should appear in for a particular type (when using the default template).
+	/// </summary>
+	public class NodeTypeColorKey : ComponentResourceKey {
+
+		/// <summary>
+		/// Creates a new <see cref="NodeTypeColorKey"/> that marks the color for the nodes of the given type (for the default template).
+		/// </summary>
+		/// <param name="targetType">The type that this color is to be used for.</param>
+		public NodeTypeColorKey(Type targetType)
+			: base(typeof(NodeTypeColorKey), targetType) { }
 	}
 
 

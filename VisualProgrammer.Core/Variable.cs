@@ -7,7 +7,7 @@ namespace VisualProgrammer.Core {
 
 		private object? value;
 
-		public Variable(string name, Type type) : this(name, type, null) { }
+		public Variable(string name, Type type) : this(name, type, type.IsValueType ? Activator.CreateInstance(type) : null) { }
 		public Variable(string name, Type type, object? defaultValue) {
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentException("The variable name must be non-null and non-whitespace.", nameof(name));

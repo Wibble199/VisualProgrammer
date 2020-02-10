@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VisualProgrammer.Core.Environment {
 
@@ -14,6 +15,7 @@ namespace VisualProgrammer.Core.Environment {
 		private VisualNodeConfigurator? nodeConfigurator;
 		private VisualEntryConfigurator? entryConfigurator;
 		private DataTypesConfigurator? dataTypesConfigurator;
+		private LockedVariableConfigurator? lockedVarConfigurator;
 
 		internal VisualProgramEnvironmentBuilder() { }
 
@@ -55,12 +57,26 @@ namespace VisualProgrammer.Core.Environment {
 		}
 
 		/// <summary>
+		/// Configures the variables that will always be present in the program and which the user cannot delete.
+		/// Useful for when an interface is being implemented by the program and you require certain properties to be present.
+		/// </summary>
+		/// <param name="config">A function that is passed a configurator that can be used to configure the locked variables.</param>
+		/// <exception cref="InvalidOperationException">When the locked variables have already been configured.</exception>
+		public VisualProgramEnvironmentBuilder ConfigureLockedVariables(Action<LockedVariableConfigurator> config) {
+			if (dataTypesConfigurator != null) throw new InvalidOperationException("Cannot configure the locked variables. They have already been configured.");
+			lockedVarConfigurator = new LockedVariableConfigurator();
+			config(lockedVarConfigurator);
+			return this;
+		}
+
+		/// <summary>
 		/// Constructs an environment configuration to be passed to a VisualProgram.
 		/// </summary>
 		internal VisualProgramEnvironment Build() => new VisualProgramEnvironment {
 			AvailableNodeTypes = (nodeConfigurator ?? defaultNodes).Types,
 			DataTypes = (dataTypesConfigurator ?? defaultDataTypes).types,
-			EntryDefinitions = entryConfigurator?.entries ?? new Dictionary<string, EntryDefinition>()
+			EntryDefinitions = entryConfigurator?.entries ?? new Dictionary<string, EntryDefinition>(StringComparer.OrdinalIgnoreCase),
+			LockedVariables = lockedVarConfigurator?.variables.Values ?? Enumerable.Empty<Variable>()
 		};
 	}
 }

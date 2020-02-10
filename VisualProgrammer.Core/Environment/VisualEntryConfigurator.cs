@@ -9,7 +9,7 @@ namespace VisualProgrammer.Core.Environment {
 	/// </summary>
 	public sealed class VisualEntryConfigurator {
 
-		internal readonly Dictionary<string, EntryDefinition> entries = new Dictionary<string, EntryDefinition>();
+		internal readonly Dictionary<string, EntryDefinition> entries = new Dictionary<string, EntryDefinition>(StringComparer.OrdinalIgnoreCase);
 
 		internal VisualEntryConfigurator() { }
 

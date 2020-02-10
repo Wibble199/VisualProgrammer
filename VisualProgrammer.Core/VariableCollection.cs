@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Linq.Expressions;
 using VisualProgrammer.Core.Compilation;
 
@@ -14,7 +15,7 @@ namespace VisualProgrammer.Core {
 
 		internal VisualProgram context;
 
-		private Dictionary<string, Variable> definitions = new Dictionary<string, Variable>();
+		private Dictionary<string, Variable> definitions = new Dictionary<string, Variable>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
 		/// A parameter that will be the first parameter of all compiled functions which provides them access to their instance context (e.g. allows for accessing variable store).
@@ -37,6 +38,20 @@ namespace VisualProgrammer.Core {
 		}
 
 		/// <summary>
+		/// Adds the given variable to this collection.
+		/// </summary>
+		internal void Add(Variable variable) {
+			if (definitions.ContainsKey(variable.Name))
+				throw new ArgumentException($"A variable with the name '{variable.Name}' already exists.", nameof(variable));
+			definitions.Add(variable.Name, variable);
+		}
+
+		/// <summary>
+		/// Returns a boolean indicating if a variable by the given name exists in this collection.
+		/// </summary>
+		public bool Contains(string name) => definitions.ContainsKey(name);
+
+		/// <summary>
 		/// Attempts to get the variable with the given name. If not found, returns null.
 		/// </summary>
 		public Variable? this[string name] => definitions.TryGetValue(name, out var @var) ? var : null;
@@ -50,9 +65,9 @@ namespace VisualProgrammer.Core {
 		/// Removes the variable with the given name from the program.<para/>
 		/// Will remove the references from any VisualEntries's parameter mappings and any VisualNodes's VariableReference properties
 		/// </summary>
-		/// <param name="name"></param>
-		public void Remove(string name) {
-			if (definitions.Remove(name)) {
+		/// <returns><c>True</c> if the variable was deleted, <c>false</c> if there is no variable by this name or the variable is locked.</returns>
+		public bool Remove(string name) {
+			if (definitions.Remove(name) && !IsVariableLocked(name)) {
 				// References to reset (cannot remove in the first loop as doing so modifies the collection and invalidates the enumerator)
 				var paramMapsToReset = new List<(VisualEntry, string)>();
 				var varRefsToReset = new List<(VisualNode, VisualNodePropertyDefinition)>();
@@ -77,8 +92,39 @@ namespace VisualProgrammer.Core {
 					entry.ParameterMap[paramKey] = "";
 				foreach (var (node, prop) in varRefsToReset)
 					prop.Setter(node, VariableReference.Create(prop.PropertyDataType!, "")); // Create a new empty reference of the relevant type
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Merges the locked variables from the environment into this collection.<para/>
+		/// Will throw an error if a variable of the same name but different types exist in this collection and the environment.
+		/// In the case of mis-matching default values for a variable of the same name and type, the default from the collection will be kept.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">If there is a variable with the same name but different type in both the environment's locked variables and this collection.</exception>
+		internal void MergeWithEnvironment() {
+			foreach (var locked in context.Environment.LockedVariables) {
+				// If the variable already exists in this collection
+				if (TryGetVariable(locked.Name, out var thisVar)) {
+					// And if the types are mismatching, throw an error.
+					if (thisVar.Type != locked.Type)
+						throw new InvalidOperationException($"A variable conflict was found between the environment's locked variables and the variables defined in this collection. Variable '{locked.Name}' is defined on the collection as a '{thisVar.Type.Name}', but the environment defines it as a '{locked.Type.Name}'.");
+
+					// If the types match, we don't need to do anything since the one in this collection is valid 
+					// (we will keep the default defined here instead of the default defined on the locked variable)
+
+				} else {
+					// Otherwise if the varaible does not exist in our collection, add it
+					definitions.Add(locked.Name, locked);
+				}
 			}
 		}
+
+		/// <summary>
+		/// Determines if a variable with the given name is locked by the context's environment.
+		/// </summary>
+		internal bool IsVariableLocked(string varName) => context.Environment.LockedVariables.Any(v => v.Name.Equals(varName, StringComparison.OrdinalIgnoreCase));
 
 		#region IEnumerable
 		public IEnumerator<Variable> GetEnumerator() => definitions.Values.GetEnumerator();

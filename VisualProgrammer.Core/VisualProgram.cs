@@ -20,6 +20,7 @@ namespace VisualProgrammer.Core {
 			Nodes = nodes ?? throw new ArgumentNullException(nameof(nodes));
 			Variables = variables ?? throw new ArgumentNullException(nameof(variables));
 			Variables.context = this;
+			Variables.MergeWithEnvironment();
 		}
 
 		public VisualProgramEnvironment Environment { get; }

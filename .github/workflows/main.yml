@@ -17,7 +17,7 @@ jobs:
       run: |
         choco install docfx -y
         docfx .\Docs\docfx.json
-        Move-Item -Path .\Docs\doc -Destination .\_public
+        Move-Item -Path .\Docs\doc\* -Destination .\_public
     - name: Build Demo
       run: |
         (Get-Content -Path .\Demos\DemoBlazorApp\wwwroot\index.html) -replace '<base href="/" />', '<base href="/VisualProgrammer/wasm-demo/" />' | Set-Content -Path .\Demos\DemoBlazorApp\wwwroot\index.html

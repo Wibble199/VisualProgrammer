@@ -1,0 +1,670 @@
+/*
+  Modified from the DocFX material theme (https://github.com/ovasquez/docfx-material/)
+*/
+
+/* COLOR VARIABLES*/
+:root {
+  --header-bg-color: #1E2533;
+  --subnav-bg-color: #2A3140;
+  --header-ft-color: #FFFFFF87;
+  --highlight-light: #B7F9EF;
+  --highlight-dark: #35D7C0;
+  --background-color: #353C4A;
+  --font-color: #D1D2D2;
+  --table-border: #FFFFFF1F;
+  --custom-box-shadow: 0 1px 2px 0 rgba(61, 65, 68, 0.06), 0 1px 3px 1px rgba(61, 65, 68, 0.16);
+}
+
+body {
+  background: var(--background-color);
+  color: var(--font-color);
+  font-family: "Roboto", sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  word-wrap: break-word;
+}
+
+/* Full width page */
+.container {
+  width: 100% !important;
+}
+
+/* HIGHLIGHT COLOR */
+
+button,
+a {
+  color: var(--highlight-dark);
+  cursor: pointer;
+}
+
+button:hover,
+button:focus,
+a:hover,
+a:focus {
+  color: var(--highlight-light);
+  text-decoration: underline;
+}
+
+.toc .nav > li.active > a {
+  color: var(--highlight-dark);
+}
+
+.toc .nav > li > a:hover {
+  color: #FFF;
+}
+
+.toc .nav > li.active > a:hover,
+.toc .nav > li.active > a:focus {
+  color: var(--highlight-light);
+}
+
+.pagination > .active > a {
+  background-color: var(--header-bg-color);
+  border-color: var(--header-bg-color);
+}
+
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
+  background-color: var(--highlight-light);
+  border-color: var(--highlight-light);
+}
+
+/* HEADINGS */
+
+h1 {
+  font-weight: 600;
+  font-size: 32px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.8;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+h5 {
+  font-size: 14px;
+  padding: 10px 0px;
+}
+
+article h1,
+article h2,
+article h3,
+article h4 {
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+article h4 {
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* NAVBAR */
+
+.navbar-brand > img {
+  color: var(--header-ft-color);
+}
+
+.navbar {
+  border: none;
+  /* Both navbars use box-shadow */
+  -webkit-box-shadow: var(--custom-box-shadow);
+  -moz-box-shadow: var(--custom-box-shadow);
+  box-shadow: var(--custom-box-shadow);
+}
+
+.subnav {
+  border-top: 1px solid #ddd;
+  background-color: var(--subnav-bg-color);
+}
+
+.navbar-inverse {
+  background-color: var(--header-bg-color);
+  z-index: 100;
+}
+
+.navbar-inverse .navbar-nav > li > a,
+.navbar-inverse .navbar-text {
+  color: var(--header-ft-color);
+  background-color: var(--header-bg-color);
+  border-bottom: 3px solid transparent;
+  padding-bottom: 12px;
+}
+
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-nav > li > a:hover {
+  color: var(--header-ft-color);
+  background-color: var(--header-bg-color);
+  border-bottom: 3px solid var(--header-ft-color);
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > a:hover {
+  color: #E9E9E9;
+  background-color: #1A212F;
+  border-bottom: 3px solid #E9E9E9;
+}
+
+.navbar-form .form-control {
+  border: none;
+  border-radius: 20px;
+}
+
+/* SIDEBAR */
+
+.toc .level1 > li {
+  font-weight: 400;
+}
+
+.toc .nav > li > a {
+  color: var(--font-color);
+}
+
+.sidefilter {
+  background-color: transparent;
+  border-left: none;
+  border-right: none;
+}
+
+.toc-filter {
+  padding: 10px 0;
+  margin: 0;
+  background: transparent;
+}
+
+.toc-filter > input {
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background: #2E3440;
+  color: var(--font-color);
+  padding: 3px 13px;
+  transition: border-color linear 100ms;
+}
+
+.toc-filter > input:hover {
+  border-color: #FFF4;
+}
+
+.toc-filter > input:focus {
+  border-color: var(--highlight-dark);
+}
+
+.toc-filter > .clear-icon {
+  color: var(--font-color);
+  top: 18px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.toc-filter > .filter-icon {
+  display: none;
+}
+
+.sidetoc > .toc {
+  background-color: transparent;
+  overflow-x: hidden;
+}
+
+.sidetoc {
+  background-color: transparent;
+  border: none;
+}
+
+.affix ul > li > a,
+.affix ul > li > a:hover {
+  color: var(--font-color);
+}
+
+.affix li.active > a,
+.affix li.active > a:before {
+  color: var(--highlight-dark) !important;
+}
+
+/* TABLES */
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: #FFFFFF05;
+}
+
+.table-bordered,
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border: 1px solid var(--table-border);
+}
+
+/* ALERTS */
+
+.alert {
+  padding: 0px 0px 5px 0px;
+  color: inherit;
+  background-color: inherit;
+  border: 1px solid transparent;
+}
+
+.alert > p {
+  margin-bottom: 0;
+  padding: 5px 10px;
+}
+
+.alert > ul {
+  margin-bottom: 0;
+  padding: 5px 40px;
+}
+
+.alert > h5 {
+  color: var(--background-color);
+  padding: 10px 15px;
+  margin-top: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 4px 4px 0 0;
+}
+
+.alert-info { border-color: #44C6DB; }
+.alert-info > h5 { background-color: #44C6DB; }
+.alert-warning { border-color: #F69138; }
+.alert-warning > h5 { background-color: #F69138; }
+.alert-danger { border-color: #E3416B; }
+.alert-danger > h5 { background-color: #E3416B; }
+
+/* CODE HIGHLIGHT */
+pre {
+  padding: 0;
+  margin: 0 0 10px;
+  font-size: 13px;
+  word-break: break-all;
+  word-wrap: break-word;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+}
+
+code {
+  color: #81a1c1;
+  background: #2f3644; 
+}
+
+.contribution-link {
+  border-radius: 100px;
+}
+.contribution-link:hover {
+  color: var(--background-color) !important;
+  background-color: var(--highlight-dark) !important;
+}
+
+/* TABS */
+.tabGroup a[role="tab"] {
+  border-radius: 4px 4px 0 0;
+  border: none;
+  margin-bottom: -1px;
+}
+
+.tabGroup a[role="tab"][aria-selected="true"] {
+  color: var(--font-color);
+  border: 1px solid var(--table-border) !important;
+  border-bottom-color: var(--background-color) !important;
+}
+
+.tabGroup section[role="tabpanel"] {
+  border: 1px solid var(--table-border);
+  padding-bottom: 32px;
+  margin-bottom: 12px;
+}
+
+.tabGroup section[role="tabpanel"] > .codeHeader,
+.tabGroup section[role="tabpanel"] > pre {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+.tabGroup a[role="tab"]:hover,
+.tabGroup a[role="tab"]:focus,
+.tabGroup a[role="tab"][aria-selected="true"] {
+  border-bottom: none;
+}
+
+.tabGroup a[role="tab"]:focus {
+  outline: none;
+}
+
+/* FOOTER */
+.grad-bottom {
+  background: none;
+}
+
+footer {
+  display: none !important;
+}
+
+.sidetoc.shiftup {
+  bottom: 0 !important;
+}
+
+
+
+/*
+ * Copyright (c) 2017-present Arctic Ice Studio <development@arcticicestudio.com>
+ * Copyright (c) 2017-present Sven Greb <development@svengreb.de>
+ *
+ * Project:    Nord highlight.js
+ * Version:    0.1.0
+ * Repository: https://github.com/arcticicestudio/nord-highlightjs
+ * License:    MIT
+ * References:
+ *   https://github.com/arcticicestudio/nord
+ */
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #2E3440;
+}
+
+.hljs,
+.hljs-subst {
+  color: #D8DEE9;
+}
+
+.hljs-selector-tag {
+  color: #81A1C1;
+}
+
+.hljs-selector-id {
+  color: #8FBCBB;
+  font-weight: bold;
+}
+
+.hljs-selector-class {
+  color: #8FBCBB;
+}
+
+.hljs-selector-attr {
+  color: #8FBCBB;
+}
+
+.hljs-selector-pseudo {
+  color: #88C0D0;
+}
+
+.hljs-addition {
+  background-color: rgba(163, 190, 140, 0.5);
+}
+
+.hljs-deletion {
+  background-color: rgba(191, 97, 106, 0.5);
+}
+
+.hljs-built_in,
+.hljs-type {
+  color: #8FBCBB;
+}
+
+.hljs-class {
+  color: #8FBCBB;
+}
+
+.hljs-function {
+  color: #88C0D0;
+}
+
+.hljs-function > .hljs-title {
+  color: #88C0D0;
+}
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-symbol {
+  color: #81A1C1;
+}
+
+.hljs-number {
+  color: #B48EAD;
+}
+
+.hljs-regexp {
+  color: #EBCB8B;
+}
+
+.hljs-string {
+  color: #A3BE8C;
+}
+
+.hljs-title {
+  color: #8FBCBB;
+}
+
+.hljs-params {
+  color: #D8DEE9;
+}
+
+.hljs-bullet {
+  color: #81A1C1;
+}
+
+.hljs-code {
+  color: #8FBCBB;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-formula {
+  color: #8FBCBB;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link:hover {
+  text-decoration: underline;
+}
+
+.hljs-quote {
+  color: #4C566A;
+}
+
+.hljs-comment {
+  color: #4C566A;
+}
+
+.hljs-doctag {
+  color: #8FBCBB;
+}
+
+.hljs-meta,
+.hljs-meta-keyword {
+  color: #5E81AC;
+}
+
+.hljs-meta-string {
+  color: #A3BE8C;
+}
+
+.hljs-attr {
+  color: #8FBCBB;
+}
+
+.hljs-attribute {
+  color: #D8DEE9;
+}
+
+.hljs-builtin-name {
+  color: #81A1C1;
+}
+
+.hljs-name {
+  color: #81A1C1;
+}
+
+.hljs-section {
+  color: #88C0D0;
+}
+
+.hljs-tag {
+  color: #81A1C1;
+}
+
+.hljs-variable {
+  color: #D8DEE9;
+}
+
+.hljs-template-variable {
+  color: #D8DEE9;
+}
+
+.hljs-template-tag {
+  color: #5E81AC;
+}
+
+.abnf .hljs-attribute {
+  color: #88C0D0;
+}
+
+.abnf .hljs-symbol {
+  color: #EBCB8B;
+}
+
+.apache .hljs-attribute {
+  color: #88C0D0;
+}
+
+.apache .hljs-section {
+  color: #81A1C1;
+}
+
+.arduino .hljs-built_in {
+  color: #88C0D0;
+}
+
+.aspectj .hljs-meta {
+  color: #D08770;
+}
+
+.aspectj > .hljs-title {
+  color: #88C0D0;
+}
+
+.bnf .hljs-attribute {
+  color: #8FBCBB;
+}
+
+.clojure .hljs-name {
+  color: #88C0D0;
+}
+
+.clojure .hljs-symbol {
+  color: #EBCB8B;
+}
+
+.coq .hljs-built_in {
+  color: #88C0D0;
+}
+
+.cpp .hljs-meta-string {
+  color: #8FBCBB;
+}
+
+.css .hljs-built_in {
+  color: #88C0D0;
+}
+
+.css .hljs-keyword {
+  color: #D08770;
+}
+
+.diff .hljs-meta {
+  color: #8FBCBB;
+}
+
+.ebnf .hljs-attribute {
+  color: #8FBCBB;
+}
+
+.glsl .hljs-built_in {
+  color: #88C0D0;
+}
+
+.groovy .hljs-meta:not(:first-child) {
+  color: #D08770;
+}
+
+.haxe .hljs-meta {
+  color: #D08770;
+}
+
+.java .hljs-meta {
+  color: #D08770;
+}
+
+.ldif .hljs-attribute {
+  color: #8FBCBB;
+}
+
+.lisp .hljs-name {
+  color: #88C0D0;
+}
+
+.lua .hljs-built_in {
+  color: #88C0D0;
+}
+
+.moonscript .hljs-built_in {
+  color: #88C0D0;
+}
+
+.nginx .hljs-attribute {
+  color: #88C0D0;
+}
+
+.nginx .hljs-section {
+  color: #5E81AC;
+}
+
+.pf .hljs-built_in {
+  color: #88C0D0;
+}
+
+.processing .hljs-built_in {
+  color: #88C0D0;
+}
+
+.scss .hljs-keyword {
+  color: #81A1C1;
+}
+
+.stylus .hljs-keyword {
+  color: #81A1C1;
+}
+
+.swift .hljs-meta {
+  color: #D08770;
+}
+
+.vim .hljs-built_in {
+  color: #88C0D0;
+  font-style: italic;
+}
+
+.yaml .hljs-meta {
+  color: #D08770;
+}

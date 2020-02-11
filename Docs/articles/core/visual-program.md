@@ -1,3 +1,3 @@
 # Visual Program
 
-The `VisualProgram` is the main unit of work in the Core. The program stores all the [Nodes](nodes.md) that are currently added, the defined [Variables](variables.md) (and their values) and can generate compiled `System.Action`s for the methods.
+The `VisualProgram` is the main unit of work in the Core. It is built up of ["nodes"](nodes.md) that can store information and may have references pointing to other nodes. These nodes then determine how the program operates, the control flow, etc. The program stores the Nodes in a `VisualNodeCollection`. Additionally, the program may be composed of [variables](variables.md) (stored in a `VariableCollection`) which store and mutate data as the program operates. There exists the concept of an ["environment"](environment.md) in which the program exists. This determines what sort of features are available to the program.

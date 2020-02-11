@@ -5,8 +5,7 @@
         {
           "src": "..",
           "files": [
-            "VisualProgrammer.Core/**.csproj",
-            "VisualProgrammer.Blazor/**.csproj"
+            "VisualProgrammer.Core/**.csproj"
           ]
         }
       ],
@@ -55,7 +54,8 @@
     "fileMetadataFiles": [],
     "template": [
       "default",
-      "templates/darkfx"
+      "templates/material",
+      "templates/custom"
     ],
     "postProcessors": [],
     "markdownEngineName": "markdig",

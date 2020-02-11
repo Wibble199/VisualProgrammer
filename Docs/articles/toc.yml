@@ -1,11 +1,27 @@
-- name: Visual Program
-  href: core/visual-program.md
-- name: Nodes
-  href: core/nodes.md
-- name: Variables
-  href: core/variables.md
-- name: Entry Definition
-  href: core/entry-definition.md
-- name: Compilation
-  href: core/compilation.md
-  
+- name: Concepts
+  items:
+  - name: Visual Program
+    href: core/visual-program.md
+  - name: Nodes
+    href: core/nodes.md
+  - name: Environment
+    href: core/environment.md
+  - name: Variables
+    href: core/variables.md
+  - name: Entry Definition
+    href: core/entry-definition.md
+  - name: Compilation
+    href: core/compilation.md
+
+- name: Setup
+  items:
+  - name: TODO
+
+- name: Extension
+  items:
+  - name: Creating Basic Nodes
+    href: extension/nodes.md
+  - name: Generic Nodes
+    href: extension/generic-nodes.md
+  - name: Flow Nodes
+    href: extension/flow-nodes.md

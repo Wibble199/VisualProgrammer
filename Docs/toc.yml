@@ -4,6 +4,6 @@
   href: api/
   homepage: api/index.md
 - name: Demo
-  href: /wasm-demo/
+  href: /VisualProgrammer/wasm-demo/
 - name: GitHub
   href: https://github.com/Wibble199/VisualProgrammer

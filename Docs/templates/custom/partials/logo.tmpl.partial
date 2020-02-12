@@ -5,6 +5,6 @@
 </a>
 
 {{! GitHub Ribbon }}
-<a href="https://github.com/Wibble199/VisualProgrammer" style="position: fixed; z-index: 1; right: 0; top: 0">
+<a href="https://github.com/Wibble199/VisualProgrammer" class="github-ribbon">
   <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
 </a>

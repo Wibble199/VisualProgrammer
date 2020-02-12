@@ -15,7 +15,10 @@
 
 - name: Setup
   items:
-  - name: TODO
+  - name: Blazor
+    href: setup/blazor.md
+  - name: WPF
+    href: setup/wpf.md
 
 - name: Extension
   items:
@@ -23,5 +26,5 @@
     href: extension/nodes.md
   - name: Generic Nodes
     href: extension/generic-nodes.md
-  - name: Flow Nodes
+  - name: Flow Nodes (Advanced)
     href: extension/flow-nodes.md

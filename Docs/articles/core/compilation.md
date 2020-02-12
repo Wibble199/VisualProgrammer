@@ -9,41 +9,33 @@ If an interface was provided to the compile method of the `VisualProgram`, the f
 ## Example
 ```cs
 // Our program definition
-VisualProgram program = new VisualProgram {
-	EntryDefinitions = new Dictionary<string, EntryDefinition> {
-		["paramEntry"] = new EntryDefinition {
-			Name = "Parameterized Entry",
-			Parameters = new IndexedDictionary<string, Type> {
-				{ "someDouble", typeof(double) }
-			}
-		},
-		["nonParamEntry"] = new EntryDefinition {
-			Name = "No paremeters"
-		}
-	},
-
-	variableDefinitions = new Dictionary<string, (Type type, object @default)> {
-		["doubleVar"] = (typeof(double), 0d),
-		["boolVar"] = (typeof(bool), false)
-	},
-
-	Nodes = new Dictionary<Guid, VisualNode> {
+var program = new VisualProgram(env => env
+	.ConfigureEntries(e => e
+		.Add("paramEntry", "Parameterized Entry", p => p.WithParameter<double>("someDouble"))
+		.Add("nonParamEntry", "No Parameters")
+	),
+	new VisualNodeCollection {
 		...
+	},
+	new VariableCollection {
+		{ "doubleVar", typeof(double), 0d },
+		{ "boolVar", typeof(bool), false }
 	}
-};
+);
 
 
-// Compile into an anonymous program
+// --- Using an Anonymous Factory ---
 var anonFactory = program.Compile();
-var anonInstance = anonFactory.CreateProgram();
+dynamic anonInstance = anonFactory.CreateProgram();
 
-// To invoke methods on an anonymous we must cast it to dynamic first
-((dynamic)anonInstance).ParamEntry(3.14d);
-((dynamic)anonInstance).NonParamEntry();
+// We can invoke methods on the dynamic instance
+anonInstance.ParamEntry(3.14d);
+anonInstance.NonParamEntry();
 // To get/set the variables, we must first cast to a CompiledInstanceBase
-Console.WriteLine("Bool var = " + ((CompiledInstanceBase)typedInstance).GetVariable("boolVar"));
+Console.WriteLine("Bool var = " + ((CompiledInstanceBase)anonInstance).GetVariable("boolVar"));
 
 
+// --- OR using a Typed Factory ---
 // Compile into a typed program
 var typedFactory = program.Compile<IMyProgram>();
 var typedInstance = typedFactory.CreateProgram();
@@ -53,6 +45,7 @@ typedInstance.ParamEntry(10.5d);
 typedInstance.NonParamEntry();
 Console.WriteLine("Double var = " + typedInstance.DoubleVar); // doubleVar is on the interface, so we can access it like a normal property
 Console.WriteLine("Bool var = " + typedInstance.GetVariable("boolVar")); // boolVar was not on the interface, but we can access it using GetVariable
+
 
 // Our interface for the typed program
 // It does not have to extend from ICompiledInstanceBase, but if it does it allows us to use ResetVariables, GetVariable and SetVariable without needing to cast to a dynamic first.

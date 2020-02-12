@@ -164,6 +164,19 @@ article h4 {
   border-radius: 20px;
 }
 
+.github-ribbon {
+  display: none;
+}
+@media (min-width:768px){
+  .github-ribbon {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    right: 0;
+    top: 0;
+  }
+}
+
 /* SIDEBAR */
 
 .toc .level1 > li {

@@ -18,6 +18,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Id, kvp => new VisualNodeViewModel(kvp));
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
 			AvailableNodes = model.Environment.AvailableNodeTypes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
+			AvailableEntries = model.Environment.EntryDefinitions.Values.Select(e => new ToolboxEntryViewModel(this, e)).ToList();
 
 			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.Variables.Select(var => {
 				var varVm = new VariableDefinitionViewModel(var, model.Environment);
@@ -42,11 +43,16 @@ namespace VisualProgrammer.WPF.ViewModels {
 		/// <summary>A list of all available node types that can be added to this program.</summary>
 		public IEnumerable<ToolboxItemViewModel> AvailableNodes { get; }
 
-		public VisualNodeViewModel CreateNode(Type nodeType, params Type[] genericTypes) {
-			var node = model.Nodes.Create(nodeType, genericTypes);
+		/// <summary>A list of all available entries that can be added to this program.</summary>
+		public IEnumerable<ToolboxEntryViewModel> AvailableEntries { get; }
+
+		public VisualNodeViewModel CreateNode(Type nodeType, params Type[] genericTypes) => CreateNode(model.Nodes.Create(nodeType, genericTypes));
+		public VisualNodeViewModel CreateNode(EntryDefinition entryDefinition) => CreateNode(model.Nodes.Create(entryDefinition));
+		private VisualNodeViewModel CreateNode(VisualNode node) {
 			var vm = new VisualNodeViewModel(node);
 			nodeIdViewModelMap.Add(node.Id, vm);
 			Nodes.Add(vm);
+			Notify(nameof(Nodes));
 			return vm;
 		}
 
@@ -54,6 +60,7 @@ namespace VisualProgrammer.WPF.ViewModels {
 			model.Nodes.Remove(nodeId);
 			Nodes.Remove(nodeIdViewModelMap[nodeId]);
 			nodeIdViewModelMap.Remove(nodeId);
+			Notify(nameof(Nodes));
 		}
 		#endregion
 

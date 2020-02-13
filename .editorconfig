@@ -123,6 +123,9 @@ csharp_preserve_single_line_blocks = true
 # RCS1036: Remove redundant empty line.
 dotnet_diagnostic.RCS1036.severity = none
 
+# RCS1057: Add empty line between declarations.
+dotnet_diagnostic.RCS1057.severity = none
+
 [*.vb] 
 # Modifier preferences 
 visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async:suggestion 

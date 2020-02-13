@@ -23,7 +23,7 @@ namespace VisualProgrammer.Core.Environment {
 		public IEnumerable<Type> DataTypes { get; internal set; }
 
 		/// <summary>Gets the entry definitions that are recognised by a program using this environment.</summary>
-		public Dictionary<string, EntryDefinition> EntryDefinitions { get; internal set; }
+		public IDictionary<string, EntryDefinition> EntryDefinitions { get; internal set; }
 
 		/// <summary>Gets the variables that are locked by the program and cannot be changed.</summary>
 		public IEnumerable<Variable> LockedVariables { get; internal set; }

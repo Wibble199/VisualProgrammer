@@ -1,6 +1,14 @@
 ﻿@inject IJSRuntime JsRuntime
 
 <div class="vp--node-toolbox">
+	@* For every entry definition, add a dummy node for that entry *@
+	@foreach (var def in Context.Environment.EntryDefinitions.Values) {
+		@* Create a preview dummy node that the user can drag *@
+        <div class="vp--visual-node-toolbox-template" @onmousedown="() => CreateNode(def)" style="opacity:@(CanMakeEntry(def) ? 1f : 0.7f)">
+            <VisualNodePresenter Node="new VisualEntry(def.Id)" Key="Guid.Empty" />
+        </div>
+	}
+
     @* For every different node type the user can choose (e.g. If statement, Literal expression, etc.) *@
     @foreach (var nodeType in Context.Environment.AvailableNodeTypes) {
 
@@ -41,6 +49,18 @@
 		var node = Context.Nodes.Create(item.NodeType, item.GenericTypes);
 		NodeCreated.InvokeAsync(node.Id);
 	}
+
+	/// <summary>
+	/// Creates a new visual entry node in the program for the given entry definition. Will return (a string representation of) the new ID of the node to the caller.
+	/// </summary>
+	public void CreateNode(EntryDefinition entryDefinition) {
+		if (!CanMakeEntry(entryDefinition)) return;
+		var node = Context.Nodes.Create(entryDefinition);
+		NodeCreated.InvokeAsync(node.Id);
+	}
+
+	/// <summary>Determines if a visual entry bound to the given entry definition can be added to the program.</summary>
+	private bool CanMakeEntry(EntryDefinition entryDefinition) => !Context.Nodes.OfType<VisualEntry>().Any(e => e.VisualEntryId == entryDefinition.Id);
 
 	/// <summary>Creates a new data POCO for the given source node type. and adds it to the <see cref="ListDataDict"/> source.</summary>
 	private NodeListDataItem CreateListDataEntry(Type sourceType) {

@@ -40,18 +40,12 @@ namespace DemoWPFApp {
 				)
 				.ConfigureEntries(e => e
 					.Add("demoEntry", "Demo Entry")
+					.Add("demoEntry2", "Demo Entry 2")
 				).ConfigureLockedVariables(v => v
 					.Add<int>("someIntVar", 20)
 					.Add<double>("somenewLockedDouble")
 				),
-				new VisualNodeCollection {
-					{ new VisualEntry("demoEntry") { FirstStatement = new StatementReference(printGuid), Position = new System.Drawing.Point(250, 0) } },
-					{ printGuid, new Trace { PrintValue = new ExpressionReference<string>(stringLitGuid), Position = new System.Drawing.Point(250, 40) } },
-					{ stringLitGuid, new Literal<string> { Value = "Hello World!", Position = new System.Drawing.Point(5, 100) } },
-					{ new GetVariable<string> { Variable = new VariableReference<string>("someStringVar"), Position = new System.Drawing.Point(5, 175) } },
-					{ new Trace { Position = new System.Drawing.Point(250, 150) } },
-					{ new If { Position = new System.Drawing.Point(0, 250) } }
-				},
+				new VisualNodeCollection(),
 				new VariableCollection {
 					{ "someStringVar", typeof(string), "Hello from the someStringVar!" },
 					{ "otherStrVar", typeof(string), "Greetings from the otherStrVar!" },

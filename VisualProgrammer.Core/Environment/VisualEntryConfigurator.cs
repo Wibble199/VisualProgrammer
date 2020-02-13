@@ -19,13 +19,11 @@ namespace VisualProgrammer.Core.Environment {
 		/// <exception cref="ArgumentNullException">If the given ID or name is null or empty.</exception>
 		/// <exception cref="ArgumentException">If an entry with this ID has already been added.</exception>
 		public VisualEntryConfigurator Add(string id, string name, Action<VisualEntryParameterConfigurator> parameters) {
-			if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id), "ID must be non-null and non-empty.");
 			if (entries.ContainsKey(id)) throw new ArgumentException($"An entry with this ID ('{id}') has already been registered.", nameof(id));
-			if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Name must be non-null and non-empty.");
 
 			var paramConfig = new VisualEntryParameterConfigurator();
 			parameters(paramConfig);
-			var ed = new EntryDefinition { Name = name, Parameters = paramConfig.parameters };
+			var ed = new EntryDefinition(id, name, paramConfig.parameters);
 			entries.Add(id, ed);
 			return this;
 		}

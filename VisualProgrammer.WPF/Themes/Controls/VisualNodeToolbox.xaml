@@ -2,7 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VisualProgrammer.WPF"
 					xmlns:ap="clr-namespace:VisualProgrammer.WPF.AttachedProperties"
-					xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+					xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+					xmlns:util="clr-namespace:VisualProgrammer.WPF.Util"
+					xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+	<util:BooleanValueConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodeToolbox}, BooleanOpacityConverter}">
+		<util:BooleanValueConverter.TrueValue>
+			<sys:Double>1</sys:Double>
+		</util:BooleanValueConverter.TrueValue>
+		<util:BooleanValueConverter.FalseValue>
+			<sys:Double>0.7</sys:Double>
+		</util:BooleanValueConverter.FalseValue>
+	</util:BooleanValueConverter>
 
 	<Style TargetType="{x:Type local:VisualNodeToolbox}">
 		<Setter Property="Template">
@@ -11,43 +22,75 @@
 					<Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-						<ScrollViewer>
-							<ItemsControl ItemsSource="{Binding Path=(ap:VisualProgramViewModelAttachedProperty.VisualProgramModel).AvailableNodes, RelativeSource={RelativeSource Mode=Self}}">
-								<ItemsControl.ItemTemplate>
-									<DataTemplate>
-										<StackPanel Orientation="Vertical" Margin="16,8">
-											<Grid>
-												<!-- Preview -->
-												<local:VisualNodePresenter DataContext="{Binding TemplateInstance, Mode=OneWay}" IsHitTestVisible="False" />
-												
-												<!-- Preview hit area -->
-												<Rectangle x:Name="PART_NodeDragHitArea" Fill="Transparent">
-													<i:Interaction.Triggers>
-														<i:EventTrigger EventName="MouseDown">
-															<i:CallMethodAction TargetObject="{Binding}" MethodName="CreateNode" />
-														</i:EventTrigger>
-													</i:Interaction.Triggers>
-												</Rectangle>
-											</Grid>
+						<TabControl>
+							<TabItem Header="Nodes">
+								<ScrollViewer>
+									<ItemsControl ItemsSource="{Binding Path=(ap:VisualProgramViewModelAttachedProperty.VisualProgramModel).AvailableNodes, RelativeSource={RelativeSource Mode=Self}}">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<StackPanel Orientation="Vertical" Margin="16,8">
+													<Grid>
+														<!-- Preview -->
+														<local:VisualNodePresenter DataContext="{Binding TemplateInstance, Mode=OneWay}" IsHitTestVisible="False" />
 
-											<!-- Generic type lists -->
-											<ItemsControl ItemsSource="{Binding SelectedGenericTypesViewModels}" Margin="0,4,0,0">
-												<ItemsControl.ItemsPanel>
-													<ItemsPanelTemplate>
-														<StackPanel Orientation="Horizontal" IsItemsHost="True" />
-													</ItemsPanelTemplate>
-												</ItemsControl.ItemsPanel>
-												<ItemsControl.ItemTemplate>
-													<DataTemplate>
-														<ComboBox SelectedItem="{Binding Value, Mode=TwoWay}" ItemsSource="{Binding AllowedTypes}" DisplayMemberPath="Name" />
-													</DataTemplate>
-												</ItemsControl.ItemTemplate>
-											</ItemsControl>
-										</StackPanel>
-									</DataTemplate>
-								</ItemsControl.ItemTemplate>
-							</ItemsControl>
-						</ScrollViewer>
+														<!-- Preview hit area -->
+														<Rectangle x:Name="PART_NodeDragHitArea" Fill="Transparent">
+															<i:Interaction.Triggers>
+																<i:EventTrigger EventName="MouseDown">
+																	<i:CallMethodAction TargetObject="{Binding}" MethodName="CreateNode" />
+																</i:EventTrigger>
+															</i:Interaction.Triggers>
+														</Rectangle>
+													</Grid>
+
+													<!-- Generic type lists -->
+													<ItemsControl ItemsSource="{Binding SelectedGenericTypesViewModels}" Margin="0,4,0,0">
+														<ItemsControl.ItemsPanel>
+															<ItemsPanelTemplate>
+																<StackPanel Orientation="Horizontal" IsItemsHost="True" />
+															</ItemsPanelTemplate>
+														</ItemsControl.ItemsPanel>
+														<ItemsControl.ItemTemplate>
+															<DataTemplate>
+																<ComboBox SelectedItem="{Binding Value, Mode=TwoWay}" ItemsSource="{Binding AllowedTypes}" DisplayMemberPath="Name" />
+															</DataTemplate>
+														</ItemsControl.ItemTemplate>
+													</ItemsControl>
+												</StackPanel>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+								</ScrollViewer>
+							</TabItem>
+							
+							<TabItem Header="Entries">
+								<ScrollViewer>
+									<ItemsControl ItemsSource="{Binding Path=(ap:VisualProgramViewModelAttachedProperty.VisualProgramModel).AvailableEntries, RelativeSource={RelativeSource Mode=Self}}">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<StackPanel Orientation="Vertical" Margin="16,8">
+													<Grid>
+														<!-- Preview -->
+														<Border Opacity="{Binding CanAdd, Converter={StaticResource {ComponentResourceKey {x:Type local:VisualNodeToolbox}, BooleanOpacityConverter}}, Mode=OneWay}">
+															<local:VisualNodePresenter DataContext="{Binding TemplateInstance, Mode=OneWay}" IsHitTestVisible="False" />
+														</Border>
+
+														<!-- Preview hit area -->
+														<Rectangle x:Name="PART_NodeDragHitArea" Fill="Transparent">
+															<i:Interaction.Triggers>
+																<i:EventTrigger EventName="MouseDown">
+																	<i:CallMethodAction TargetObject="{Binding}" MethodName="CreateNode" />
+																</i:EventTrigger>
+															</i:Interaction.Triggers>
+														</Rectangle>
+													</Grid>
+												</StackPanel>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+								</ScrollViewer>
+							</TabItem>
+						</TabControl>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>

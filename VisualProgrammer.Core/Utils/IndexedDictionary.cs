@@ -18,13 +18,24 @@ namespace VisualProgrammer.Core.Utils {
         private readonly IEqualityComparer<TKey> keyComparer = EqualityComparer<TKey>.Default;
         private readonly IEqualityComparer<TValue> valueComparer = EqualityComparer<TValue>.Default;
 
-        public IndexedDictionary() { }
-        public IndexedDictionary(IEqualityComparer<TKey>? keyComparer, IEqualityComparer<TValue>? valueComparer) {
+		#region Ctors
+		public IndexedDictionary() { }
+
+        public IndexedDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection) {
+			internalList = collection.Select(kvp => (kvp.Key, kvp.Value)).ToList();
+		}
+
+		public IndexedDictionary(IEqualityComparer<TKey>? keyComparer, IEqualityComparer<TValue>? valueComparer) {
             this.keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
             this.valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
         }
 
-        public TValue this[TKey key] {
+		public IndexedDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? keyComparer, IEqualityComparer<TValue>? valueComparer) : this(keyComparer, valueComparer) {
+			internalList = collection.Select(kvp => (kvp.Key, kvp.Value)).ToList();
+		}
+		#endregion
+
+		public TValue this[TKey key] {
             get => internalList.FirstOrDefault(i => keyComparer.Equals(i.key, key)).value;
             set {
                 var idx = internalList.FindIndex(i => keyComparer.Equals(i.key, key));

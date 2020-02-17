@@ -18,6 +18,8 @@ namespace VisualProgrammer.WPF.ViewModels {
 			nodeIdViewModelMap = model.Nodes.ToDictionary(kvp => kvp.Id, kvp => new VisualNodeViewModel(kvp));
 			Nodes = new ObservableCollection<VisualNodeViewModel>(nodeIdViewModelMap.Values);
 			AvailableNodes = model.Environment.AvailableNodeTypes.Select(t => new ToolboxItemViewModel(this, t)).ToList();
+
+			EntryDisplayNames = new ReadOnlyDictionary<string, string>(model.Environment.EntryDefinitions.ToDictionary(e => e.Key, e => e.Value.Name));
 			AvailableEntries = model.Environment.EntryDefinitions.Values.Select(e => new ToolboxEntryViewModel(this, e)).ToList();
 
 			Variables = new ObservableCollection<VariableDefinitionViewModel>(model.Variables.Select(var => {
@@ -42,6 +44,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 
 		/// <summary>A list of all available node types that can be added to this program.</summary>
 		public IEnumerable<ToolboxItemViewModel> AvailableNodes { get; }
+
+		/// <summary>A map of entry IDs onto their display names.</summary>
+		public IReadOnlyDictionary<string, string> EntryDisplayNames { get; }
 
 		/// <summary>A list of all available entries that can be added to this program.</summary>
 		public IEnumerable<ToolboxEntryViewModel> AvailableEntries { get; }

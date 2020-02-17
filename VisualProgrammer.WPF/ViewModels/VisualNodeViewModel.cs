@@ -50,6 +50,9 @@ namespace VisualProgrammer.WPF.ViewModels {
 		public bool IsStatement => model is VisualStatement;
 		public bool IsEntry => model is VisualEntry;
 
+		// Entry properties
+		public string EntryKey => (model as VisualEntry)?.VisualEntryId;
+
 
 		#region Properties Lists
 		private IEnumerable<VisualNodePropertyViewModel> PropsOfType(params VisualNodePropertyType[] types) => model.GetPropertiesOfType(types).Select(prop => new VisualNodePropertyViewModel(prop, model));

@@ -2,10 +2,21 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:VisualProgrammer.WPF"
 					xmlns:pe="clr-namespace:VisualProgrammer.WPF.PropertyEditor"
-					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util">
+					xmlns:u="clr-namespace:VisualProgrammer.WPF.Util"
+					xmlns:ap="clr-namespace:VisualProgrammer.WPF.AttachedProperties"
+					xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
 	<u:EnumerableIndexConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableIndexConverter}" />
 	<u:EnumerableCountConverter x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, EnumerableCountConverter}" />
+
+	<u:Generic BaseType="{x:Type TypeName=u:DictionaryValueConverter`2}" x:Key="{ComponentResourceKey {x:Type local:VisualNodePresenter}, NodeEntryNameConverter}">
+		<u:Generic.TypeArguments>
+			<x:Array Type="{x:Type sys:Type}">
+				<x:Type TypeName="sys:String" />
+				<x:Type TypeName="sys:String" />
+			</x:Array>
+		</u:Generic.TypeArguments>
+	</u:Generic>
 
 	<Style TargetType="{x:Type local:VisualNodePresenter}">
 		<Setter Property="Width" Value="140px" />
@@ -17,7 +28,26 @@
 							<!-- Main node content -->
 							<StackPanel Orientation="Vertical" Margin="5,5,10,0">
 								<!-- Title -->
-								<TextBlock Text="{Binding NodeName, Mode=OneWay}" FontWeight="Bold" />
+								<TextBlock FontWeight="Bold">
+									<TextBlock.Style>
+										<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+											<Setter Property="Text" Value="{Binding NodeName, Mode=OneWay}" />
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsEntry}" Value="True">
+													<Setter Property="Text">
+														<Setter.Value>
+															<MultiBinding Converter="{StaticResource {ComponentResourceKey {x:Type local:VisualNodePresenter}, NodeEntryNameConverter}}">
+																<Binding Path="(ap:VisualProgramViewModelAttachedProperty.VisualProgramModel).EntryDisplayNames"
+																		 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type local:VisualNodePresenter}}" />
+																<Binding Path="EntryKey" />
+															</MultiBinding>
+														</Setter.Value>
+													</Setter>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBlock.Style>
+								</TextBlock>
 
 								<!-- Properties list -->
 								<pe:MultiEditor Node="{Binding .}" Margin="0,8" />

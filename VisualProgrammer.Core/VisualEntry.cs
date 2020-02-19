@@ -1,13 +1,11 @@
-﻿using VisualProgrammer.Core.Nodes.Variables;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using VisualProgrammer.Core.Utils;
-using System;
 
 namespace VisualProgrammer.Core {
 
-    public sealed class VisualEntry : VisualNode {
+	public sealed class VisualEntry : VisualNode {
 
 		public VisualEntry(string visualEntryId) {
 			VisualEntryId = visualEntryId;

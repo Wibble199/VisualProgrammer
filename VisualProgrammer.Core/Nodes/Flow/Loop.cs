@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using static System.Linq.Expressions.Expression;
+using VisualProgrammer.Core.Utils;
 
 namespace VisualProgrammer.Core.Nodes.Flow {
 
@@ -8,18 +8,9 @@ namespace VisualProgrammer.Core.Nodes.Flow {
         [VisualNodeProperty] public ExpressionReference<bool> Condition { get; set; }
         [VisualNodeProperty] public StatementReference Body { get; set; }
 
-       public override Expression CreateExpression(VisualProgram context) {
-            var @break = Label("break");
-            return Expression.Loop(
-                Block(
-                    IfThen(
-                        Not(Condition.ResolveRequiredExpression(context)),
-                        Break(@break)
-                    ),
-                    Body.ResolveStatement(context)
-                ),
-                @break
-            );
-        }
+		public override Expression CreateExpression(VisualProgram context) => LoopFactory.CreateLoop(
+			Body.ResolveStatement(context),
+			Condition.ResolveRequiredExpression(context)
+		);
     }
 }

@@ -2,12 +2,12 @@
 using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 
-namespace VisualProgrammer.Core {
+namespace VisualProgrammer.Core.Utils {
 
 	/// <summary>
 	/// Providers methods that create expressions relating to reading and writing variables.
 	/// </summary>
-    internal static class VariableAccessorFactory {
+	internal static class VariableAccessorFactory {
 
 		/// <summary>
 		/// Creates a property accessing expression that points to the variable with the given reference.
@@ -15,7 +15,7 @@ namespace VisualProgrammer.Core {
 		/// <param name="context">The program context whose variable dictionary will be used.</param>
 		/// <param name="variable">A reference to the desired variable.</param>
 		private static Expression GetMemberExpressionFor(VisualProgram context, IVariableReference variable) =>
-            Property(
+			Property(
 				Property(
 					PropertyOrField(
 						context.Variables.compiledInstanceParameter,

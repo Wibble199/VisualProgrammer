@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace VisualProgrammer.Core {
 
@@ -21,6 +22,16 @@ namespace VisualProgrammer.Core {
 				throw new Exception(); // TODO: Add meaninful error message. If this is thrown, could not find a variable with the target name.
 			if (def.Type != Type)
 				throw new Exception(); // TODO: Add meaningful message. If this is thrown, variable is wrong type
+		}
+
+		public Expression ResolveRequiredGetterExpression(VisualProgram context) => VariableAccessorFactory.CreateGetterExpression(context, this, typeof(TVar));
+		public Expression? ResolveGetterExpression(VisualProgram context) {
+			try { return ResolveRequiredGetterExpression(context); } catch { return null; }
+		}
+
+		public Expression ResolveRequiredSetterExpression(VisualProgram context, Expression value) => VariableAccessorFactory.CreateSetterExpression(context, this, value);
+		public Expression? ResolveSetterExpression(VisualProgram context, Expression value) {
+			try { return ResolveRequiredSetterExpression(context, value); } catch { return null; }
 		}
 
 		public override bool Equals(object obj) => Name == (obj as VariableReference<TVar>?)?.Name;
@@ -49,5 +60,23 @@ namespace VisualProgrammer.Core {
 		/// </summary>
 		/// <param name="context">The context to validate the reference in.</param>
 		void Validate(VisualProgram context);
+
+		/// <summary>Resolves an expression that will return the value stored in the referenced variable.
+		/// If the variable could not be found in the program, null is returned.</summary>
+		Expression? ResolveGetterExpression(VisualProgram context);
+
+		/// <summary>Resolves an expression that will return the value stored in the referenced variable.
+		/// If the variable could not be found in the program, an exception will be thrown.</summary>
+		/// <exception cref="Exception" />
+		Expression ResolveRequiredGetterExpression(VisualProgram context);
+
+		/// <summary>Resolves an expression that will set the value of the referenced variable.
+		/// If the node could not be found in the program, null is returned.</summary>
+		Expression? ResolveSetterExpression(VisualProgram context, Expression value);
+
+		/// <summary>Resolves an expression that will set the value of the referenced variable.
+		/// If the node could not be found in the program, an exception will be thrown.</summary>
+		/// <exception cref="Exception" />
+		Expression ResolveRequiredSetterExpression(VisualProgram context, Expression value);
 	}
 }

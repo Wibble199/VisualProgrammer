@@ -8,6 +8,6 @@ namespace VisualProgrammer.Core.Nodes.Variables {
         [VisualNodeProperty] public ExpressionReference<TVar> Value { get; set; }
 
         public override Expression CreateExpression(VisualProgram context) =>
-            VariableAccessorFactory.CreateSetterExpression(context, Variable, Value.ResolveRequiredExpression(context));
+			Variable.ResolveRequiredSetterExpression(context, Value.ResolveRequiredExpression(context));
     }
 }

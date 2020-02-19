@@ -67,8 +67,7 @@ namespace VisualProgrammer.Core {
 		public override string ToString() => isValue ? value?.ToString() ?? "null value" : nodeId?.ToString() ?? default(Guid).ToString();
 
 		public override bool Equals(object obj)
-			=> obj is ExpressionReference<TValue> other ? isValue == other.isValue && nodeId == other.nodeId && Equals(value, other.value)
-			 : false;
+			=> obj is ExpressionReference<TValue> other && isValue == other.isValue && nodeId == other.nodeId && Equals(value, other.value);
 		public static bool operator ==(ExpressionReference<TValue> a, ExpressionReference<TValue> b) => a.Equals(b);
 		public static bool operator !=(ExpressionReference<TValue> a, ExpressionReference<TValue> b) => !a.Equals(b);
 		public override int GetHashCode() => HashCode.Combine(isValue, nodeId, value);

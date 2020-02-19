@@ -6,7 +6,7 @@ namespace VisualProgrammer.Core.Nodes.Variables {
 
 		[VisualNodeProperty] public VariableReference<TVar> Variable { get; set; }
 
-        public override Expression CreateExpression(VisualProgram context) =>
-            VariableAccessorFactory.CreateGetterExpression(context, Variable, typeof(TVar));
+		public override Expression CreateExpression(VisualProgram context) =>
+			Variable.ResolveRequiredGetterExpression(context);
     }
 }

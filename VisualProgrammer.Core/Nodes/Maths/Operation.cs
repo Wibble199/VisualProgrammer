@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace VisualProgrammer.Core.Nodes.Maths {
+
     public class Operation : VisualExpression<double> {
 
         [VisualNodeProperty(Label = "A")] public ExpressionReference<double> LHS { get; set; }
@@ -23,7 +24,7 @@ namespace VisualProgrammer.Core.Nodes.Maths {
             Pow
         }
 
-        private static Dictionary<Op, Func<Expression, Expression, Expression>> opMap = new Dictionary<Op, Func<Expression, Expression, Expression>> {
+        internal static readonly Dictionary<Op, Func<Expression, Expression, Expression>> opMap = new Dictionary<Op, Func<Expression, Expression, Expression>> {
             { Op.Add, Expression.Add },
             { Op.Substract, Expression.Subtract },
             { Op.Multiply, Expression.Multiply },

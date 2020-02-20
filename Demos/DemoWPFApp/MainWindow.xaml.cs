@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using VisualProgrammer.Core;
-using VisualProgrammer.Core.Flow;
-using VisualProgrammer.Core.Nodes.Variables;
 
 namespace DemoWPFApp {
 

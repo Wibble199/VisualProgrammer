@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using VisualProgrammer.Core.Utils;
 
-namespace VisualProgrammer.Core.Flow {
+namespace VisualProgrammer.Core.Nodes.Flow {
 
     public sealed class If : VisualStatement {
 

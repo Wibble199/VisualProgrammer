@@ -276,16 +276,19 @@ namespace VisualProgrammer.Core.Compilation {
 			foreach (var func in functions) {
 				var args = program.Environment.EntryDefinitions[func.Key].Parameters.Values.ToArray();
 				var isEmpty = func.Value == null;
-				var declaration = typeof(TExtends).GetMethod(func.Key, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase, null, args, null);
+				var declaration = typeof(TExtends).GetMethod(func.Key, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.FlattenHierarchy, null, args, null);
 
 				// If the method declaration on TExtends is a non-abstract virtual method (i.e. it already has an implementation) AND the incoming compiled function is empty, don't override the default implementation
 				if (declaration?.IsAbstract == false && isEmpty) continue;
+
+				// If a declarion is found, use the casing from that declaration.
+				var name = declaration?.Name ?? func.Key;
 
 				// The visibility of the new method is the same as the existing declaration if it exists, or defaults to public if it does not.
 				var newVisibility = declaration == null ? MethodAttributes.Public : IsolateVisibilityAttribute(declaration.Attributes);
 
 				// If a declaration exists, make sure we use the casing from that declarion
-				var method = typeBuilder.DefineMethod(declaration?.Name ?? func.Key, newVisibility | MethodAttributes.HideBySig | MethodAttributes.Virtual, typeof(void), args);
+				var method = typeBuilder.DefineMethod(name, newVisibility | MethodAttributes.HideBySig | MethodAttributes.Virtual, typeof(void), args);
 				var il = method.GetILGenerator();
 
 				if (!isEmpty) {
@@ -304,8 +307,7 @@ namespace VisualProgrammer.Core.Compilation {
 				// If the compiled lambda function is empty, simply make an empty method that immediately returns (instead of going through the step of invoking an empty method)
 				il.Emit(Ret);
 
-				if (declaration != null)
-					typeBuilder.DefineMethodOverride(method, declaration);
+				TryDefineMethodOverride(name, typeof(void), args, method, false);
 			}
 		}
 
@@ -362,13 +364,23 @@ namespace VisualProgrammer.Core.Compilation {
 		}
 
 		/// <summary>
-		/// Attempts to mark the given method as an override for a method on <typeparamref name="TExtends"/> with the given <paramref name="name"/> and <paramref name="parameterTypes"/>.<para/>
+		/// Attempts to mark the given method as an override for a method on <typeparamref name="TExtends"/> (and it's superclasses) with the given <paramref name="name"/> and <paramref name="parameterTypes"/>.<para/>
 		/// </summary>
 		/// <param name="overrideVirtual">If false and and the found method is virtual but not abstract (n.b. this includes default interface methods), the override will not be set.
 		/// This is for when overriding a method that calls a function and the compiled function is empty.</param>
 		private void TryDefineMethodOverride(string name, Type returnType, Type[] parameterTypes, MethodBuilder methodBuilder, bool overrideVirtual = true) {
-			if (typeof(TExtends).GetMethod(name, parameterTypes) is { } targetDeclaration && targetDeclaration.ReturnType == returnType && (targetDeclaration.IsAbstract || (overrideVirtual && targetDeclaration.IsVirtual)))
-				typeBuilder.DefineMethodOverride(methodBuilder, targetDeclaration);
+			// Attempts to find and override a method on the given type
+			void DefineOnType(Type targetType) {
+				if (targetType.GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.FlattenHierarchy, null, parameterTypes, null) is { } targetDeclaration && targetDeclaration.ReturnType == returnType && (targetDeclaration.IsAbstract || (overrideVirtual && targetDeclaration.IsVirtual)))
+					typeBuilder.DefineMethodOverride(methodBuilder, targetDeclaration);
+			}
+
+			// Override methods on the starting TExtends type (flattening the heirarchy, so any abstract/virtual methods in superclasses will also be overriden)
+			DefineOnType(typeof(TExtends));
+
+			// Attempt to mark an override in any interfaces implemented by TExends.
+			foreach (var @interface in typeof(TExtends).GetInterfaces())
+				DefineOnType(@interface);
 		}
 
 		/// <summary>

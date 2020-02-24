@@ -25,6 +25,10 @@ namespace DemoWPFApp {
 		double SomeNewLockedDouble { get; set; }
 	}
 
+	public interface IProgramBase {
+		void DemoEntry2();
+	}
+
 	public class MainWindowModel {
 
         public VisualProgram Program { get; set; }

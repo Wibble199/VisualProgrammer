@@ -13,14 +13,15 @@ namespace VisualProgrammer.Core {
 	/// </summary>
 	public class VariableCollection : IEnumerable<Variable> {
 
+		[SuppressMessage("", "CS8618", Justification = "This field is set by VisualProgram during it's constructor.")]
 		internal VisualProgram context;
 
-		private Dictionary<string, Variable> definitions = new Dictionary<string, Variable>(StringComparer.OrdinalIgnoreCase);
+		private readonly Dictionary<string, Variable> definitions = new Dictionary<string, Variable>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
 		/// A parameter that will be the first parameter of all compiled functions which provides them access to their instance context (e.g. allows for accessing variable store).
 		/// </summary>
-		internal readonly ParameterExpression compiledInstanceParameter = Expression.Parameter(typeof(CompiledInstanceBase), "context");
+		internal readonly ParameterExpression compiledInstanceParameter = Expression.Parameter(typeof(ICompiledInstanceBase), "context");
 
 		/// <summary>
 		/// Attempts to define a new variable on this program.

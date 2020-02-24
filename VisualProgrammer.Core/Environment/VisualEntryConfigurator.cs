@@ -51,8 +51,14 @@ namespace VisualProgrammer.Core.Environment {
 		/// <param name="name">The (unique) name for this parameter.</param>
 		/// <exception cref="ArgumentNullException">If the given parameter name is null or empty.</exception>
 		/// <exception cref="ArgumentException">If a parameter with this name has already been added.</exception>
+		/// <exception cref="NotSupportedException">If this method is called when there are 15 parameters already defined.</exception>
 		public VisualEntryParameterConfigurator WithParameter(string name, Type type) {
 			if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "Parameter name must not be null or empty.");
+
+			// Since the compiler attempts to get a closed generic action type from the function definition from the function definition, it is limited by the max-sized generic action, which has 16 generic args
+			// However, we also need to pass the compiled instance base context in as the first parameter, leaving 15 parameters left for the entry. Hence this limit.
+			if (parameters.Count >= 15) throw new NotSupportedException("Cannot pass more than 15 parameters to a single entry.");
+
 			parameters.Add(name, type);
 			return this;
 		}
@@ -64,6 +70,7 @@ namespace VisualProgrammer.Core.Environment {
 		/// <param name="name">The (unique) name for this parameter.</param>
 		/// <exception cref="ArgumentNullException">If the given parameter name is null or empty.</exception>
 		/// <exception cref="ArgumentException">If a parameter with this name has already been added.</exception>
+		/// <exception cref="NotSupportedException">If this method is called when there are 15 parameters already defined.</exception>
 		public VisualEntryParameterConfigurator WithParameter<T>(string name) => WithParameter(name, typeof(T));
 	}
 }

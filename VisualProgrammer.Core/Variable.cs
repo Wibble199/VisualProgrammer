@@ -33,5 +33,7 @@ namespace VisualProgrammer.Core {
 		}
 
 		public void Reset() => value = DefaultValue;
+
+		public Variable Clone() => new Variable(Name, Type, DefaultValue) { Value = Value };
 	}
 }

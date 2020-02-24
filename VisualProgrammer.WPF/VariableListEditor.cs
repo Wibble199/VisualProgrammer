@@ -7,11 +7,5 @@ namespace VisualProgrammer.WPF {
 		static VariableListEditor() {
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(VariableListEditor), new FrameworkPropertyMetadata(typeof(VariableListEditor)));
 		}
-
-		public override void OnApplyTemplate() {
-			base.OnApplyTemplate();
-		}
-
-
 	}
 }

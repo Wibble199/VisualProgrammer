@@ -32,16 +32,13 @@ namespace VisualProgrammer.Core {
 
         /// <summary>
         /// Compiles the VisualProgram into a compiled program factory, which can then be used to create independent instances of the program.<para/>
-		/// The program instances generated from this factory will attempt to implement the given interface.
+		/// The program instances generated from this factory will attempt to extend/implement the given class or interface.
         /// </summary>
-        public CompiledProgramFactory<TImplements> Compile<TImplements>() where TImplements : class => new CompiledProgramFactory<TImplements>(
-			Nodes.OfType<VisualEntry>().ToDictionary(e => e.VisualEntryId, e => e.CreateLambda(this).Compile()),
-			Variables
-		);
+        public CompiledProgramFactory<TExtends> Compile<TExtends>() where TExtends : class => new CompiledProgramFactory<TExtends>(this);
 
 		/// <summary>
 		/// Compiles the VisualProgram into a compiled program factory, which can then be used to create independent instances of the program.
 		/// </summary>
-		public CompiledProgramFactory<IAnonymousProgram> Compile() => Compile<IAnonymousProgram>();
+		public CompiledProgramFactory<ICompiledInstanceBase> Compile() => Compile<ICompiledInstanceBase>();
     }
 }

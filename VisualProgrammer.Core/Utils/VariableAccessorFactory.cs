@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
+using VisualProgrammer.Core.Compilation;
 using static System.Linq.Expressions.Expression;
 
 namespace VisualProgrammer.Core.Utils {
@@ -9,23 +11,8 @@ namespace VisualProgrammer.Core.Utils {
 	/// </summary>
 	internal static class VariableAccessorFactory {
 
-		/// <summary>
-		/// Creates a property accessing expression that points to the variable with the given reference.
-		/// </summary>
-		/// <param name="context">The program context whose variable dictionary will be used.</param>
-		/// <param name="variable">A reference to the desired variable.</param>
-		private static Expression GetMemberExpressionFor(VisualProgram context, IVariableReference variable) =>
-			Property(
-				Property(
-					PropertyOrField(
-						context.Variables.compiledInstanceParameter,
-						"variables"
-					),
-					"Item",
-					Constant(variable.Name, typeof(string))
-				),
-				nameof(Variable.Value)
-			);
+		private static readonly MethodInfo getVariableMethod = typeof(ICompiledInstanceBase).GetMethod(nameof(ICompiledInstanceBase.GetVariable));
+		private static readonly MethodInfo setVariableMethod = typeof(ICompiledInstanceBase).GetMethod(nameof(ICompiledInstanceBase.SetVariable));
 
 		/// <summary>
 		/// Creates an expression that gets the value of a visual program variable.
@@ -36,7 +23,14 @@ namespace VisualProgrammer.Core.Utils {
 		/// <exception cref=""></exception>
 		internal static Expression CreateGetterExpression(VisualProgram context, IVariableReference variable, Type type) {
 			variable.Validate(context);
-			return Convert(GetMemberExpressionFor(context, variable), type);
+			return Convert(
+				Call(
+					context.Variables.compiledInstanceParameter,
+					getVariableMethod,
+					Constant(variable.Name, typeof(string))
+				),
+				type
+			);
 		}
 
 		/// <summary>
@@ -47,7 +41,12 @@ namespace VisualProgrammer.Core.Utils {
 		/// <param name="value">The expression that represents the new value of the variable.</param>
 		internal static Expression CreateSetterExpression(VisualProgram context, IVariableReference variable, Expression value) {
 			variable.Validate(context);
-			return Assign(GetMemberExpressionFor(context, variable), Convert(value, typeof(object)));
+			return Call(
+				context.Variables.compiledInstanceParameter,
+				setVariableMethod,
+				Constant(variable.Name, typeof(string)),
+				Convert(value, typeof(object))
+			);
 		}
 	}
 }

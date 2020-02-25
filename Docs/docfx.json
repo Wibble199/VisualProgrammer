@@ -10,6 +10,7 @@
         }
       ],
       "dest": "api",
+      "filter": "filter.yml",
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -24,8 +25,10 @@
       },
       {
         "files": [
-          "articles/**.md",
-          "articles/**/toc.yml",
+          "devguide/**.md",
+          "devguide/**/toc.yml",
+          "userguide/**.md",
+          "userguide/**/toc.yml",
           "toc.yml",
           "*.md"
         ]

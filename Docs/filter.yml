@@ -1,0 +1,3 @@
+apiRules:
+  - exclude:
+      uidRegex: ^VisualProgrammer.Core.Nodes

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using VisualProgrammer.Core.Utils;
 using static System.Reflection.Emit.OpCodes;
 using VariableStore = System.Collections.Generic.Dictionary<string, VisualProgrammer.Core.Variable>;
 using FunctionStore = System.Collections.Generic.Dictionary<string, System.Delegate?>;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using VisualProgrammer.Core.Utils;
 
 namespace VisualProgrammer.Core.Compilation {
 
@@ -24,8 +24,8 @@ namespace VisualProgrammer.Core.Compilation {
 	/// If an interface is given, any methods defined on that interface will map to an entry with the same name. Any properties on the inter will
 	/// map to variables of the same name.<para/>
 	/// Note that any variables not mapped to an interface or class's properties will only available for reading/writing via the
-	/// <see cref="ICompiledInstanceBase.Variables"/> property (to prevent name collisions between variables and entries), however all functions in the
-	/// VisualProgram that are available on the root program instance.
+	/// <see cref="ICompiledInstanceBase.GetVariable(string)"/> and <see cref="ICompiledInstanceBase.SetVariable(string, object)"/> methods. (to prevent
+	/// name collisions between variables and entries), however all functions in the VisualProgram that are available on the root program instance.
 	/// </summary>
 	/// <typeparam name="TExtends">A class or interface type that is extended/implemented by the program instances created by this factory.</typeparam>
 	public class CompiledProgramFactory<TExtends> where TExtends : class {
@@ -149,15 +149,15 @@ namespace VisualProgrammer.Core.Compilation {
 		/// </summary>
 		private void GenerateConstructors() {
 			// Constructor bindingflags
-			const MethodAttributes bf = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
+			const MethodAttributes bf = MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
 
 			if (typeof(TExtends).IsInterface) {
-				// If there are constructors, make a default parameterless one
+				// For interfaces, we need make a default parameterless one
 				typeBuilder.DefineDefaultConstructor(bf);
 
 			} else {
-				// Otherwise, make a constructor for each one on the base type with matching args
-				foreach (var ctor in typeof(TExtends).GetConstructors()) {
+				// Otherwise, make a constructor for each one on the base class with matching args
+				foreach (var ctor in typeof(TExtends).GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
 					var @params = ctor.GetParameters();
 					var ctorBuilder = typeBuilder.DefineConstructor(bf, CallingConventions.HasThis, @params.Select(p => p.ParameterType).ToArray());
 					var il = ctorBuilder.GetILGenerator();
@@ -322,42 +322,42 @@ namespace VisualProgrammer.Core.Compilation {
 					var hasOverridableGetter = prop.GetMethod != null && (prop.GetMethod.IsVirtual || prop.GetMethod.IsAbstract);
 					var hasOverridableSetter = prop.SetMethod != null && (prop.SetMethod.IsVirtual || prop.SetMethod.IsAbstract);
 
+					if (!(hasOverridableGetter || hasOverridableSetter)) continue;
+
 					// If atleast the setter or getter is overridable, implement the property
-					if (hasOverridableGetter || hasOverridableSetter) {
-						var propBuilder = typeBuilder.DefineProperty(prop.Name, prop.Attributes, prop.PropertyType, null);
+					var propBuilder = typeBuilder.DefineProperty(prop.Name, prop.Attributes, prop.PropertyType, null);
 
-						// If the getter is overridable, implement the getter (which is a proxy for the 'Value' property of the variable with the relevant key in the variable dictionary)
-						if (hasOverridableGetter) {
-							var vis = IsolateVisibilityAttribute(prop.GetMethod!.Attributes);
-							var propGetBuilder = typeBuilder.DefineMethod($"get_{prop.Name}", vis | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig, prop.PropertyType, Type.EmptyTypes);
-							var il = propGetBuilder.GetILGenerator();
-							il.Emit(Ldarg_0);
-							il.Emit(Ldfld, varsFieldBuilder);
-							il.Emit(Ldstr, varDef.Name);
-							il.Emit(Callvirt, variableDictGetItem);
-							il.Emit(Callvirt, variableGetValue);
-							il.Emit(Unbox_Any, prop.PropertyType);
-							il.Emit(Ret);
-							propBuilder.SetGetMethod(propGetBuilder);
-							TryDefineMethodOverride($"get_{prop.Name}", prop.PropertyType, Type.EmptyTypes, propGetBuilder);
-						}
+					// If the getter is overridable, implement the getter (which is a proxy for the 'Value' property of the variable with the relevant key in the variable dictionary)
+					if (hasOverridableGetter) {
+						var vis = IsolateVisibilityAttribute(prop.GetMethod!.Attributes);
+						var propGetBuilder = typeBuilder.DefineMethod($"get_{prop.Name}", vis | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig, prop.PropertyType, Type.EmptyTypes);
+						var il = propGetBuilder.GetILGenerator();
+						il.Emit(Ldarg_0);
+						il.Emit(Ldfld, varsFieldBuilder);
+						il.Emit(Ldstr, varDef.Name);
+						il.Emit(Callvirt, variableDictGetItem);
+						il.Emit(Callvirt, variableGetValue);
+						il.Emit(Unbox_Any, prop.PropertyType);
+						il.Emit(Ret);
+						propBuilder.SetGetMethod(propGetBuilder);
+						TryDefineMethodOverride($"get_{prop.Name}", prop.PropertyType, Type.EmptyTypes, propGetBuilder);
+					}
 
-						// If the setter is overridable, implement it (which is a proxy for setting the 'Value' property of the variable with the relevant key in the variable dictionary)
-						if (hasOverridableSetter) {
-							var vis = IsolateVisibilityAttribute(prop.SetMethod!.Attributes);
-							var propSetBuilder = typeBuilder.DefineMethod($"set_{prop.Name}", vis | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig, typeof(void), new[] { prop.PropertyType });
-							var il = propSetBuilder.GetILGenerator();
-							il.Emit(Ldarg_0);
-							il.Emit(Ldfld, varsFieldBuilder);
-							il.Emit(Ldstr, varDef.Name);
-							il.Emit(Callvirt, variableDictGetItem);
-							il.Emit(Ldarg_1);
-							il.Emit(Box, prop.PropertyType);
-							il.Emit(Callvirt, variableSetValue);
-							il.Emit(Ret);
-							propBuilder.SetSetMethod(propSetBuilder);
-							TryDefineMethodOverride($"set_{prop.Name}", typeof(void), new[] { prop.PropertyType }, propSetBuilder);
-						}
+					// If the setter is overridable, implement it (which is a proxy for setting the 'Value' property of the variable with the relevant key in the variable dictionary)
+					if (hasOverridableSetter) {
+						var vis = IsolateVisibilityAttribute(prop.SetMethod!.Attributes);
+						var propSetBuilder = typeBuilder.DefineMethod($"set_{prop.Name}", vis | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig, typeof(void), new[] { prop.PropertyType });
+						var il = propSetBuilder.GetILGenerator();
+						il.Emit(Ldarg_0);
+						il.Emit(Ldfld, varsFieldBuilder);
+						il.Emit(Ldstr, varDef.Name);
+						il.Emit(Callvirt, variableDictGetItem);
+						il.Emit(Ldarg_1);
+						il.Emit(Box, prop.PropertyType);
+						il.Emit(Callvirt, variableSetValue);
+						il.Emit(Ret);
+						propBuilder.SetSetMethod(propSetBuilder);
+						TryDefineMethodOverride($"set_{prop.Name}", typeof(void), new[] { prop.PropertyType }, propSetBuilder);
 					}
 				}
 			}
@@ -392,8 +392,14 @@ namespace VisualProgrammer.Core.Compilation {
 		/// Creates a new instance of the target program, with its own set of variables.<para/>
 		/// Note that the returned type also inherits <see cref="ICompiledInstanceBase"/> (and, by extension, <see cref="System.Dynamic.DynamicObject"/>).
 		/// </summary>
+		/// <exception cref="ArgumentException">If no constructor could be found with the given parameters.</exception>
 		public TExtends CreateProgram(params object[] args) {
-			var inst = (TExtends)Activator.CreateInstance(programType, args);
+			TExtends inst;
+			try {
+				inst = (TExtends)Activator.CreateInstance(programType, BindingFlags.Instance | BindingFlags.NonPublic, null, args, null);
+			} catch (MissingMethodException ex) {
+				throw new ArgumentException("Could not find a suitable constructor for the given parameters.", nameof(args), ex);
+			}
 			varsFieldInfo.SetValue(inst, vars.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.OrdinalIgnoreCase));
 			((ICompiledInstanceBase)inst).ResetVariables();
 			return inst;

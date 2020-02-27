@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Environment </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Environment ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+              
+              <a href="https://github.com/Wibble199/VisualProgrammer" class="github-ribbon">
+                <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+              </a>    </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="environment">Environment</h1>
+
+<p>The environment determines some of the aspects of a program:</p>
+<ul>
+<li>The available types of statements and expressions</li>
+<li>The data types that can be utilised
+<ul>
+<li>Types of variables that can be created by the user</li>
+<li>Types available for generic nodes</li>
+</ul>
+</li>
+<li>The <a href="entry-definition.html">entry definitions</a></li>
+<li>The locked/mandatory <a href="variables.html">variables</a></li>
+</ul>
+<h2 id="configuring-the-environment">Configuring the Environment</h2>
+<p>The environment can be configured by using the fluent API exposed by the <code>VisualProgramEnvironmentBuilder</code>. An example of this is shown below.</p>
+<pre><code class="lang-cs">var program = new VisualProgram(env =&gt; env
+	.ConfigureNodes(n =&gt; n
+		.IncludeDefault() // Include the default nodes
+		.Include&lt;MyCustomType&gt;() // Include some custom statement/expression
+	)
+	.ConfigureDataTypes(t =&gt; t
+		.AddDefault() // Include the default types (bool, int, double and string)
+		.Remove&lt;int&gt;() // Remove one of the defaults
+		.Add&lt;DateTime&gt;() // Include another type (make sure to add nodes that support this type)
+	)
+	.ConfigureEntries(e =&gt; e
+		.Add(&quot;entryKey&quot;, &quot;Display Name&quot;)
+		.Add(&quot;anotherEntryKey&quot;, &quot;Entry with Params&quot;, p =&gt; p
+			.WithParameter&lt;double&gt;(&quot;doubleParam&quot;)
+		)
+	)
+	.ConfigureLockedVariables(v =&gt; v
+		.Add&lt;double&gt;(&quot;MyDoubleVariable&quot;, 10d)
+	)
+);
+
+</code></pre>
+<h3 id="configurenodes">ConfigureNodes</h3>
+<p>Methods available on the VisualNodeConfigurator:</p>
+<ul>
+<li><code>IncludeDefault()</code> - Includes the nodes that come built-in with VisualProgrammer.Core (recommended)</li>
+<li><code>Include&lt;T&gt;()</code>/<code>Include(Type)</code> - Includes a single specific type.</li>
+<li><code>IncludeFromAssembly(Assembly)</code> - Includes all non-abstract types that extend from <code>VisualStatement</code> or <code>VisualExpression</code> in the given assembly.</li>
+<li><code>IncludeFromAppDomain()</code> - Includes all non-abstract types that extend from <code>VisualStatement</code> or <code>VisualExpression</code> in <strong>any</strong> of the assemblies loaded into the current AppDomain</li>
+<li><code>Exclude&lt;T&gt;()</code>/<code>Exclude(Type)</code> - Excludes a single specific type. Note that the exclusion logic is always executed last, so even if you include this type manually after this point, the type will not appear.</li>
+</ul>
+<h3 id="configuredatatypes">ConfigureDataTypes</h3>
+<p>Methods available on the DataTypesConfigurator:</p>
+<ul>
+<li><code>AddDefault()</code> - Includes the standard types supported by VisualProgrammer (Boolean, Int32, Double and String)</li>
+<li><code>Add&lt;T&gt;()</code>/<code>Add(Type)</code> - Adds a specific type.</li>
+<li><code>Remove&lt;T&gt;()</code>/<code>Remove(Type)</code> - Removes a specific type.</li>
+</ul>
+<h3 id="configureentries">ConfigureEntries</h3>
+<p>Methods available on the VisualEntryConfigurator:</p>
+<ul>
+<li><code>Add(String, String)</code> - Adds a parameterless entry with the given internal ID and display name.</li>
+<li><code>Add(String, String, Action&lt;VisualEntryParameterConfigurator&gt;)</code> - Adds a new entry with the given internal ID, display name and parameters.</li>
+</ul>
+<p>Methods available on the VisualEntryParameterConfigurator:</p>
+<ul>
+<li><code>WithParameter&lt;T&gt;(String)</code>/<code>WithParameter(String, Type)</code> - Adds a new parameter to the entry with the given type and name. The name must be unique. Note that when multiple parameters are added, the parameters are ordered in the same order they are added using this method. For example, <code>.WithParameter&lt;double&gt;(&quot;a&quot;).WithParameter&lt;string&gt;(&quot;b&quot;)</code> would result in an entry that compiles to an <code>Action&lt;double, string&gt;</code>.</li>
+</ul>
+<h3 id="configurelockedvariables">ConfigureLockedVariables</h3>
+<p>Methods available on the LockedVariableConfigurator:</p>
+<ul>
+<li><code>Add(String, Type, Object?)</code>/<code>Add&lt;T&gt;(String, T)</code> - Adds a new locked variable of the given name and type with the given default/starting value.</li>
+<li><code>Add(String, Type)</code>/<code>Add&lt;T&gt;(String)</code> - Adds a new locked variable of the given name and type with an automatic default value (for example 0 for int).</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/Docs/devguide/core/environment.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

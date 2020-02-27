@@ -1,0 +1,180 @@
+﻿.vp--program-presenter {
+    display: flex;
+    flex-direction: row;
+    background: #EFF0F1;
+    user-select: none;
+}
+
+.vp--program-presenter .vp--canvas {
+    flex: 1 1 0;
+    order: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.vp--canvas > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.vp--node-toolbox {
+    order: 0;
+    flex: 0 0 300px;
+    border-right: 1px solid #d7d7d7;
+}
+
+/* Toolbox template nodes (i.e. ones that should not be edited, but can be dragged onto canvas) */
+.vp--visual-node-toolbox-template {
+    cursor: move;
+}
+.vp--visual-node-toolbox-template > * {
+    pointer-events: none; /* Prevent anything such as inputs from responding to the user input */
+}
+
+.vp--variable-list {
+    order: 2;
+    flex: 0 0 300px;
+    border-left: 1px solid #d7d7d7;
+}
+
+.vp--node-connector-container {
+    top: 11px; /* This is so that it's easier to make the line meet the center of the */
+    left: 12px; /* link dot, without needing to add it to the JS calculation. */
+
+    overflow: visible; /* So we don't have to resize the SVG to fit everything. Easy :) */
+    width: 1px;  /* These used to be zero, but Chrome does not display the lines inside the */
+    height: 1px; /* container (despite overflow being visible) if they have zero width/height. */
+}
+
+.vp--node-connector-container path {
+    stroke: var(--type-color, #AAA);
+    stroke-width: 3;
+    fill: none;
+}
+.vp--node-connector-container path[data-line-dest-id=""] {
+    display: none;
+}
+
+.vp--visual-node-container {
+    position: absolute;
+}
+
+.vp--visual-node-container.vp--selected {
+    outline: 3px solid #0087FF;
+}
+
+.vp--visual-node {
+    display: inline-block;
+    position: relative;
+    min-width: 180px;
+    border: 1px solid #FFF2;
+    border-radius: 4px;
+    font-size: 85%;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+    background: #68717B;
+}
+
+[data-type="double"] { --type-color: #42759F; }
+[data-type="int32"] { --type-color: #44AE90 }
+[data-type="boolean"] { --type-color: #AE4444; }
+[data-type="string"] { --type-color: #5E9B4E; }
+
+.vp--visual-entry {
+    --type-color: #1E222A;
+    --node-border: rgba(255, 255, 255, .15);
+    --link-inner: rgba(255, 255, 255, .2);
+    color: #F9F9F9;
+}
+
+.vp--visual-node, .vp--visual-node .vp--node-link {
+    background: var(--type-color, #F9F9F9);
+    border: 1px solid var(--node-border, rgba(0, 0, 0, .15));
+}
+
+.vp--visual-node .vp--node-title {
+    display: block;
+    padding: 6px 10px;
+    font-weight: bold;
+}
+
+.vp--visual-node .vp--node-dragger {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 29px;
+    cursor: move;
+}
+
+.vp--visual-node .vp--node-properties > div {
+    position: relative;
+    padding: 6px 6px 6px 10px;
+}
+
+.vp--visual-node .vp--node-properties > div:not(:first-child) {
+    border-top: 1px solid #FFF1;
+}
+
+.vp--visual-node .vp--node-properties, .vp--visual-node .vp--node-statements {
+    position: relative;
+}
+
+.vp--visual-node .vp--node-statements {
+    display: flex;
+}
+
+.vp--visual-node .vp--node-statements > div {
+    position: relative;
+    flex: 1 1 0;
+    padding: 4px 4px 6px 4px;
+    text-align: center;
+    font-size: 90%;
+}
+
+.vp--visual-node .vp--node-statements > span:not(:first-of-type) {
+    border-left: 1px solid #FFF1;
+}
+
+.vp--visual-node .vp--node-link {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    cursor: crosshair;
+}
+
+.vp--visual-node .vp--node-link::after {
+    content: ' ';
+    position: absolute;
+    top: 3px; bottom: 3px;
+    left: 3px; right: 3px;
+    border-radius: 50%;
+    background: var(--link-inner, rgba(0, 0, 0, 0.2));
+}
+
+.vp--visual-node.vp--visual-expression .vp--node-link[data-node-link-role="destination"] { /* Connector for the result of an expression */
+    right: -1px;
+    top: 11px;
+    transform: translateX(50%) rotate(45deg);
+}
+
+.vp--visual-node.vp--visual-statement .vp--node-link[data-node-link-role="destination"] { /* Connector for the incoming statement. */
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.vp--visual-node .vp--node-link[data-node-link-type="expression"][data-node-link-role="source"] { /* Connector for the expression parameters for an expression/statement */
+    left: -1px;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.vp--visual-node .vp--node-link[data-node-link-type="statement"][data-node-link-role="source"] { /* Connector for outgoing statements (e.g. "next", "true branch", etc.) */
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(135deg);
+}

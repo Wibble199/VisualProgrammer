@@ -1,0 +1,646 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class VisualNode
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class VisualNode
+   ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+              
+              <a href="https://github.com/Wibble199/VisualProgrammer" class="github-ribbon">
+                <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+              </a>    </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="VisualProgrammer.Core.VisualNode">
+  
+  
+  <h1 id="VisualProgrammer_Core_VisualNode" data-uid="VisualProgrammer.Core.VisualNode" class="text-break">Class VisualNode
+  </h1>
+  <div class="markdown level0 summary"><p>The base class for all statements and expressions.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">VisualNode</span></div>
+      <div class="level2"><a class="xref" href="VisualProgrammer.Core.VisualEntry.html">VisualEntry</a></div>
+      <div class="level2"><a class="xref" href="VisualProgrammer.Core.VisualExpression-1.html">VisualExpression&lt;TResult&gt;</a></div>
+      <div class="level2"><a class="xref" href="VisualProgrammer.Core.VisualStatement.html">VisualStatement</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="VisualProgrammer.Core.IVisualNode.html">IVisualNode</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="VisualProgrammer.Core.html">VisualProgrammer.Core</a></h6>
+  <h6><strong>Assembly</strong>: VisualProgrammer.Core.dll</h6>
+  <h5 id="VisualProgrammer_Core_VisualNode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class VisualNode : IVisualNode</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_Id.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L17">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_Id_" data-uid="VisualProgrammer.Core.VisualNode.Id*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_Id" data-uid="VisualProgrammer.Core.VisualNode.Id">Id</h4>
+  <div class="markdown level1 summary"><p>The ID of this node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Guid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_Position.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L23">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_Position_" data-uid="VisualProgrammer.Core.VisualNode.Position*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_Position" data-uid="VisualProgrammer.Core.VisualNode.Position">Position</h4>
+  <div class="markdown level1 summary"><p>The position of this node on the program canvas.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point Position { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Drawing.Point</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_ClearAllLinks_System_Nullable_System_Guid__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.ClearAllLinks(System.Nullable%7BSystem.Guid%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L136">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_ClearAllLinks_" data-uid="VisualProgrammer.Core.VisualNode.ClearAllLinks*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_ClearAllLinks_System_Nullable_System_Guid__" data-uid="VisualProgrammer.Core.VisualNode.ClearAllLinks(System.Nullable{System.Guid})">ClearAllLinks(Nullable&lt;Guid&gt;)</h4>
+  <div class="markdown level1 summary"><p>Attempts to clear all references on this node. Optionally only clears references for a specific node ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearAllLinks(Guid? onlyIf = default(Guid? ))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+        <td><span class="parametername">onlyIf</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_ClearLink_System_String_System_Nullable_System_Guid__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.ClearLink(System.String%2CSystem.Nullable%7BSystem.Guid%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L120">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_ClearLink_" data-uid="VisualProgrammer.Core.VisualNode.ClearLink*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_ClearLink_System_String_System_Nullable_System_Guid__" data-uid="VisualProgrammer.Core.VisualNode.ClearLink(System.String,System.Nullable{System.Guid})">ClearLink(String, Nullable&lt;Guid&gt;)</h4>
+  <div class="markdown level1 summary"><p>Attempts to clears the between a node and the target property of this node. Optionally only clears the link for a specific Node ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearLink(string targetProperty, Guid? onlyIf = default(Guid? ))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+        <td><span class="parametername">onlyIf</span></td>
+        <td><p>If a value for this parameter is provided, the reference will only be cleared if the ID of the target node of the reference matches this.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_Construct_System_Type_System_Type___.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.Construct(System.Type%2CSystem.Type%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L171">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_Construct_" data-uid="VisualProgrammer.Core.VisualNode.Construct*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_Construct_System_Type_System_Type___" data-uid="VisualProgrammer.Core.VisualNode.Construct(System.Type,System.Type[])">Construct(Type, Type[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new node of the given type and returns it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static VisualNode Construct(Type nodeType, params Type[] genericTypes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">nodeType</span></td>
+        <td><p>The type of node to create. Must be a <a class="xref" href="VisualProgrammer.Core.VisualNode.html">VisualNode</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericTypes</span></td>
+        <td><p>If the node to create is a generic node, these are the types to use as the type arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.VisualNode.html">VisualNode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_CreateExpression_VisualProgrammer_Core_VisualProgram_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.CreateExpression(VisualProgrammer.Core.VisualProgram)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L27">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_CreateExpression_" data-uid="VisualProgrammer.Core.VisualNode.CreateExpression*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_CreateExpression_VisualProgrammer_Core_VisualProgram_" data-uid="VisualProgrammer.Core.VisualNode.CreateExpression(VisualProgrammer.Core.VisualProgram)">CreateExpression(VisualProgram)</h4>
+  <div class="markdown level1 summary"><p>Gets the Linq Expression for this node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Expression CreateExpression(VisualProgram context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.VisualProgram.html">VisualProgram</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The program context. Required for variables, resolving links, etc.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_GetPropertiesOfType_VisualProgrammer_Core_VisualNodePropertyType___.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.GetPropertiesOfType(VisualProgrammer.Core.VisualNodePropertyType%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L41">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_GetPropertiesOfType_" data-uid="VisualProgrammer.Core.VisualNode.GetPropertiesOfType*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_GetPropertiesOfType_VisualProgrammer_Core_VisualNodePropertyType___" data-uid="VisualProgrammer.Core.VisualNode.GetPropertiesOfType(VisualProgrammer.Core.VisualNodePropertyType[])">GetPropertiesOfType(VisualNodePropertyType[])</h4>
+  <div class="markdown level1 summary"><p>Gets all the properties of a specific <a class="xref" href="VisualProgrammer.Core.VisualNodePropertyType.html">VisualNodePropertyType</a>, for example getting all statements.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;VisualNodePropertyDefinition&gt; GetPropertiesOfType(params VisualNodePropertyType[] types)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.VisualNodePropertyType.html">VisualNodePropertyType</a>[]</td>
+        <td><span class="parametername">types</span></td>
+        <td><p>The type(s) of property to filter by.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="VisualProgrammer.Core.VisualNodePropertyDefinition.html">VisualNodePropertyDefinition</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_GetPropertyValue_System_String_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.GetPropertyValue(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L45">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_GetPropertyValue_" data-uid="VisualProgrammer.Core.VisualNode.GetPropertyValue*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_GetPropertyValue_System_String_" data-uid="VisualProgrammer.Core.VisualNode.GetPropertyValue(System.String)">GetPropertyValue(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the value of the property with the given name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object GetPropertyValue(string propertyName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>If the property with the given name is not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_Link_VisualProgrammer_Core_VisualProgram_System_String_VisualProgrammer_Core_VisualNode_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.Link(VisualProgrammer.Core.VisualProgram%2CSystem.String%2CVisualProgrammer.Core.VisualNode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L70">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_Link_" data-uid="VisualProgrammer.Core.VisualNode.Link*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_Link_VisualProgrammer_Core_VisualProgram_System_String_VisualProgrammer_Core_VisualNode_" data-uid="VisualProgrammer.Core.VisualNode.Link(VisualProgrammer.Core.VisualProgram,System.String,VisualProgrammer.Core.VisualNode)">Link(VisualProgram, String, VisualNode)</h4>
+  <div class="markdown level1 summary"><p>Attempts to link the given target <a class="xref" href="VisualProgrammer.Core.VisualNode.html">VisualNode</a> to the target property of this node.<p>
+Will perform validation checks to ensure that the nodes can be linked, such as checking for expression/statement and expression type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Link(VisualProgram context, string targetProperty, VisualNode node)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.VisualProgram.html">VisualProgram</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.VisualNode.html">VisualNode</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>If the target property could not be found on this node.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.VisualNodeLinkException.html">VisualNodeLinkException</a></td>
+        <td><p>When attempting to create a link that would be invalid, e.g. causing a circular reference, mismatching expression/statement types.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode_SetPropertyValue_System_String_System_Object_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode.SetPropertyValue(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L55">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_VisualNode_SetPropertyValue_" data-uid="VisualProgrammer.Core.VisualNode.SetPropertyValue*"></a>
+  <h4 id="VisualProgrammer_Core_VisualNode_SetPropertyValue_System_String_System_Object_" data-uid="VisualProgrammer.Core.VisualNode.SetPropertyValue(System.String,System.Object)">SetPropertyValue(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Sets the value of the property with the given name to the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPropertyValue(string propertyName, object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="VisualProgrammer_Core_VisualNode_SetPropertyValue_System_String_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that no type checking is performed, only casting.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>If the property with the given name is not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="VisualProgrammer.Core.IVisualNode.html">IVisualNode</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_VisualNode.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.VisualNode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/VisualNode.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

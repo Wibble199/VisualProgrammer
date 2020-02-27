@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Creating a Basic Custom Node Type </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Creating a Basic Custom Node Type ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+              
+              <a href="https://github.com/Wibble199/VisualProgrammer" class="github-ribbon">
+                <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+              </a>    </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="creating-a-basic-custom-node-type">Creating a Basic Custom Node Type</h1>
+
+<p>It is possible to create custom node types to integrate more deeply with whatever the program is being created for. For example, if you were making an IoT style program, you could add an expression node that checks whether a device is connected to the internet or perhaps add a statement that triggers a push notification.</p>
+<p>To be able to add a node, you must be able to create a Linq expression for the action. Note however, it is possible to make a simple Linq expression that calls a method.</p>
+<p>In this guide, we'll walk through creating a simple node that will add 10 to another value, then multiply it by 2 and return that value.</p>
+<h2 id="1-creating-the-class">1. Creating the Class</h2>
+<p>To make a node, you first need to figure out what kind of node best suits the function.
+Simply, if your node will be returning a value to be used by other nodes, you will extend <code>VisualExpression&lt;T&gt;</code> (where <code>T</code> is the type of data that the expression will return). If your node performs an action and should be able to be part of the program's flow, then you will want to extend <code>VisualStatement</code>.</p>
+<p>For this guide, our node will be returning a value, so we want to make a VisualExpression. Create a new class for the node and extend the expression base class. Here's our first bit of code:</p>
+<pre><code class="lang-cs">using VisualProgrammer.Core;
+
+namespace CustomProgrammerNodes {
+	public class AddTenThenDouble : VisualExpression&lt;double&gt; {
+		// TODO
+	}
+}
+
+</code></pre>
+<p>We will also want to add our custom node to the environment so that the visual program editors allow the user to add our node to the program canvas. When creating the program, we can give it an action to configure the environment. Read more on the <a href="../core/environment.html">environment</a> page.</p>
+<pre><code class="lang-cs">new VisualProgram(env =&gt; env
+	.ConfigureNodes(n =&gt; n
+		.IncludeDefault()
+		.Include&lt;AddTenThenDouble&gt;()
+	...
+</code></pre>
+<p>Once we've finished implementing the abstract methods on our node, we can compile and run the program.</p>
+<h2 id="2-initial-functionality">2. Initial Functionality</h2>
+<p>The next step is to implement the abstract <code>CreateExpression</code> method. This method takes a <code>VisualProgram</code> context and returns a <code>System.Linq.Expressions.Expression</code>. To create an expression, the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression?view=netstandard-2.1#methods">methods on the Expression class</a> are used. There are far too many to detail here, but some examples include <code>Constant</code> to get a static value, <code>AddChecked</code> to add two numbers together (and check for overflow errors), etc. Some of these expressions may in turn require other expressions to be passed in (this makes an Expression Tree).</p>
+<p>At first, we'll just use a static value of three for now instead of a parameter - we'll get to parameters later, let's make our Linq tree first.</p>
+<p>The first step is to take our input of three and then add ten to it. We will therefore need to use an <code>AddChecked</code> expression and pass it our two numbers as expressions:</p>
+<pre><code class="lang-cs">Expression.AddChecked(
+	Expression.Constant(3, typeof(double)), // We will replace this later
+	Expression.Constant(10, typeof(double)) // Just add 10 to it
+)
+</code></pre>
+<p>We then want to take this value that comes out of this expression, and multiply it by two. To do that we'll use <code>MultiplyChecked</code>.</p>
+<p>I also like to add in <code>using static System.Linq.Expressions.Expression;</code> at the top of the file, so we don't have to prefix our methods with Expression.</p>
+<pre><code class="lang-cs">MultiplyChecked(
+	AddChecked(...),
+	Constant(2, typeof(double))
+)
+</code></pre>
+<p>What we've generated here is a Linq version of the expression <code>(3 + 10) * 2</code>. So, we just want to return this expression as our <code>CreateExpression</code> method.</p>
+<p>The custom node will now look like this:</p>
+<pre><code class="lang-cs">public class AddTenThenDouble : VisualExpression&lt;double&gt; {
+	public override Expression CreateExpression(VisualProgram context) =&gt;
+		MultiplyChecked(
+			AddChecked(
+				Constant(3d, typeof(double)),
+				Constant(10d, typeof(double))
+			),
+			Constant(2d, typeof(double))
+		);
+}
+</code></pre>
+<p>If we run our program, we should see our custom node in the toolbox of the editor. Dragging and dropping this node onto the canvas and connecting it to a print statement (you may need a ToString node too) should print out the value <code>26</code> in the console.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>CreateExpression</code> method is called once when the program is compiled. This means that any conditions here (such as if statements) will execute at <em>compile</em> time and NOT at <em>runtime</em>. Anything that needs to happen at runtime needs to be built-in to the expression returned by this method.</p>
+</div>
+<p>I would also recommend finding a Linq Expression Tree guide if you want to learn more about these expressions.</p>
+<h2 id="3-adding-properties">3. Adding Properties</h2>
+<p>The next thing we want to do is make it so our node is capable of taking a value as it's input instead of having a hard-coded value. To achieve this we can add properties to the node and mark it with the <code>VisualNodeProperty</code> attribute. There are a few types of properties that are supported by the editor:</p>
+<div class="tabGroup" id="tabgroup_CeZOj-G++Q">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_CeZOj-G++Q_tabid-exprref" role="tab" aria-controls="tabpanel_CeZOj-G++Q_tabid-exprref" data-tab="tabid-exprref" tabindex="0" aria-selected="true">Expression references</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_CeZOj-G++Q_tabid-fixedval" role="tab" aria-controls="tabpanel_CeZOj-G++Q_tabid-fixedval" data-tab="tabid-fixedval" tabindex="-1">Fixed values</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_CeZOj-G++Q_tabid-varref" role="tab" aria-controls="tabpanel_CeZOj-G++Q_tabid-varref" data-tab="tabid-varref" tabindex="-1">Variable references</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_CeZOj-G++Q_tabid-stmtref" role="tab" aria-controls="tabpanel_CeZOj-G++Q_tabid-stmtref" data-tab="tabid-stmtref" tabindex="-1">Statement references</a>
+</li>
+</ul>
+<section id="tabpanel_CeZOj-G++Q_tabid-exprref" role="tabpanel" data-tab="tabid-exprref">
+
+<p>Which the user can connect to another expression to source the value at runtime. This will likely be the most common property type. The type pased in as the generic argument is the type of expression that can be connected. It is possible to pass a type argument defined on the node into the reference type argument.</p>
+<pre><code class="lang-cs">[VisualNodeProperty] public ExpressionReference&lt;double&gt; SomeDouble { get; set; }
+</code></pre>
+</section>
+<section id="tabpanel_CeZOj-G++Q_tabid-fixedval" role="tabpanel" data-tab="tabid-fixedval" aria-hidden="true" hidden="hidden">
+
+<p>These are entered by the user before the program is compiled. These can be used to conditionally generate the expression. For example, the default comparison expression uses an enum allowing the user to pick which operator to use.</p>
+<pre><code class="lang-cs">[VisualNodeProperty] public ActionEnum Action { get; set; }
+</code></pre>
+</section>
+<section id="tabpanel_CeZOj-G++Q_tabid-varref" role="tabpanel" data-tab="tabid-varref" aria-hidden="true" hidden="hidden">
+
+<p>Which point to a variable of a specific kind. Generally, it's better to use an expression reference and allow the user to link it to a &quot;GetVariable&quot; node if they want to read a variable. Like the expression references, the type passed to the VariableReference's type argument is the data type of the variable and it's possible to pass a generic argument defined on the node.</p>
+<pre><code class="lang-cs">[VisualNodeProperty] public VariableReference&lt;TVar&gt; Variable { get; set; }
+</code></pre>
+</section>
+<section id="tabpanel_CeZOj-G++Q_tabid-stmtref" role="tabpanel" data-tab="tabid-stmtref" aria-hidden="true" hidden="hidden">
+
+<p>Which you will likely never need to be used and can point to other statements. This is for nodes that may affect the control flow (such as loops or if conditionals) and will be touched on in a different tutorial.</p>
+<p>By default, all VisualStatements inherit a <code>NextStatement</code> statement reference which determines the next statement to execute.</p>
+<pre><code class="lang-cs">[VisualNodeProperty] public StatementReference AnotherBranch { get; set; }
+</code></pre>
+</section>
+</div>
+
+<p>For our node, we want users to be able to connect our node to another node that provides a value therefore we need to use an expression reference. We want a double type, so that will be the generic argument of the expression reference.</p>
+<p>Next, we need to get an expression from this reference that we can pass to our Linq expression. This is simple, we just need to replace the <code>Constant(3d, typeof(double))</code> line with <code>Value.ResolveRequiredExpression(context)</code>. This will get the expression of the referenced expression when the user compiles the program. We used <code>ResolveRequiredExpression</code> because it throws an error if there is no expression connected. Alternatively you can use <code>ResolveExpression</code> which returns null if there is no connected expression, allowing you to use a different expression in it's place (e.g. a fallback default value).</p>
+<p>Our class is now done. It takes an double expression and returns <code>(value + 10) * 2</code>. Run the program and try it out. The final code for the node is shown below.</p>
+<pre><code class="lang-cs">using System.Linq.Expressions;
+using VisualProgrammer.Core;
+
+using static System.Linq.Expressions.Expression;
+
+namespace CustomProgrammerNodes {
+	public class AddTenThenDouble : VisualExpression&lt;double&gt; {
+
+		[VisualNodeProperty] public ExpressionReference&lt;double&gt; Value { get; set; }
+
+		public override Expression CreateExpression(VisualProgram context) =&gt;
+			MultiplyChecked(
+				AddChecked(
+					Value.ResolveExpression(context),
+					Constant(10d, typeof(double))
+				),
+				Constant(2d, typeof(double))
+			);
+	}
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/Docs/devguide/extension/nodes.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

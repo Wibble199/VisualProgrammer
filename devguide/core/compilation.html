@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Compilation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Compilation ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+              
+              <a href="https://github.com/Wibble199/VisualProgrammer" class="github-ribbon">
+                <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+              </a>    </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="compilation">Compilation</h1>
+
+<p>When a VisualProgram is compiled using the Compile methods, a program factory class is created which is responsible for creating the self-contained program instances. The program that has been created by the user will be compiled to IL code through the user of Linq expressions. During compilation, a new dynamic class is created which extends or inherits a specified class/interface (called <code>TExtends</code>), as well as implementing <a class="xref" href="../../api/VisualProgrammer.Core.Compilation.ICompiledInstanceBase.html"><code>ICompiledInstanceBase</code></a>.</p>
+<p>When the dynamic type is created, VisualProgrammer will attempt to bind the user's compiled functions and the variables to methods and properties on <code>TExtends</code> and any of it's superclasses or interfaces:</p>
+<ul>
+<li>For each entry defined in the program's environment, a method of the same name as the entry (case insensitive) will be created if:
+<ul>
+<li><code>TExtends</code> is a class and a <code>public abstract</code> or <code>protected abstract</code> method of that name exists on <code>TExtends</code> or any of its superclasses.</li>
+<li><code>TExtends</code> is a class and a <code>public virtual</code> or <code>protected abstract</code> method of that name exists on <code>TExtends</code> or any of its superclasses, but <strong>only</strong> if the compiled delegate is not empty. So, if the user does not add that entry to the canvas or adds it but does not connect any statements to it, the virtual method will not be overriden. This allows you to provide &quot;fallback&quot; logic.</li>
+<li>Any of <code>TExtends</code>'s interfaces (including <code>TExtends</code> itself if it is an interface) defines a method of that name.</li>
+</ul>
+</li>
+<li>For each variable that exists in the program, a property of the same name (case insensitive) and read-write status is created on the dynamic type if:
+<ul>
+<li><code>TExtends</code> or any of it's superclasses define a <code>public virtual</code> or <code>protected virtual</code> property of that name.</li>
+<li>Any of <code>TExtends</code>'s interfaces(including <code>TExtends</code> itself if it is an interface) defines a property of that name.</li>
+</ul>
+</li>
+<li>If <code>TExtends</code> is a class and there are any constructors defined, these will also be implemented on the created type and will pass any parameters tat are given to the <code>CreateProgram</code> call onto the constructor.
+<ul>
+<li>One very important caveat with constructors however, is that they are unable to access the variables defined in the program (including properties that are bound to these variables) because the variable store has not been initialised yet.</li>
+</ul>
+</li>
+</ul>
+<p>Note that all methods must be of a void type and must have parameters that match the ones defined on the entry definition.</p>
+<p>All variables - regardless of whether they are locked or bound to a property - can be read or written to using the <code>ICompiledInstanceBase</code>'s <code>SetVariable</code> and <code>GetVariable</code> methods. Variable accessors are not automatically created on the dynamic type to prevent a name collision between variables and entries.</p>
+<h2 id="examples">Examples</h2>
+<p>That's quite a lot to understand, but here are some examples using the following program definition. If you're not sure, it's easiest to start with an interface.</p>
+<pre><code class="lang-cs">var program = new VisualProgram(env =&gt; env
+	.ConfigureEntries(e =&gt; e
+		.Add(&quot;paramEntry&quot;, &quot;Parameterized Entry&quot;, p =&gt; p.WithParameter&lt;double&gt;(&quot;someDouble&quot;))
+		.Add(&quot;nonParamEntry&quot;, &quot;No Parameters&quot;)
+	),
+	new VisualNodeCollection {
+		...
+	},
+	new VariableCollection {
+		{ &quot;doubleVar&quot;, typeof(double), 0d },
+		{ &quot;boolVar&quot;, typeof(bool), false }
+	}
+);
+</code></pre>
+<h3 id="interface">Interface</h3>
+<pre><code class="lang-cs">// Compile the program and create an instance
+var factory = program.Compile&lt;IMyProgram&gt;();
+var instance = factory.CreateProgram();
+
+// We can now use this instance as a normal object
+instance.ParamEntry(10d);
+instance.DoubleVar = 1.23d;
+instance.NonParamEntry();
+Console.WriteLine(instance.DoubleVar);
+
+
+// Our interface for the typed program
+// It does not have to extend from ICompiledInstanceBase, but if it does it allows us to use ResetVariables, GetVariable and SetVariable
+interface IMyProgram : ICompiledInstanceBase {
+	void ParamEntry(double d);
+	void NonParamEntry();
+	double DoubleVar { get; set; }
+}
+</code></pre>
+<h3 id="simple-abstract-class">Simple Abstract Class</h3>
+<pre><code class="lang-cs">public abstract class SimpleAbstract : ParentClass {
+
+	public abstract void ParamEntry(double d);
+	public double DoubleVar { get; set; }
+
+	public void AdditionalStuffOnTheClass() {
+		// You can add your own methods that don't relate to an entry which will be inherited.
+	}
+}
+
+// Inheritance works, so we can define the entry on other superclasses
+public abstract class ParentClass {
+	// Make sure the method is virtual if not abstract (if it relates to an entry) so it can be overriden by the VisualProgrammer compiler
+	public virtual void NonParamEntry() { }
+}
+</code></pre>
+<h3 id="complex-abstract-class">Complex Abstract Class</h3>
+<pre><code class="lang-cs">// The class must be public so it can be seen by the compiler
+// Once again, it does not have to specify it implements ICompiledBase if you do not need to use the variable accessor methods
+public abstract class AbstractProgram : ICompiledInstanceBase {
+
+	public AbstractProgram(string name) {
+		Console.WriteLine(&quot;Printed from the constructor. Hello &quot; + name);
+	}
+	
+	// This works. A property that can be get publicly, but only set privately
+	public virtual double DoubleVar { get; protected set; }
+
+	public abstract void NonParamEntry();
+
+	protected virtual void ParamEntry(double d) {
+		// This will only be executed if the ParamEntry is not given any statements to execute
+		Console.WriteLine(&quot;You added nothing to the program&quot;);
+	}
+
+	// This will never be overwritten even if an entry existed with the same name, because it's not virtual or abstract
+	public void ExecuteMyProtectedMethod() {
+		ParamEntry(3.14d); // Obviously you can access protected methods here
+	}
+
+	// These methods are required to make the class implement ICompiledInstanceBase. They will be implemented by the VisualProgram compiler.
+	public abstract void ResetVariables();
+	public abstract object GetVariable(string key);
+	public abstract void SetVariable(string key, object value);
+}
+
+
+// Compile the program into a factory and create it. We must pass an argument for the AbstractProgram constructor
+var factory = progam.Compile&lt;AbstractProgram&gt;();
+instance = factory.CreateProgram(&quot;World!&quot;); // Prints &quot;Printed from the constructor. Hello World!&quot;
+// instance = factory.CreateProgram(); // Throws an error since there is no parameterless constructor
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/Docs/devguide/core/compilation.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,745 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/a/VisualProgrammer/VisualProgrammer/Docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Compilation.CompiledProgramFactory-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Compilation.CompiledProgramFactory-1.html",
+          "hash": "mxly1FhvIv/hL5yBXNoEAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Compilation.ICompiledInstanceBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Compilation.ICompiledInstanceBase.html",
+          "hash": "QGcMCnlerxYI5EDozULQrA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Compilation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Compilation.html",
+          "hash": "IOyK0v9wg23jSOjOk0MtgQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.EntryDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.EntryDefinition.html",
+          "hash": "u5KO2Ftdv06Yj2vvbM7BSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.DataTypesConfigurator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.DataTypesConfigurator.html",
+          "hash": "F7dnO446PjyxtG9A/DRVpA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.LockedVariableConfigurator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.LockedVariableConfigurator.html",
+          "hash": "b8e9J1YSitR8ks8pIsrELw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.VisualEntryConfigurator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.VisualEntryConfigurator.html",
+          "hash": "WTlHelBEs1bSBD1fAAOtAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.VisualEntryParameterConfigurator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.VisualEntryParameterConfigurator.html",
+          "hash": "nGCDtudA0oEmo6/lkTcn6Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.VisualNodeConfigurator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.VisualNodeConfigurator.html",
+          "hash": "e5DCRMIkorLBM1pwn5WTUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.VisualProgramEnvironment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.VisualProgramEnvironment.html",
+          "hash": "CaxIW7N5ZjM6usAnptWjZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.VisualProgramEnvironmentBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.VisualProgramEnvironmentBuilder.html",
+          "hash": "vz1mDXobPh+MfnDm7IfEBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Environment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Environment.html",
+          "hash": "bSuswZeYf9VgDIS/gB7SAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.ExpressionReference-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.ExpressionReference-1.html",
+          "hash": "DsFglJg/nLOPO8zsV3Z0JA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.ExpressionReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.ExpressionReference.html",
+          "hash": "HrVpj4SEfnWNXICSpn3Ybw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.INodeReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.INodeReference.html",
+          "hash": "iSREC8f217RbymnH6GCiig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.IVariableReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.IVariableReference.html",
+          "hash": "fKVEmvgE7Q+CMpSngr+khg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.IVisualExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.IVisualExpression.html",
+          "hash": "rdNCEpf74bg/B6zuySe/pw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.IVisualNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.IVisualNode.html",
+          "hash": "EEpr1lgEwvnCNYtntptUHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.StatementReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.StatementReference.html",
+          "hash": "h/VfQ9tvsrbWQwzsy6PIJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Utils.IndexedDictionary-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Utils.IndexedDictionary-2.html",
+          "hash": "oGLgrOoziiKWLWTdMtoc9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Utils.TypeUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Utils.TypeUtils.html",
+          "hash": "8Q9R5snQkANuP7/Dww2zlw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Utils.html",
+          "hash": "/kcBU7NpRfDVplqGFOqauQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.Variable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.Variable.html",
+          "hash": "+qdaCHwfnd8Yx5eCBvpltw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VariableCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VariableCollection.html",
+          "hash": "DKcymnKSVqYtXPG75oVpnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VariableReference-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VariableReference-1.html",
+          "hash": "BB7ZI8gcR8akbxmBhtOJAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VariableReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VariableReference.html",
+          "hash": "zopNQO1WtEZ+VIWFcx4Mfw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualEntry.html",
+          "hash": "RnSGumHl62b8bkqls0aXiA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualExpression-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualExpression-1.html",
+          "hash": "8QdOF92qIhCK916vv+bRFw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualNode.html",
+          "hash": "gi2Wd3PKf9SyS5GdUwXxZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualNodeCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualNodeCollection.html",
+          "hash": "uNX6d7zfB9bbBUuwM6hqEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualNodeLinkException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualNodeLinkException.html",
+          "hash": "+zvDr13DrGQw0gbcZUacEA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualNodePropertyAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualNodePropertyAttribute.html",
+          "hash": "kEZLyxujaa5yBHpsxixqhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualNodePropertyDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualNodePropertyDefinition.html",
+          "hash": "PqEFBQKyBRnoU2cdc02Lng=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualNodePropertyType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualNodePropertyType.html",
+          "hash": "PKZqj9Dbait8ANkMRrSd1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualProgram.html",
+          "hash": "pmw7osLqsTTFQhyNKRsRZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.VisualStatement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.VisualStatement.html",
+          "hash": "u+bLYMD9cm/MZzob30NGvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/VisualProgrammer.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/VisualProgrammer.Core.html",
+          "hash": "NU9Ea/otVe1cAwLVTdcfbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "vhL3IsUePaGlL1fy6Q43hw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "sjoDvLr/QfvaT0HoGEC3jQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/core/compilation.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/core/compilation.html",
+          "hash": "AQRVk/FgsI1fuQ1mpUEsRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/core/entry-definition.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/core/entry-definition.html",
+          "hash": "NRjB86O5aedVUcPGXqQFtQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/core/environment.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/core/environment.html",
+          "hash": "r4a/jr1wqvmfREi+Dwz91w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/core/nodes.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/core/nodes.html",
+          "hash": "Tfqfb5lQ8Q/iq+0SyXvDHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/core/variables.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/core/variables.html",
+          "hash": "RuJardGVhClxlmqbPdS8kQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/core/visual-program.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/core/visual-program.html",
+          "hash": "xpw625ZTUyR2NIq5BnHLgA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/extension/flow-nodes.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/extension/flow-nodes.html",
+          "hash": "Fd8Ocg4AQkRI4wqMHfMuxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/extension/generic-nodes.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/extension/generic-nodes.html",
+          "hash": "jaqC+/HVz719Lg13d7tSZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/extension/nodes.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/extension/nodes.html",
+          "hash": "KcMTdUGsgpqBe8cXFWHGug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/setup/blazor.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/setup/blazor.html",
+          "hash": "NdXjUFscvijeAj0jW+wabQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "devguide/setup/wpf.md",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/setup/wpf.html",
+          "hash": "Kb/tslAxMI0HdYf3JswV9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "devguide/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "devguide/toc.html",
+          "hash": "imVoxahSkGjFAjV64suQSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "BRaJvV5//7nF0YoLrKHpWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "resources/images/flow-branch-alternative.png",
+      "output": {
+        "resource": {
+          "relative_path": "resources/images/flow-branch-alternative.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "resources/images/flow-branch-simplified.png",
+      "output": {
+        "resource": {
+          "relative_path": "resources/images/flow-branch-simplified.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "hVeqqHmXunTouW4H/Eazcg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "userguide/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "userguide/toc.html",
+          "hash": "igOndaZJQKdx0+KxTAhOUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "userguide/todo.md",
+      "output": {
+        ".html": {
+          "relative_path": "userguide/todo.html",
+          "hash": "v7iQyW0rLfM7fRyY35p3Xg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 14,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 37,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

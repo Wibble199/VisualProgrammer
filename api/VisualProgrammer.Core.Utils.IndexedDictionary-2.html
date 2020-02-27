@@ -1,0 +1,1807 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class IndexedDictionary&lt;TKey, TValue&gt;
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class IndexedDictionary&lt;TKey, TValue&gt;
+   ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+              
+              <a href="https://github.com/Wibble199/VisualProgrammer" class="github-ribbon">
+                <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+              </a>    </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2">
+  
+  
+  <h1 id="VisualProgrammer_Core_Utils_IndexedDictionary_2" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2" class="text-break">Class IndexedDictionary&lt;TKey, TValue&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Data storage class that can be accessed using a key or an index.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">IndexedDictionary&lt;TKey, TValue&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Collections.Generic.IList</span>&lt;TValue&gt;</div>
+    <div><span class="xref">System.Collections.Generic.ICollection</span>&lt;TValue&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TValue&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IDictionary</span>&lt;TKey, TValue&gt;</div>
+    <div><span class="xref">System.Collections.Generic.ICollection</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;&gt;</div>
+    <div><span class="xref">System.Collections.IEnumerable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="VisualProgrammer.Core.Utils.html">VisualProgrammer.Core.Utils</a></h6>
+  <h6><strong>Assembly</strong>: VisualProgrammer.Core.dll</h6>
+  <h5 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class IndexedDictionary&lt;TKey, TValue&gt; : IList&lt;TValue&gt;, ICollection&lt;TValue&gt;, IEnumerable&lt;TValue&gt;, IDictionary&lt;TKey, TValue&gt;, ICollection&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;, IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;, IEnumerable</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TKey</span></td>
+        <td><p>The type that is used as the dictionary's keys.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The type that is used as the dictionary's values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L22">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor">IndexedDictionary()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IndexedDictionary()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0__1___.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2C%601%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L24">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0__1___" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">IndexedDictionary(IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IndexedDictionary(IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt; collection)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;&gt;</td>
+        <td><span class="parametername">collection</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0__1___System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2C%601%7D%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L33">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0__1___System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}},System.Collections.Generic.IEqualityComparer{`0},System.Collections.Generic.IEqualityComparer{`1})">IndexedDictionary(IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;, IEqualityComparer&lt;TKey&gt;, IEqualityComparer&lt;TValue&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IndexedDictionary(IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt; collection, IEqualityComparer&lt;TKey&gt; keyComparer, IEqualityComparer&lt;TValue&gt; valueComparer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;&gt;</td>
+        <td><span class="parametername">collection</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TKey&gt;</td>
+        <td><span class="parametername">keyComparer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TValue&gt;</td>
+        <td><span class="parametername">valueComparer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.%23ctor(System.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L28">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2__ctor_System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0},System.Collections.Generic.IEqualityComparer{`1})">IndexedDictionary(IEqualityComparer&lt;TKey&gt;, IEqualityComparer&lt;TValue&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IndexedDictionary(IEqualityComparer&lt;TKey&gt; keyComparer, IEqualityComparer&lt;TValue&gt; valueComparer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TKey&gt;</td>
+        <td><span class="parametername">keyComparer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TValue&gt;</td>
+        <td><span class="parametername">valueComparer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Count.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L64">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Count_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Count*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Count" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Count">Count</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_IsReadOnly.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.IsReadOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L66">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_IsReadOnly_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.IsReadOnly*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_IsReadOnly" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.IsReadOnly">IsReadOnly</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Item__0_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Item(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L38">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Item_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Item*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Item__0_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Item(`0)">Item[TKey]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TValue this[TKey key] { get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Item_System_Int32_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Item(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L51">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Item_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Item*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Item_System_Int32_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Item(System.Int32)">Item[Int32]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TValue this[int index] { get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Keys.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Keys%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L61">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Keys_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Keys*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Keys" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Keys">Keys</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICollection&lt;TKey&gt; Keys { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;TKey&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Values.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Values%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L62">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Values_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Values*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Values" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Values">Values</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICollection&lt;TValue&gt; Values { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;TValue&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Add__0__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Add(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L68">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Add_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Add*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Add__0__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Add(`0,`1)">Add(TKey, TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(TKey key, TValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Add_System_Collections_Generic_KeyValuePair__0__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Add(System.Collections.Generic.KeyValuePair%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L72">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Add_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Add*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Add_System_Collections_Generic_KeyValuePair__0__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">Add(KeyValuePair&lt;TKey, TValue&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(KeyValuePair&lt;TKey, TValue&gt; item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;</td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Clear.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L108">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Clear_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Clear*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Clear" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Removes all elements from the <a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary&lt;TKey, TValue&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Contains__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Contains(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L111">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Contains_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Contains*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Contains__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Contains(`1)">Contains(TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(TValue item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Contains_System_Collections_Generic_KeyValuePair__0__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Contains(System.Collections.Generic.KeyValuePair%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L110">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Contains_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Contains*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Contains_System_Collections_Generic_KeyValuePair__0__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">Contains(KeyValuePair&lt;TKey, TValue&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(KeyValuePair&lt;TKey, TValue&gt; item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;</td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_ContainsKey__0_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.ContainsKey(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L112">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_ContainsKey_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.ContainsKey*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_ContainsKey__0_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.ContainsKey(`0)">ContainsKey(TKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ContainsKey(TKey key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_CopyTo__1___System_Int32_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.CopyTo(%601%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L115">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_CopyTo_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.CopyTo*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_CopyTo__1___System_Int32_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.CopyTo(`1[],System.Int32)">CopyTo(TValue[], Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(TValue[] array, int arrayIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TValue[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">arrayIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_CopyTo_System_Collections_Generic_KeyValuePair__0__1____System_Int32_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.CopyTo(System.Collections.Generic.KeyValuePair%7B%600%2C%601%7D%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L114">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_CopyTo_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.CopyTo*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_CopyTo_System_Collections_Generic_KeyValuePair__0__1____System_Int32_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">CopyTo(KeyValuePair&lt;TKey, TValue&gt;[], Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(KeyValuePair&lt;TKey, TValue&gt;[] array, int arrayIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">arrayIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_From_System_Collections_Generic_IEnumerable__1__System_Func__1__0__System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.From(System.Collections.Generic.IEnumerable%7B%601%7D%2CSystem.Func%7B%601%2C%600%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L104">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_From_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.From*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_From_System_Collections_Generic_IEnumerable__1__System_Func__1__0__System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.From(System.Collections.Generic.IEnumerable{`1},System.Func{`1,`0},System.Collections.Generic.IEqualityComparer{`0},System.Collections.Generic.IEqualityComparer{`1})">From(IEnumerable&lt;TValue&gt;, Func&lt;TValue, TKey&gt;, IEqualityComparer&lt;TKey&gt;, IEqualityComparer&lt;TValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary&lt;TKey, TValue&gt;</a> based on the given collection, using the specified key selector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IndexedDictionary&lt;TKey, TValue&gt; From(IEnumerable&lt;TValue&gt; collection, Func&lt;TValue, TKey&gt; keySelector, IEqualityComparer&lt;TKey&gt; keyComparer = null, IEqualityComparer&lt;TValue&gt; valueComparer = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TValue&gt;</td>
+        <td><span class="parametername">collection</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TValue, TKey&gt;</td>
+        <td><span class="parametername">keySelector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TKey&gt;</td>
+        <td><span class="parametername">keyComparer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TValue&gt;</td>
+        <td><span class="parametername">valueComparer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary</a>&lt;TKey, TValue&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_From__1_System_Collections_Generic_IEnumerable___0__System_Func___0__0__System_Func___0__1__System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.From%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2C%600%7D%2CSystem.Func%7B%60%600%2C%601%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L96">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_From_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.From*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_From__1_System_Collections_Generic_IEnumerable___0__System_Func___0__0__System_Func___0__1__System_Collections_Generic_IEqualityComparer__0__System_Collections_Generic_IEqualityComparer__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.From``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,`0},System.Func{``0,`1},System.Collections.Generic.IEqualityComparer{`0},System.Collections.Generic.IEqualityComparer{`1})">From&lt;TItem&gt;(IEnumerable&lt;TItem&gt;, Func&lt;TItem, TKey&gt;, Func&lt;TItem, TValue&gt;, IEqualityComparer&lt;TKey&gt;, IEqualityComparer&lt;TValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary&lt;TKey, TValue&gt;</a> based on the given collection, using the specified key selector and value selector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IndexedDictionary&lt;TKey, TValue&gt; From&lt;TItem&gt;(IEnumerable&lt;TItem&gt; collection, Func&lt;TItem, TKey&gt; keySelector, Func&lt;TItem, TValue&gt; valueSelector, IEqualityComparer&lt;TKey&gt; keyComparer = null, IEqualityComparer&lt;TValue&gt; valueComparer = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TItem&gt;</td>
+        <td><span class="parametername">collection</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TItem, TKey&gt;</td>
+        <td><span class="parametername">keySelector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TItem, TValue&gt;</td>
+        <td><span class="parametername">valueSelector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TKey&gt;</td>
+        <td><span class="parametername">keyComparer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;TValue&gt;</td>
+        <td><span class="parametername">valueComparer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary</a>&lt;TKey, TValue&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TItem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_GetEnumerator.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L117">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_GetEnumerator_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.GetEnumerator*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_GetEnumerator" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;KeyValuePair&lt;TKey, TValue&gt;&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_IndexOf__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.IndexOf(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L121">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_IndexOf_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.IndexOf*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_IndexOf__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.IndexOf(`1)">IndexOf(TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IndexOf(TValue item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Insert_System_Int32__0__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Insert(System.Int32%2C%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L74">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Insert_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Insert*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Insert_System_Int32__0__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Insert(System.Int32,`0,`1)">Insert(Int32, TKey, TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Insert(int index, TKey key, TValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Map__1_System_Func__1___0__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Map%60%601(System.Func%7B%601%2C%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L91">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Map_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Map*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Map__1_System_Func__1___0__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Map``1(System.Func{`1,``0})">Map&lt;TOutValue&gt;(Func&lt;TValue, TOutValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary&lt;TKey, TValue&gt;</a> based on this dictionary, passing the values though the provided value selector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IndexedDictionary&lt;TKey, TOutValue&gt; Map&lt;TOutValue&gt;(Func&lt;TValue, TOutValue&gt; valueSelector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TValue, TOutValue&gt;</td>
+        <td><span class="parametername">valueSelector</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary</a>&lt;TKey, TOutValue&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TOutValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Map__2_System_Func__0___0__System_Func__1___1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Map%60%602(System.Func%7B%600%2C%60%600%7D%2CSystem.Func%7B%601%2C%60%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L81">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Map_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Map*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Map__2_System_Func__0___0__System_Func__1___1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Map``2(System.Func{`0,``0},System.Func{`1,``1})">Map&lt;TOutKey, TOutValue&gt;(Func&lt;TKey, TOutKey&gt;, Func&lt;TValue, TOutValue&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary&lt;TKey, TValue&gt;</a> based on this dictionary, passing the keys and values though the provided key selector and value selector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IndexedDictionary&lt;TOutKey, TOutValue&gt; Map&lt;TOutKey, TOutValue&gt;(Func&lt;TKey, TOutKey&gt; keySelector, Func&lt;TValue, TOutValue&gt; valueSelector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TKey, TOutKey&gt;</td>
+        <td><span class="parametername">keySelector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TValue, TOutValue&gt;</td>
+        <td><span class="parametername">valueSelector</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualProgrammer.Core.Utils.IndexedDictionary-2.html">IndexedDictionary</a>&lt;TOutKey, TOutValue&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TOutKey</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TOutValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove__0_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Remove(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L123">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove__0_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove(`0)">Remove(TKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(TKey key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove__0__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Remove(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L125">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove__0__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove(`0,`1)">Remove(TKey, TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(TKey key, TValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Remove(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L126">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove(`1)">Remove(TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(TValue item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove_System_Collections_Generic_KeyValuePair__0__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.Remove(System.Collections.Generic.KeyValuePair%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L124">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_Remove_System_Collections_Generic_KeyValuePair__0__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">Remove(KeyValuePair&lt;TKey, TValue&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(KeyValuePair&lt;TKey, TValue&gt; item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, TValue&gt;</td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveAt_System_Int32_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.RemoveAt(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L127">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveAt_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveAt*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveAt_System_Int32_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveAt(System.Int32)">RemoveAt(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAt(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveKey__0_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.RemoveKey(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L130">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveKey_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveKey*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveKey__0_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveKey(`0)">RemoveKey(TKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemoveKey(TKey key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveValue__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.RemoveValue(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L131">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveValue_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveValue*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveValue__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveValue(`1)">RemoveValue(TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemoveValue(TValue item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveWhere_System_Func__0__1_System_Boolean__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.RemoveWhere(System.Func%7B%600%2C%601%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L134">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveWhere_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveWhere*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_RemoveWhere_System_Func__0__1_System_Boolean__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.RemoveWhere(System.Func{`0,`1,System.Boolean})">RemoveWhere(Func&lt;TKey, TValue, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Removes the first occurance of the item that matches the given predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemoveWhere(Func&lt;TKey, TValue, bool&gt; predicate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TKey, TValue, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_TryGetValue__0__1__.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.TryGetValue(%600%2C%601%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L140">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_TryGetValue_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.TryGetValue*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_TryGetValue__0__1__" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.TryGetValue(`0,`1@)">TryGetValue(TKey, out TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetValue(TKey key, out TValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_ICollection_TValue__Add__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.System%23Collections%23Generic%23ICollection%7BTValue%7D%23Add(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L148">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_ICollection_TValue__Add_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#Generic#ICollection{TValue}#Add*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_ICollection_TValue__Add__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#Generic#ICollection{TValue}#Add(`1)">ICollection&lt;TValue&gt;.Add(TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void ICollection&lt;TValue&gt;.Add(TValue item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_IEnumerable_TValue__GetEnumerator.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.System%23Collections%23Generic%23IEnumerable%7BTValue%7D%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L119">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_IEnumerable_TValue__GetEnumerator_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#Generic#IEnumerable{TValue}#GetEnumerator*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_IEnumerable_TValue__GetEnumerator" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#Generic#IEnumerable{TValue}#GetEnumerator">IEnumerable&lt;TValue&gt;.GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerator&lt;TValue&gt; IEnumerable&lt;TValue&gt;.GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;TValue&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_IList_TValue__Insert_System_Int32__1_.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.System%23Collections%23Generic%23IList%7BTValue%7D%23Insert(System.Int32%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L149">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_IList_TValue__Insert_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#Generic#IList{TValue}#Insert*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_Generic_IList_TValue__Insert_System_Int32__1_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#Generic#IList{TValue}#Insert(System.Int32,`1)">IList&lt;TValue&gt;.Insert(Int32, TValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IList&lt;TValue&gt;.Insert(int index, TValue item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L118">View Source</a>
+  </span>
+  <a id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_IEnumerable_GetEnumerator_" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#IEnumerable#GetEnumerator*"></a>
+  <h4 id="VisualProgrammer_Core_Utils_IndexedDictionary_2_System_Collections_IEnumerable_GetEnumerator" data-uid="VisualProgrammer.Core.Utils.IndexedDictionary`2.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Collections.Generic.IList&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IDictionary&lt;TKey, TValue&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.IEnumerable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/new/f8ef031d21c4076529e15639a09e6b905f78410e/apiSpec/new?filename=VisualProgrammer_Core_Utils_IndexedDictionary_2.md&amp;value=---%0Auid%3A%20VisualProgrammer.Core.Utils.IndexedDictionary%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Wibble199/VisualProgrammer/blob/f8ef031d21c4076529e15639a09e6b905f78410e/VisualProgrammer.Core/Utils/IndexedDictionary.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
